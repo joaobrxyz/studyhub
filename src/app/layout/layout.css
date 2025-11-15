@@ -1,0 +1,10 @@
+/* :host se refere ao próprio componente <app-layout> */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 96px);
+}
+
+.content-wrapper {
+  flex-grow: 1;
+}

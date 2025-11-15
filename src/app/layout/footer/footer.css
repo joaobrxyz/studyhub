@@ -1,0 +1,23 @@
+footer {
+    background-color: #FAFAFA !important;
+}
+
+.footer {
+  font-family: inherit;
+  font-size: 0.875rem; /* 14px */
+}
+
+.footer-text {
+  color: #6B7280; 
+}
+
+.footer-link {
+  color: #6B7280; 
+  text-decoration: none; 
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #111827; 
+  text-decoration: underline; 
+}

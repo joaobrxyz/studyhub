@@ -1,0 +1,20 @@
+/* Apenas ajustes finos que o Bootstrap não cobre */
+.btn-primary {
+    background-color: #2563EB;
+    border-color: #2563EB;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+/* Tira a borda cinza feia do input quando clica */
+.form-control:focus, .input-group-text {
+    border-color: #e0e0e0; 
+}
+
+/* Ajuste fino na logo */
+.navbar-brand {
+    font-family: sans-serif; 
+}

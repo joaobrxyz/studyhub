@@ -1,11 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
+import { Auth } from '../../core/services/auth';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  standalone: true, // Se seu projeto for standalone
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.html',
-  styleUrl: './header.css',
+  styleUrls: ['./header.css']
 })
 export class Header {
+  authService = inject(Auth);
+  router = inject(Router);
 
+  // Função simples de busca no header
+  onSearch(event: any) {
+    const termo = event.target.value;
+    if (termo) {
+      this.router.navigate(['/questoes'], { queryParams: { termo: termo } });
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
+
+  irParaBusca() {
+    this.router.navigate(['/questoes']);
+  }
 }
