@@ -1,1 +1,200 @@
-<p>question-filter works!</p>
+<h5 class="mb-3">Filtros Avançados</h5>
+<hr class="mt-0 mb-4 opacity-25">
+
+<!-- Seção Disciplina -->
+<div class="filter-group mb-4">
+  <h6 class="filter-title">Disciplina</h6>
+  
+  <!-- 
+    LIGANDO OS CHECKBOXES ESTÁTICOS
+    Note o [(ngModel)]="filtrosEstaticos.disciplina['Matematica']"
+  -->
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="checkMatematica"
+           [(ngModel)]="filtrosEstaticos.disciplina['Matematica']">
+    <label class="form-check-label" for="checkMatematica">
+      Matemática
+    </label>
+  </div>
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="checkPortugues"
+           [(ngModel)]="filtrosEstaticos.disciplina['Portugues']">
+    <label class="form-check-label" for="checkPortugues">
+      Português
+    </label>
+  </div>
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="checkHistoria"
+           [(ngModel)]="filtrosEstaticos.disciplina['Historia']">
+    <label class="form-check-label" for="checkHistoria">
+      História
+    </label>
+  </div>
+
+  <!-- 
+    LOOP DINÂMICO (Seu código anterior, que já está correto)
+  -->
+  <div *ngFor="let item of outrasDisciplinas; let i = index; trackBy: trackByIndex">
+    <div class="form-check d-flex align-items-center mb-2"
+         (mouseenter)="checkDisabledHover('disciplina', i)"
+         (mouseleave)="hideWarning('disciplina')">
+      
+      <input class="form-check-input" 
+             type="checkbox" 
+             [id]="'checkOutraDisciplina' + i"
+             [(ngModel)]="item.checked"
+             (ngModelChange)="onCheckboxToggle('disciplina', i)">
+      
+      <div class="ms-2 flex-grow-1">
+        <input type="text" 
+               class="form-control form-control-sm extra-input" 
+               placeholder="Digite outra disciplina..."
+               [(ngModel)]="item.value"
+               (input)="onOutroInput('disciplina', i)"
+               [disabled]="!item.checked">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Seção Dificuldade -->
+<div class="filter-group mb-4">
+  <h6 class="filter-title">Dificuldade</h6>
+
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="checkFacil"
+           [(ngModel)]="filtrosEstaticos.dificuldade['FACIL']">
+    <label class="form-check-label" for="checkFacil">Fácil</label>
+  </div>
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="checkMedia"
+           [(ngModel)]="filtrosEstaticos.dificuldade['MEDIO']">
+    <label class="form-check-label" for="checkMedia">Média</label>
+  </div>
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="checkDificil"
+           [(ngModel)]="filtrosEstaticos.dificuldade['DIFICIL']">
+    <label class="form-check-label" for="checkDificil">Difícil</label>
+  </div>
+</div>
+
+<!-- Seção Instituição -->
+<div class="filter-group mb-4">
+    <h6 class="filter-title">Instituição</h6>
+    
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkFuvest"
+               [(ngModel)]="filtrosEstaticos.instituicao['Fuvest']">
+        <label class="form-check-label" for="checkFuvest">
+          Fuvest
+        </label>
+    </div>
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkEnem"
+               [(ngModel)]="filtrosEstaticos.instituicao['Enem']">
+        <label class="form-check-label" for="checkEnem">
+          Enem
+        </label>
+    </div>
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkEnade"
+               [(ngModel)]="filtrosEstaticos.instituicao['Enade']">
+        <label class="form-check-label" for="checkEnade">
+          Enade
+        </label>
+    </div>
+
+    <!-- Loop dinâmico (correto) -->
+    <div *ngFor="let item of outrasInstituicoes; let i = index; trackBy: trackByIndex">
+      <div class="form-check d-flex align-items-center mb-2"
+           (mouseenter)="checkDisabledHover('instituicao', i)"
+           (mouseleave)="hideWarning('instituicao')">
+        
+        <input class="form-check-input" 
+               type="checkbox" 
+               [id]="'checkOutraInstituicao' + i"
+               [(ngModel)]="item.checked"
+               (ngModelChange)="onCheckboxToggle('instituicao', i)">
+        
+        <div class="ms-2 flex-grow-1">
+          <input type="text" 
+                 class="form-control form-control-sm extra-input" 
+                 placeholder="Digite outra instituição..."
+                 [(ngModel)]="item.value"
+                 (input)="onOutroInput('instituicao', i)"
+                 [disabled]="!item.checked">
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Seção Ano -->
+<div class="filter-group mb-4">
+    <h6 class="filter-title">Ano</h6>
+    
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkAno2025"
+               [(ngModel)]="filtrosEstaticos.ano['2025']">
+        <label class="form-check-label" for="checkAno2025">
+          2025
+        </label>
+    </div>
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkAno2024"
+               [(ngModel)]="filtrosEstaticos.ano['2024']">
+        <label class="form-check-label" for="checkAno2024">
+          2024
+        </label>
+    </div>
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="checkAno2023"
+               [(ngModel)]="filtrosEstaticos.ano['2023']">
+        <label class="form-check-label" for="checkAno2023">
+          2023
+        </label>
+    </div>
+
+    <!-- Loop dinâmico (correto) -->
+    <div *ngFor="let item of outrosAnos; let i = index; trackBy: trackByIndex">
+      <div class="form-check d-flex align-items-center mb-2"
+           (mouseenter)="checkDisabledHover('ano', i)"
+           (mouseleave)="hideWarning('ano')">
+        
+        <input class="form-check-input" 
+               type="checkbox" 
+               [id]="'checkOutroAno' + i"
+               [(ngModel)]="item.checked"
+               (ngModelChange)="onCheckboxToggle('ano', i)">
+        
+        <div class="ms-2 flex-grow-1">
+          <input type="number" 
+                 class="form-control form-control-sm extra-input" 
+                 placeholder="Digite outro ano..."
+                 [(ngModel)]="item.value"
+                 (input)="onOutroInput('ano', i)"
+                 [disabled]="!item.checked">
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- 
+  LIGANDO O BOTÃO
+  Adiciona (click)="aplicarFiltros()"
+-->
+<div class="d-grid gap-2 mt-3">
+  
+  <!-- Botão 1: Aplicar -->
+  <button class="btn btn-primary w-100 rounded-pill" 
+          (click)="aplicarFiltros()">
+    Aplicar Filtros
+  </button>
+  
+  <!-- Botão 2: Limpar (NOVO) -->
+  <!-- 'btn-outline-secondary' dá um visual "leve" -->
+  <button type="button" class="btn btn-outline-secondary w-100 rounded-pill"
+          (click)="limparFiltros()">
+    Limpar Filtros
+  </button>
+
+</div>

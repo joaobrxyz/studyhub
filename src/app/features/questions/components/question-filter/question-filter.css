@@ -1,0 +1,76 @@
+/* :host é o próprio <app-question-filter> */
+:host {
+  display: block;
+  background-color: #ffffff; /* Fundo BRANCO */
+  
+  /* Borda divisória sutil */
+  border-right: 1px solid #dee2e6;
+  
+  /* Padding interno, como no seu Figma */
+  padding: 1.6rem; /* 24px */
+  
+}
+
+.filter-title {
+  font-size: 0.9rem; /* 14px */
+  font-weight: 600;
+  color: #6B7280; /* Cinza do Figma */
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.form-check-label {
+  font-size: 0.95rem; /* 15px */
+  color: #333; /* Ou um cinza escuro mais suave se preferir */
+  /* Ajusta o posicionamento do label */
+  padding-left: 0.25rem; 
+}
+
+/* O input cinza "Digite outra disciplina" */
+.extra-input {
+  background-color: #F3F4F6; /* Fundo cinza claro */
+  border: 1px solid #E5E7EB; /* Borda suave */
+  border-radius: 8px; /* Arredondado */
+  color: #6B7280; /* Cor do texto placeholder */
+  font-size: 0.875rem; /* Menor que o label */
+  padding: 0.5rem 0.75rem; /* Espaçamento interno */
+}
+
+.extra-input::placeholder {
+  color: #9CA3AF; /* Cor do placeholder */
+  opacity: 1; /* Garante que a cor do placeholder seja aplicada */
+}
+
+/* Estilo para os checkboxes e radio buttons */
+.form-check-input:checked {
+  background-color: #007bff; /* Azul padrão do Bootstrap, ou a cor do seu tema */
+  border-color: #007bff;
+}
+
+/* Ajuste fino para os inputs */
+.form-check-input {
+  width: 1.15em;
+  height: 1.15em;
+  margin-top: 0.2rem;
+  border: 1px solid #D1D5DB; /* Borda cinza clara, como no Figma */
+}
+
+label {
+  margin-left: 0.2rem;
+}
+
+.extra-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Para Chrome, Safari, Edge, Opera */
+.extra-input[type=number]::-webkit-outer-spin-button,
+.extra-input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+.extra-input[type=number] {
+  -moz-appearance: textfield;
+}

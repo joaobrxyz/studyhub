@@ -1,0 +1,54 @@
+/* :host se refere ao próprio componente <app-question-list> */
+:host {
+  display: block; 
+  background-color: #FAFAFA; 
+  width: 100%;
+  min-height: 100%; 
+}
+
+.btn-ver-questao {
+  background-color: #F7F7F7; 
+  color: #495057; 
+  border: 1px solid #00000051;   
+  transition: all 0.2s ease-in-out;
+}
+
+.search-input {
+  padding: 0.75rem 1.25rem;
+  background-color: #F3F4F6;
+  font-size: 15px;
+  height: 60px;
+}
+
+.search-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 16px;
+  height: 55px;
+}
+
+.question-id-text {
+  font-size: 12px;
+}
+
+.markdown-content p {
+  margin-bottom: 0; /* Remove a margem extra de parágrafo */
+}
+
+.markdown-content strong {
+  /* Garante que o negrito tenha a cor certa */
+  color: #000; 
+}
+
+.truncate-enunciado {
+  /* Limita o texto a 3 linhas */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden; /* Esconde o texto que "vazar" */
+  text-overflow: ellipsis; /* Adiciona o "..." no final */
+  min-height: 60px; 
+}
+
+.truncate-enunciado p {
+  margin-bottom: 0;
+}

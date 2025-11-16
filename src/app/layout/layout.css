@@ -2,7 +2,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 96px);
+  min-height: calc(100vh - 80px);
 }
 
 .content-wrapper {

@@ -1,1 +1,129 @@
-<p>question-list works!</p>
+<div class="d-flex">
+  <div class="col-lg-3">
+    <!-- 
+      PASSO 1: Ligar o (Output) do filtro com a função (Input) do pai.
+      (filtrosMudaram) é um @Output() que você precisa criar no seu filter.component.ts
+    -->
+    <app-question-filter (filtrosMudaram)="onFiltrosMudaram($event)"></app-question-filter>
+  </div>
+
+  <div class="container py-5 px-5">
+    <div class="row g-4">
+      <div class="col-lg-11 col-12">
+        
+        <h5 class="mb-3">Pesquisar por Termo</h5>
+
+        <!-- 
+          PASSO 2: Ligar a busca com o TypeScript.
+          1. Adicionei #termoBusca para "ler" o valor do input.
+          2. Adicionei (keyup.enter) para buscar com Enter.
+          3. Adicionei (click) no botão para buscar ao clicar.
+        -->
+        <div class="d-flex gap-3 mb-4">
+          <div class="flex-grow-1">
+            <input #termoBusca 
+                   (keyup.enter)="onSearch(termoBusca.value)"
+                   type="text" 
+                   class="form-control form-control-lg rounded-pill border-0 search-input" 
+                   placeholder="Escreva o enunciado da questão ou termo de busca...">
+          </div>
+          <div>
+            <button (click)="onSearch(termoBusca.value)"
+                    class="btn btn-primary btn-lg rounded-pill d-flex align-items-center gap-2 search-button" 
+                    type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              </svg>
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <!-- 
+          PASSO 3: Ligar o texto de status com as variáveis.
+        -->
+        <div class="mb-3">
+          <span *ngIf="!isLoading" class="text-muted small">
+            Exibindo {{ questoes.length }} de {{ totalElements }} questões encontradas
+          </span>
+          <span *ngIf="isLoading" class="text-muted small">
+            Buscando questões...
+          </span>
+        </div>
+
+        <!-- 
+          PASSO 4: Lógica de Carregamento (Loading) e Lista.
+        -->
+        
+        <!-- 4a. MOSTRAR O SPINNER MENTRAS 'isLoading' FOR TRUE -->
+        <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+          <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+        </div>
+
+        <!-- 4b. MOSTRAR A LISTA APENAS QUANDO 'isLoading' FOR FALSE -->
+        <div *ngIf="!isLoading" class="vstack gap-3">
+          
+          <!-- 
+            PASSO 5: O LOOP *ngFor
+            Repete este card para cada 'questao' no array 'questoes'
+          -->
+          <div *ngFor="let questao of questoes" class="card shadow-sm border-1 rounded-4">
+            <div class="card-body">
+              
+              <!-- 
+                PASSO 6: DATA BINDING
+                Troca o texto estático pelos dados da 'questao'
+              -->
+              <p class="text-muted small mb-3 question-id-text">{{ questao.id }}</p>
+              
+              <markdown [data]="questao.enunciado" class="mb-3 markdown-content truncate-enunciado"></markdown>
+              
+              <div class="mb-4">
+                <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.disciplina }}</span>
+                <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.dificuldade }}</span>
+                <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.instituicao }}</span>
+                <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.ano }}</span>
+              </div>
+              
+              <div class="d-flex gap-2">
+                <!-- 
+                  PASSO 7: LINK DINÂMICO
+                  [routerLink] navega para 'questoes/ID_DA_QUESTAO'
+                -->
+                <button [routerLink]="['/questoes', questao.id]" class="btn btn-sm rounded-3 d-flex align-items-center gap-1 px-3 py-1 btn-ver-questao">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                  </svg>
+                  Ver Questão
+                </button>
+                <button class="btn btn-sm btn-primary rounded-3 px-3 py-1">Simulado +</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 
+            PASSO 8: ESTADO VAZIO
+            Mostra se 'isLoading' for false E o array 'questoes' estiver vazio
+          -->
+          <div *ngIf="!isLoading && questoes.length === 0" class="text-center text-muted my-5">
+            <h5>Nenhuma questão encontrada</h5>
+            <p>Tente ajustar seus filtros ou pesquisar por outro termo.</p>
+          </div>
+
+        </div>
+
+        <nav aria-label="Paginação" class="mt-4">
+          <app-pagination 
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            (paginaMudou)="onPaginaMudou($event)">
+          </app-pagination>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</div>

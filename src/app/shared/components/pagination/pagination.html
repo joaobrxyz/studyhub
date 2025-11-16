@@ -1,1 +1,41 @@
-<p>pagination works!</p>
+<nav aria-label="Paginação">
+  <ul class="pagination justify-content-center">
+    
+    <!-- Botão ANTERIOR -->
+    <li class="page-item" [class.disabled]="currentPage === 0">
+      <a class="page-link" href="javascript:void(0)" (click)="mudarPagina(currentPage)">
+        &laquo; Anterior
+      </a>
+    </li>
+
+    <!-- 
+      LOOP *ngFor: Desenha os números de página
+      [1, 2, '...', 77, 78]
+    -->
+    <ng-container *ngFor="let page of pages">
+      
+      <!-- Se for '...', mostra um item desabilitado -->
+      <li *ngIf="typeof page === 'string'" class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+
+      <!-- Se for um NÚMERO, mostra o botão -->
+      <li *ngIf="typeof page === 'number'" 
+          class="page-item" 
+          [class.active]="page - 1 === currentPage">
+        <a class="page-link" href="javascript:void(0)" (click)="mudarPagina(page)">
+          {{ page }}
+        </a>
+      </li>
+
+    </ng-container>
+
+    <!-- Botão PRÓXIMA -->
+    <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+      <a class="page-link" href="javascript:void(0)" (click)="mudarPagina(currentPage + 2)">
+        Próxima &raquo;
+      </a>
+    </li>
+
+  </ul>
+</nav>

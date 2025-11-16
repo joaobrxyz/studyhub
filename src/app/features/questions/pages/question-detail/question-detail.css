@@ -1,0 +1,96 @@
+/* 1. Fundo cinza da página */
+
+
+:host {
+  display: block;
+  background-color: #F8F9FA;
+  width: 100%;
+  min-height: calc(100vh - 96px); 
+}
+
+#questao-id {
+    font-size: 12px;
+}
+
+/* 2. O "CARD" DA ALTERNATIVA */
+.alternativa-label {
+  /* Cor e borda como no Figma */
+  background-color: #ffffff; /* O cinza claro do input */
+  border: 1px solid #0000002e;
+  border-radius: 0.5rem; /* 8px */
+  
+  color: #212529;
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+/* 3. O "BADGE" CIRCULAR DA LETRA (A, B, C...) */
+.alternativa-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  width: 32px;
+  height: 32px;
+  
+  background-color: #F5F5F5; 
+  border-radius: 10px; 
+  
+  color: #374151; /* Texto escuro */
+  font-weight: 600;
+  
+  /* Impede que o texto "A" seja selecionado */
+  user-select: none; 
+}
+
+
+/* --- (ESTILOS DE FEEDBACK E HOVER) --- */
+
+.alternativa-label:hover {
+  border-color: #0d6efd; /* Borda azul ao passar o mouse */
+}
+
+/* Quando MARCADO */
+.btn-check:checked + .alternativa-label {
+  background-color: #EFF6FF; /* Fundo azul claro */
+  border-color: #0d6efd; /* Borda azul */
+  color: #000;
+}
+
+/* Quando MARCADO, o badge também muda */
+.btn-check:checked + .alternativa-label .alternativa-badge {
+  background-color: #0d6efd; /* Fundo azul */
+  color: #fff; /* Texto branco */
+}
+
+/* Resposta CORRETA */
+.alternativa-label.alternativa-correta,
+.btn-check:checked + .alternativa-label.alternativa-correta {
+  background-color: #D1E7DD; /* Fundo verde claro */
+  border-color: #198754; /* Borda verde */
+  color: #0a3622;
+  box-shadow: none;
+}
+.btn-check:checked + .alternativa-label.alternativa-correta .alternativa-badge {
+  background-color: #198754;
+  color: #fff;
+}
+
+/* Resposta INCORRETA */
+.alternativa-label.alternativa-incorreta,
+.btn-check:checked + .alternativa-label.alternativa-incorreta {
+  background-color: #F8D7DA; /* Fundo vermelho claro */
+  border-color: #DC3545; /* Borda vermelha */
+  color: #58151c;
+  box-shadow: none;
+}
+.btn-check:checked + .alternativa-label.alternativa-incorreta .alternativa-badge {
+  background-color: #DC3545;
+  color: #fff;
+}
+
+:host ::ng-deep .alternativa-markdown p {
+  margin: 0 !important;
+  padding: 0;
+}
