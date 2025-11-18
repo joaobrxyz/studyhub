@@ -1,6 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+/* Conteúdo para adicionar em src/styles.css */
 body {
-  /* Empurra todo o conteúdo do site para baixo
-     para dar espaço para o header fixo */
-    padding-top: 80px; 
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
 }

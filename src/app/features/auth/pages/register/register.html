@@ -1,1 +1,268 @@
-<p>register works!</p>
+<header>
+  <nav class="navbar navbar-expand-lg py-3 sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#" id="nav-logo" (click)="false"> 
+        <i class="bi bi-book-half me-2"></i>StudyHub
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link me-3" href="#">
+              <i class="bi bi-search me-1"></i>Buscar questões
+            </a>
+          </li>
+          <li class="nav-item">
+            
+            <a class="nav-link me-2" routerLink="/auth/login" id="nav-to-login"
+              >Entrar</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary" href="#" (click)="false" id="nav-to-register"
+              >Cadastrar</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section id="page-register">
+  <div class="container">
+    <div class="register-form-container">
+      <h2 class="text-center mb-4">Crie sua conta</h2>
+      <p class="text-center text-muted mb-4">É rápido e fácil.</p>
+
+      
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="regNome"
+            placeholder="Nome Completo"
+            required
+            formControlName="name"
+            [class.is-invalid]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+          />
+          <label for="regNome">Nome Completo</label>
+          <div
+            *ngIf="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+            class="invalid-feedback"
+          >
+            Nome é obrigatório.
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="email"
+            class="form-control"
+            id="regEmail"
+            placeholder="Endereço de e-mail"
+            required
+            formControlName="email"
+            [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+          />
+          <label for="regEmail">Endereço de e-mail</label>
+          <div
+            *ngIf="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+            class="invalid-feedback"
+          >
+             <span *ngIf="registerForm.controls.email.errors?.['required']">
+              E-mail é obrigatório.
+            </span>
+            <span *ngIf="registerForm.controls.email.errors?.['email']">
+              Por favor, insira um e-mail válido.
+            </span>
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="regSenha"
+            placeholder="Senha"
+            required
+            formControlName="password"
+            [class.is-invalid]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+          />
+          <label for="regSenha">Senha</label>
+           <div
+            *ngIf="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+            class="invalid-feedback"
+          >
+             <span *ngIf="registerForm.controls.password.errors?.['required']">
+              Senha é obrigatória.
+            </span>
+            <span *ngIf="registerForm.controls.password.errors?.['minlength']">
+              Senha deve ter no mínimo 6 caracteres.
+            </span>
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="regConfirmarSenha"
+            placeholder="Confirmar Senha"
+            required
+            formControlName="confirmPassword"
+            [class.is-invalid]="(registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid) || (registerForm.touched && registerForm.errors?.['passwordMismatch'])"
+          />
+          <label for="regConfirmarSenha">Confirmar Senha</label>
+          <div
+            *ngIf="registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid"
+            class="invalid-feedback"
+          >
+             <span *ngIf="registerForm.controls.confirmPassword.errors?.['required']">
+              Confirmação de senha é obrigatória.
+            </span>
+          </div>
+           <div
+            *ngIf="registerForm.touched && registerForm.errors?.['passwordMismatch'] && !registerForm.controls.confirmPassword.errors?.['required']"
+            class="invalid-feedback"
+          >
+            As senhas não coincidem.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Gênero:</label>
+          <div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="regGenero"
+                id="genMasculino"
+                value="masculino"
+                formControlName="gender"
+              />
+              <label class="form-check-label" for="genMasculino"
+                >Masculino</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="regGenero"
+                id="genFeminino"
+                value="feminino"
+                formControlName="gender"
+              />
+              <label class="form-check-label" for="genFeminino">Feminino</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="regGenero"
+                id="genOutro"
+                value="outro"
+                formControlName="gender"
+              />
+              <label class="form-check-label" for="genOutro">Outro</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="regDataNascimento" class="form-label"
+            >Data de Nascimento:</label
+          >
+          <input
+            type="date"
+            class="form-control"
+            id="regDataNascimento"
+            placeholder="dd/mm/aaaa"
+            formControlName="birthDate"
+          />
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="regCidade"
+            placeholder="Cidade"
+            formControlName="city"
+          />
+          <label for="regCidade">Cidade</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="regPais"
+            placeholder="País"
+            formControlName="country"
+          />
+          <label for="regPais">País</label>
+        </div>
+
+        
+         <div *ngIf="errorMessage" class="alert alert-danger text-center p-2 mb-3" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success text-center p-2 mb-3" role="alert">
+          {{ successMessage }}
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100"
+          [disabled]="isLoading || registerForm.invalid"
+        >
+          <span *ngIf="!isLoading">Cadastrar</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span *ngIf="isLoading"> Criando...</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="mt-5 py-4">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center">
+    <p class="col-md-4 mb-0 text-muted">
+      &copy; 2025 StudyHub. Todos os direitos reservados.
+    </p>
+
+    <ul class="nav col-md-4 justify-content-center">
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2">Termos de Uso</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2">Política de Privacidade</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2">Cookies</a>
+      </li>
+    </ul>
+
+    <div class="col-md-4 text-md-end text-start mt-2 mt-md-0">
+      <a href="mailto:contato@studyhub.com" class="text-muted">
+        <i class="bi bi-envelope me-1"></i>contato@studyhub.com
+      </a>
+    </div>
+  </div>
+</footer>
