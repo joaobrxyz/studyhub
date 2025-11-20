@@ -24,12 +24,12 @@ export class Login implements OnDestroy {
 
   public loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(3)]),
   });
 
   constructor() {
     if (this.auth.isLoggedIn()) {
-      this.router.navigate(['/questions']);
+      this.router.navigate(['/']);
     }
   }
 
@@ -48,7 +48,7 @@ export class Login implements OnDestroy {
     
     this.loginSubscription = this.auth.login(credentials as any).subscribe({
       next: (response: any) => {
-        this.router.navigate(['/questions']);
+        this.router.navigate(['/']);
         this.isLoading = false;
       },
       error: (err: any) => {

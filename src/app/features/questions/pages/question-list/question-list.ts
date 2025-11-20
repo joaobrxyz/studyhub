@@ -1,7 +1,7 @@
 // 1. IMPORTE O ViewportScroller e o HostListener
 import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { ViewportScroller, CommonModule } from '@angular/common'; 
-import { RouterModule } from '@angular/router'; 
+import { ActivatedRoute, RouterModule, Router } from '@angular/router'; 
 import { QuestionService } from '../../services/questionService';
 import { PageableResponse, Questao } from '../../../../core/models/Question'; 
 import { QuestionFilter } from '../../components/question-filter/question-filter';
@@ -26,6 +26,9 @@ export class QuestionList implements OnInit {
   private questionService = inject(QuestionService);
   // 2. INJETE O SCROLLER
   private scroller = inject(ViewportScroller); 
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private isFirstLoad = true;
 
   questoes: Questao[] = [];
   isLoading = true; 
@@ -45,29 +48,42 @@ export class QuestionList implements OnInit {
   }
 
   ngOnInit(): void {
-    // 4. VERIFICA O "BAÚ"
-    if (this.questionService.lastResponse && this.questionService.cachedFilters) {
-      // TEMOS ESTADO SALVO!
-      this.isLoading = false; // Não precisa carregar
-      
-      // Restaura tudo do serviço
-      const response = this.questionService.lastResponse;
-      this.questoes = response.content;
-      this.totalElements = response.totalElements;
-      this.totalPages = response.totalPages;
-      this.currentPage = response.number;
-      this.currentFilters = this.questionService.cachedFilters;
+    this.route.queryParams.subscribe(params => {
+      const termoUrl = params['termo'] || null;
 
-      // Restaura a posição da rolagem
-      // Usamos setTimeout(..., 10) para garantir que o HTML foi renderizado
-      setTimeout(() => {
-        this.scroller.scrollToPosition([0, this.questionService.cachedScroll]);
-      }, 10);
+      // Se for a primeira carga E tivermos cache, restauramos.
+      if (this.isFirstLoad && this.questionService.lastResponse) {
+        this.isFirstLoad = false; // Já carregou
+        this.restoreFromCache();
+      } 
+      else {
+        // Se NÃO for a primeira carga (ou seja, o usuário está pesquisando agora),
+        // ou se não tiver cache, buscamos dados novos com base na URL.
+        this.isFirstLoad = false;
+        
+        // Atualiza o filtro de termo com o que está na URL (pode ser null, o que é correto para limpar)
+        this.currentFilters.termo = termoUrl;
+        this.currentPage = 0;
+        this.fetchQuestoes(); 
+      }
+    });
+  }
 
-    } else {
-      // NÃO TEM ESTADO SALVO (Primeira vez na página)
-      this.fetchQuestoes(); 
+  restoreFromCache() {
+    this.isLoading = false;
+    const response = this.questionService.lastResponse;
+    if (response) {
+        this.questoes = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.number;
     }
+    // Restaura os filtros que estavam salvos
+    this.currentFilters = this.questionService.cachedFilters || {};
+
+    setTimeout(() => {
+      this.scroller.scrollToPosition([0, this.questionService.cachedScroll]);
+    }, 10);
   }
 
   fetchQuestoes(): void {
@@ -113,9 +129,16 @@ export class QuestionList implements OnInit {
 
   // (onSearch está correto, ele chama fetchQuestoes que agora salva o estado)
   onSearch(termo: string): void {
-    this.currentFilters.termo = termo.trim(); 
-    this.currentPage = 0; // Reseta para a primeira página
-    this.fetchQuestoes();
+    const termoLimpo = termo.trim();
+    
+    // Em vez de buscar direto, nós navegamos para atualizar a URL.
+    // O 'ngOnInit' vai perceber a mudança na URL e chamar o 'fetchQuestoes' sozinho.
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { termo: termoLimpo || null }, // Se vazio, remove o param da URL
+      queryParamsHandling: 'merge', // Mantém outros filtros (opcional, ou remova para resetar tudo)
+      replaceUrl: true // Substitui o histórico para não criar "voltar" infinito
+    });
   }
 
   // (onFiltrosMudaram está correto)

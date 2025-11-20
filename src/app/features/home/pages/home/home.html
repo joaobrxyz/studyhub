@@ -1,109 +1,95 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyHub - Do questionamento ao entendimento</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<section id="page-home">
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <div class="container text-center my-5 py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 container-inicial">
+                <h1 class="hero-heading mb-3">
+                    Vá do questionamento<br>
+                    ao <span class="highlight">entendimento</span> com o StudyHub.
+                </h1>
+                
+                <!-- Subtítulo -->
+                <p class="lead text-muted mb-4 sub-heading">
+                    Encontre, filtre e organize milhares de questões de forma gratuita.
+                </p>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8 container-search">
+                <form class="main-search-bar" (submit)="buscarQuestoes(termoBusca.value, $event)">
+                    <input #termoBusca class="form-control" type="search" placeholder="Escreva o enunciado da questão" aria-label="Buscar questão">
+                    
+                    <button class="btn btn-primary" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+        <div class="container-frase">
+            <p class="mt-4 text-muted small-text">
+                Encontre tudo o que precisa sem conta, ou 
+                <a href="/simulados" id="home-to-register-link" class="text-decoration-none fw-bold">Crie um Simulado</a> 
+                e salve seu progresso ao se logar.
+            </p>
+        </div>
+    
 
-    <link rel="stylesheet" href="home.css">
-</head>
-<body>
+    <!-- SEÇÃO VALOR EM DESTAQUE -->
+    <div class="py-5 section-value">
+        <div class="container">
+            <!-- Título da Seção com fonte serifada -->
+            <h2 class="text-center mb-2 section-title">Valor em Destaque</h2>
+            <p class="text-center text-muted mb-5 section-subtitle">Por que escolher o StudyHub para seus estudos.</p>
 
-   
-    <main>
-        <section id="page-home">
-            
-            <div class="container text-center my-5 py-5">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <h1 class="hero-heading mb-3">
-                            Vá do questionamento
-                            ao <span class="highlight">entendimento</span>
-                            com o StudyHub.
-                        </h1>
-                        <p class="lead text-muted mb-4">
-                            Encontre, filtre e organize milhares de questões de forma gratuita.
+            <div class="row g-4">
+                
+                <!-- Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card h-100 d-flex flex-column align-items-center text-center p-4">
+                        <div class="icon-wrapper mb-4">
+                            <img src="bd-icon.png" alt="Icon do banco de dados">
+                        </div>
+                        
+                        <h5 class="mb-3 feature-title">Milhares de Questões</h5>
+                        <p class="text-muted feature-desc">
+                            Acesse um banco de dados gigante com questões de diversas disciplinas, instituições e anos.
                         </p>
                     </div>
                 </div>
-                
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <form class="main-search-bar d-flex">
-                            <input class="form-control" type="search" placeholder="Escreva o enunciado da questão" aria-label="Buscar questão">
-                            <button class="btn btn-primary d-flex align-items-center" type="submit">
-                                <i class="bi bi-search fs-5"></i>
-                            </button>
-                        </form>
+
+                <!-- Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card h-100 d-flex flex-column align-items-center text-center p-4">
+                        <div class="icon-wrapper mb-4">
+                            <img src="filtro-icon.png" alt="Icon do filtro">
+                        </div>
+                        <h5 class="mb-3 feature-title">Busca Dinâmica Otimizada</h5>
+                        <p class="text-muted feature-desc">
+                            Utilize filtros flexíveis e busca avançada para encontrar exatamente o que você precisa.
+                        </p>
                     </div>
                 </div>
 
-                <p class="mt-4 text-muted">
-                    Encontre tudo o que precisa sem conta, ou 
-                    <a href="register.html" id="home-to-register-link">Crie um Simulado</a> 
-                    e salve seu progresso ao se logar.
-                </p>
-            </div>
-
-            <div class="py-5" style="background-color: #ffffff;">
-                <div class="container">
-                    <h2 class="text-center mb-3">Valor em Destaque</h2>
-                    <p class="text-center text-muted mb-5">Por que escolher o StudyHub para seus estudos.</p>
-
-                    <div class="row g-4">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="feature-card p-4 text-center h-100">
-                                <div class="feature-icon mb-3">
-                                    <i class="bi bi-stack"></i>
-                                </div>
-                                <h5 class="mb-2">Milhares de Questões</h5>
-                                <p class="text-muted small">
-                                    Acesse um banco de dados gigante com questões de diversas disciplinas, instituições e anos.
-                                </p>
-                            </div>
+                <!-- Card 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card h-100 d-flex flex-column align-items-center text-center p-4">
+                        <div class="icon-wrapper mb-4">
+                            <img src="gift-icon.png" alt="Icon de gift">
                         </div>
-
-                        <div class="col-lg-4 col-md-6">
-                            <div class="feature-card p-4 text-center h-100">
-                                <div class="feature-icon mb-3">
-                                    <i class="bi bi-filter-circle"></i>
-                                </div>
-                                <h5 class="mb-2">Busca Dinâmica Otimizada</h5>
-                                <p class="text-muted small">
-                                    Utilize filtros flexíveis e busca avançada para encontrar exatamente o que você precisa.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6">
-                            <div class="feature-card p-4 text-center h-100">
-                                <div class="feature-icon mb-3">
-                                    <i class="bi bi-gift"></i>
-                                </div>
-                                <h5 class="mb-2">Estude Sem Custos</h5>
-                                <p class="text-muted small">
-                                    Todo o conteúdo disponível gratuitamente. Sem assinaturas, sem taxas escondidas.
-                                </p>
-                            </div>
-                        </div>
+                        <h5 class="mb-3 feature-title">Estude Sem Custos</h5>
+                        <p class="text-muted feature-desc">
+                            Todo o conteúdo disponível gratuitamente. Sem assinaturas, sem taxas escondidas.
+                        </p>
                     </div>
                 </div>
+
             </div>
+        </div>
+    </div>
 
-        </section> 
-    </main>
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-</body>
-</html>
+</section>
