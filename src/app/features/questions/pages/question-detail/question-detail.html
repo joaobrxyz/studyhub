@@ -6,7 +6,7 @@
 </div>
 
 <!-- CONTEÚDO -->
-<div *ngIf="!isLoading && questao" class="container my-4">
+<div *ngIf="!isLoading && questao" class="container p-4">
   
   <div class="row g-4 justify-content-center">
     
@@ -36,7 +36,7 @@
           <hr class="my-4">
           
           <!-- Enunciado (com Markdown) -->
-          <markdown [data]="questao.enunciado" class="enunciado-markdown enunciado"></markdown>
+          <markdown [data]="questao.enunciado | removeImageMarkdown:true | katex"class="enunciado-markdown markdown-content"></markdown>
           
           
 
@@ -64,7 +64,10 @@
                   <span class="alternativa-badge">{{ item.letra }}</span>
                   
                   <!-- O texto da alternativa (com markdown) -->
-                  <markdown [data]="item.texto" class="alternativa-markdown ms-3"></markdown>
+                  <markdown 
+                    [data]="item.texto | katex" 
+                    class="alternativa-markdown ms-3">
+                  </markdown>
                 </div>
 
               </label>

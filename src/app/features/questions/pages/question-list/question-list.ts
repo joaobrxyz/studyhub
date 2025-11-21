@@ -1,12 +1,13 @@
-// 1. IMPORTE O ViewportScroller e o HostListener
-import { Component, OnInit, inject, HostListener } from '@angular/core';
+import { Component, OnInit, inject, HostListener, ViewChild } from '@angular/core';
 import { ViewportScroller, CommonModule } from '@angular/common'; 
 import { ActivatedRoute, RouterModule, Router } from '@angular/router'; 
 import { QuestionService } from '../../services/questionService';
 import { PageableResponse, Questao } from '../../../../core/models/Question'; 
 import { QuestionFilter } from '../../components/question-filter/question-filter';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
-import { MarkdownComponent } from 'ngx-markdown'; 
+import { MarkdownComponent } from 'ngx-markdown';
+import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
+import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
 
 @Component({
   selector: 'app-question-list',
@@ -16,7 +17,9 @@ import { MarkdownComponent } from 'ngx-markdown';
     RouterModule,
     QuestionFilter, 
     PaginationComponent,
-    MarkdownComponent 
+    MarkdownComponent,
+    KatexPipe,
+    RemoveImageMarkdownPipe
   ],
   templateUrl: './question-list.html',
   styleUrls: ['./question-list.css'] 
@@ -29,6 +32,9 @@ export class QuestionList implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private isFirstLoad = true;
+  isRestoring = false;
+
+  @ViewChild(QuestionFilter) filtroComponent!: QuestionFilter;
 
   questoes: Questao[] = [];
   isLoading = true; 
@@ -41,8 +47,8 @@ export class QuestionList implements OnInit {
   // 3. SALVA A ROLAGEM
   @HostListener('window:scroll')  
   onScroll() {
-    // Só salva a rolagem se não estivermos carregando (evita salvar '0' ao mudar de página)
-    if (!this.isLoading) {
+    // Só salva se NÃO estiver carregando E NÃO estiver restaurando
+    if (!this.isLoading && !this.isRestoring) {
       this.questionService.cachedScroll = window.scrollY;
     }
   }
@@ -70,7 +76,10 @@ export class QuestionList implements OnInit {
   }
 
   restoreFromCache() {
+    // 1. ATIVA A TRAVA: "Pare de salvar o scroll, vou mexer nele agora"
+    this.isRestoring = true; 
     this.isLoading = false;
+
     const response = this.questionService.lastResponse;
     if (response) {
         this.questoes = response.content;
@@ -81,9 +90,29 @@ export class QuestionList implements OnInit {
     // Restaura os filtros que estavam salvos
     this.currentFilters = this.questionService.cachedFilters || {};
 
+    // Guarda o valor localmente para garantir
+    const posicaoDestino = this.questionService.cachedScroll;
+
     setTimeout(() => {
-      this.scroller.scrollToPosition([0, this.questionService.cachedScroll]);
-    }, 10);
+      if (this.filtroComponent) {
+        this.filtroComponent.forcarSelecao(this.currentFilters);
+      }
+    }, 50);
+
+    // Primeiro Salto (Rápido)
+    setTimeout(() => {
+       window.scrollTo({ top: posicaoDestino, behavior: 'auto' });
+    }, 100);
+
+    // Segundo Salto (Correção Final e Destrava)
+    setTimeout(() => {
+       window.scrollTo({ top: posicaoDestino, behavior: 'auto' });
+       
+       // 2. SOLTA A TRAVA: "Pronto, pode voltar a salvar"
+       // Pequeno delay extra para garantir que o evento de scroll do salto terminou
+       setTimeout(() => { this.isRestoring = false; }, 100); 
+       
+    }, 600);
   }
 
   fetchQuestoes(): void {
