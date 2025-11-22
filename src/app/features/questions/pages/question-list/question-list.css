@@ -52,3 +52,21 @@
 .truncate-enunciado p {
   margin-bottom: 0;
 }
+
+:host ::ng-deep .citation-text {
+    font-size: 0.75rem;
+    color: #9CA3AF;     
+    margin-top: 0.5rem; 
+    font-style: italic; 
+    display: block;    
+    margin-bottom: 10px;
+}
+
+:host ::ng-deep .badge {
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+::ng-deep .katex .vlist > span {
+    margin-top: -0.7em !important; 
+}

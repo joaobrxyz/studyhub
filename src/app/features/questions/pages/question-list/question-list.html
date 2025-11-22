@@ -78,7 +78,7 @@
               -->
               <p class="text-muted small mb-3 question-id-text">{{ questao.id }}</p>
               
-              <markdown [data]="questao.enunciado" class="mb-3 markdown-content truncate-enunciado"></markdown>
+              <markdown [data]="questao.enunciado | removeImageMarkdown | katex" class="mb-3 markdown-content truncate-enunciado"></markdown>
               
               <div class="mb-4">
                 <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.disciplina }}</span>

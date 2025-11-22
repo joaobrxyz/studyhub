@@ -1,1 +1,107 @@
-<p>register works!</p>
+<section id="page-register">
+  <div class="container">
+    <div class="register-form-container">
+      <h2 class="text-center mb-4">Crie sua conta</h2>
+      <p class="text-center text-muted mb-4">É rápido e fácil.</p>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Campo NOME -->
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="regNome"
+            placeholder="Nome Completo"
+            formControlName="name"
+            [class.is-invalid]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+          />
+          <label for="regNome">Nome Completo</label>
+          <div *ngIf="registerForm.controls.name.touched && registerForm.controls.name.invalid" class="invalid-feedback">
+            Nome é obrigatório.
+          </div>
+        </div>
+
+        <!-- Campo EMAIL -->
+        <div class="form-floating mb-3">
+          <input
+            type="email"
+            class="form-control"
+            id="regEmail"
+            placeholder="Endereço de e-mail"
+            formControlName="email"
+            [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+          />
+          <label for="regEmail">Endereço de e-mail</label>
+          <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.invalid" class="invalid-feedback">
+            <span *ngIf="registerForm.controls.email.errors?.['required']">E-mail é obrigatório.</span>
+            <span *ngIf="registerForm.controls.email.errors?.['email']">Por favor, insira um e-mail válido.</span>
+          </div>
+        </div>
+
+        <!-- Campo SENHA -->
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="regSenha"
+            placeholder="Senha"
+            formControlName="password"
+            [class.is-invalid]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+          />
+          <label for="regSenha">Senha</label>
+          <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.invalid" class="invalid-feedback">
+            <span *ngIf="registerForm.controls.password.errors?.['required']">Senha é obrigatória.</span>
+            <span *ngIf="registerForm.controls.password.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres.</span>
+          </div>
+        </div>
+
+        <!-- Campo CONFIRMAR SENHA -->
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="regConfirmarSenha"
+            placeholder="Confirmar Senha"
+            formControlName="confirmPassword"
+            [class.is-invalid]="(registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid) || (registerForm.touched && registerForm.errors?.['passwordMismatch'])"
+          />
+          <label for="regConfirmarSenha">Confirmar Senha</label>
+          <div *ngIf="registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid" class="invalid-feedback">
+            <span *ngIf="registerForm.controls.confirmPassword.errors?.['required']">Confirmação de senha é obrigatória.</span>
+          </div>
+          <div *ngIf="registerForm.touched && registerForm.errors?.['passwordMismatch'] && !registerForm.controls.confirmPassword.errors?.['required']" class="invalid-feedback d-block">
+            As senhas não coincidem.
+          </div>
+        </div>
+
+        <!-- MENSAGENS DE ERRO/SUCESSO -->
+        <div *ngIf="errorMessage" class="alert alert-danger text-center p-2 mb-3" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success text-center p-2 mb-3" role="alert">
+          {{ successMessage }}
+        </div>
+
+        <!-- BOTÃO CADASTRAR -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100"
+          [disabled]="isLoading || registerForm.invalid"
+        >
+          <span *ngIf="!isLoading">Cadastrar</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span *ngIf="isLoading"> Criando...</span>
+        </button>
+
+        <!-- LINK PARA LOGIN -->
+        <div class="text-center mt-3">
+          <span class="text-muted">Já tem uma conta? </span>
+          <a routerLink="/auth/login" class="text-decoration-none fw-bold">Faça login</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>

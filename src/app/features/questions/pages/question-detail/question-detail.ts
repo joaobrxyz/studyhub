@@ -1,10 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { MarkdownComponent } from 'ngx-markdown';
+import { MarkdownComponent, KatexOptions } from 'ngx-markdown';
 import { Questao } from '../../../../core/models/Question';
 import { QuestionService } from '../../services/questionService';
 import { FormsModule } from '@angular/forms';
+import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
+import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
 
 @Component({
   selector: 'app-question-detail',
@@ -13,7 +15,9 @@ import { FormsModule } from '@angular/forms';
     CommonModule, 
     RouterModule, 
     MarkdownComponent,
-    FormsModule 
+    KatexPipe,
+    FormsModule,
+    RemoveImageMarkdownPipe
   ],
   templateUrl: './question-detail.html',
   styleUrls: ['./question-detail.css']

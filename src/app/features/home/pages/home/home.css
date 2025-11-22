@@ -1,0 +1,242 @@
+
+.navbar {
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #495057;
+}
+
+.btn-outline-primary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: #ffffff;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+h1 {
+    font-family: "Crimson Text", serif;
+    font-size: 60px;
+    font-weight: 520 !important;
+    font-style: normal;
+}
+
+.hero-heading .highlight {
+    color: #0d6efd; 
+}
+
+.sub-heading {
+    font-family: "Crimson Text", serif;
+    font-size: 30px;
+    width: 484px;
+}
+
+.container-inicial {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+/* --- BARRA DE BUSCA (ATUALIZADA) --- */
+
+.container-search {
+    background-color: #ffffff;
+    padding: 20px;
+    position: relative; 
+    max-width: 800px;
+    margin: 0 auto;
+    border: 3px solid #E5E7EB; /* Borda única ao redor de tudo */
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 42px;
+    margin-top: 30px;
+    margin-bottom: 110px;
+}
+
+.main-search-bar {
+    display: flex;
+    align-items: center;
+    
+    height: 72px;
+    padding: 6px; 
+}
+
+/* O Input de Texto (Transparente dentro da cápsula) */
+.main-search-bar .form-control {
+    /* Removemos bordas e fundo próprios do input */
+    border: none;
+    background-color: #ffffff;
+    /* Preenche o espaço restante */
+    flex-grow: 1;
+    height: 100%;
+    
+    /* Tipografia */
+    font-size: 1.15rem;
+    padding-left: 2rem; /* Espaço à esquerda */
+    padding-right: 1rem; /* Espaço antes do botão */
+    border-radius: 10px; 
+}
+
+.main-search-bar .form-control::placeholder {
+    color: #9CA3AF;
+    font-weight: 400;
+}
+
+.main-search-bar .form-control:focus {
+    box-shadow: none !important; /* Remove a sombra azul */
+    border-color: transparent !important; /* Remove a borda azul */
+}
+
+
+/* O BOTÃO AZUL REDONDO */
+.main-search-bar .btn {
+    /* Tamanho fixo e quadrado para ser um círculo perfeito */
+    width: 80px;  /* Ajustado para caber na altura de 72px - padding */
+    height: 80px;
+    border-radius: 50%;
+    
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Cores */
+    background-color: #2563EB;
+    border-color: #2563EB;
+    color: white;
+    
+    /* Não precisamos mais de position: absolute, pois é flex */
+    flex-shrink: 0; /* Garante que não encolha */
+    margin-left: auto; /* Empurra para a direita se necessário */
+    
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+ .btn:hover {
+    background-color: #1D4ED8;
+    transform: scale(1.05);
+}
+
+.container-frase {
+    display: flex;
+    align-items: center;
+    background-color: rgba(240, 246, 255, 0.71);
+    height: 120px;
+    margin-bottom: 40px;
+}
+
+.container-frase p {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* --- SEÇÃO VALOR EM DESTAQUE --- */
+
+.section-value {
+    background-color: #ffffff;
+    padding-top: 5rem !important; 
+    padding-bottom: 5rem !important;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif; 
+    font-weight: 500; 
+    font-size: 2.5rem; 
+    color: #111827; 
+    letter-spacing: -0.02em; 
+}
+
+.section-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #6B7280;
+    margin-bottom: 4rem !important;
+}
+
+/* --- CARDS DE FUNCIONALIDADE --- */
+
+.feature-card {
+    background-color: #ffffff;
+    margin: 15px;
+    border: 2px solid #E5E7EB;
+    border-radius: 1.5rem; /* Bordas bem arredondadas */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; 
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: transparent;
+}
+
+/* --- CONTAINER DO ÍCONE (O quadrado arredondado azul) --- */
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;    
+    justify-content: center;  
+    width: 65px;  
+    height: 65px;
+    
+    background-color: #DBEAFE; 
+    color: #2563EB; 
+    
+    border-radius: 1.25rem; 
+    margin-bottom: 1.5rem;
+    overflow: hidden; 
+}
+
+
+.icon-wrapper img, 
+.icon-wrapper svg {
+    display: block; 
+    width: 35px;
+    height: 35px;
+    object-fit: contain; 
+    margin: 0 !important; 
+}
+
+.feature-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+
+.feature-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+.feature-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #6B7280;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+}

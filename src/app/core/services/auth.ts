@@ -1,41 +1,65 @@
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root' // Isso torna o serviço acessível em todo o app
+  providedIn: 'root',
 })
 export class Auth {
+  login(credentials: { email: string; password: string }): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  private tokenKey = 'studyhub_token'; // A chave onde salvaremos o token
+    
+    const payload = {
+      email: credentials.email,
+      senha: credentials.password,
+    };
 
-  constructor(private router: Router) { }
+    return this.http.post<any>('http://localhost:8080/auth/signin', payload, { headers }).pipe(
+      map((response) => {
+        const token = response?.token || response?.accessToken;
+        if (token) {
+          this.saveToken(token);
+        }
+        return response;
+      }),
+      catchError((err) => {
+        const message = err?.error?.message || 'E-mail ou senha inválidos.';
+        return throwError(() => ({ error: { message } }));
+      })
+    );
+  }
 
-  // 1. Salva o token (chamado após o login ter sucesso)
+  private tokenKey = 'studyhub_token';
+
+  constructor(private router: Router, private http: HttpClient) {}
+  register(payload: any): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post('http://localhost:8080/auth/signup', payload, { headers });
+  }
+
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  // 2. Pega o token (usado pelo Interceptor para enviar na API)
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  // 3. Verifica se está logado (simples verificação se tem token)
   isLoggedIn(): boolean {
     const token = this.getToken();
-    // Aqui futuramente podemos verificar se o token expirou
-    return !!token; // Retorna true se token existir, false se não
+
+    return !!token;
   }
 
-  // 4. Faz Logout
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/auth/login']);
   }
-  
-  // 5. (Opcional) Verifica se é ADMIN (se você implementar roles depois)
+
   getUserRole(): string {
-    // Futuramente você decodifica o JWT aqui para ler o 'role'
-    return 'USER'; 
+    return 'USER';
   }
 }

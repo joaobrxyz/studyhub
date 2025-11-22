@@ -1,12 +1,13 @@
-// 1. IMPORTE O ViewportScroller e o HostListener
-import { Component, OnInit, inject, HostListener } from '@angular/core';
+import { Component, OnInit, inject, HostListener, ViewChild } from '@angular/core';
 import { ViewportScroller, CommonModule } from '@angular/common'; 
-import { RouterModule } from '@angular/router'; 
+import { ActivatedRoute, RouterModule, Router } from '@angular/router'; 
 import { QuestionService } from '../../services/questionService';
 import { PageableResponse, Questao } from '../../../../core/models/Question'; 
 import { QuestionFilter } from '../../components/question-filter/question-filter';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
-import { MarkdownComponent } from 'ngx-markdown'; 
+import { MarkdownComponent } from 'ngx-markdown';
+import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
+import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
 
 @Component({
   selector: 'app-question-list',
@@ -16,7 +17,9 @@ import { MarkdownComponent } from 'ngx-markdown';
     RouterModule,
     QuestionFilter, 
     PaginationComponent,
-    MarkdownComponent 
+    MarkdownComponent,
+    KatexPipe,
+    RemoveImageMarkdownPipe
   ],
   templateUrl: './question-list.html',
   styleUrls: ['./question-list.css'] 
@@ -26,6 +29,12 @@ export class QuestionList implements OnInit {
   private questionService = inject(QuestionService);
   // 2. INJETE O SCROLLER
   private scroller = inject(ViewportScroller); 
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private isFirstLoad = true;
+  isRestoring = false;
+
+  @ViewChild(QuestionFilter) filtroComponent!: QuestionFilter;
 
   questoes: Questao[] = [];
   isLoading = true; 
@@ -38,36 +47,72 @@ export class QuestionList implements OnInit {
   // 3. SALVA A ROLAGEM
   @HostListener('window:scroll')  
   onScroll() {
-    // Só salva a rolagem se não estivermos carregando (evita salvar '0' ao mudar de página)
-    if (!this.isLoading) {
+    // Só salva se NÃO estiver carregando E NÃO estiver restaurando
+    if (!this.isLoading && !this.isRestoring) {
       this.questionService.cachedScroll = window.scrollY;
     }
   }
 
   ngOnInit(): void {
-    // 4. VERIFICA O "BAÚ"
-    if (this.questionService.lastResponse && this.questionService.cachedFilters) {
-      // TEMOS ESTADO SALVO!
-      this.isLoading = false; // Não precisa carregar
-      
-      // Restaura tudo do serviço
-      const response = this.questionService.lastResponse;
-      this.questoes = response.content;
-      this.totalElements = response.totalElements;
-      this.totalPages = response.totalPages;
-      this.currentPage = response.number;
-      this.currentFilters = this.questionService.cachedFilters;
+    this.route.queryParams.subscribe(params => {
+      const termoUrl = params['termo'] || null;
 
-      // Restaura a posição da rolagem
-      // Usamos setTimeout(..., 10) para garantir que o HTML foi renderizado
-      setTimeout(() => {
-        this.scroller.scrollToPosition([0, this.questionService.cachedScroll]);
-      }, 10);
+      // Se for a primeira carga E tivermos cache, restauramos.
+      if (this.isFirstLoad && this.questionService.lastResponse) {
+        this.isFirstLoad = false; // Já carregou
+        this.restoreFromCache();
+      } 
+      else {
+        // Se NÃO for a primeira carga (ou seja, o usuário está pesquisando agora),
+        // ou se não tiver cache, buscamos dados novos com base na URL.
+        this.isFirstLoad = false;
+        
+        // Atualiza o filtro de termo com o que está na URL (pode ser null, o que é correto para limpar)
+        this.currentFilters.termo = termoUrl;
+        this.currentPage = 0;
+        this.fetchQuestoes(); 
+      }
+    });
+  }
 
-    } else {
-      // NÃO TEM ESTADO SALVO (Primeira vez na página)
-      this.fetchQuestoes(); 
+  restoreFromCache() {
+    // 1. ATIVA A TRAVA: "Pare de salvar o scroll, vou mexer nele agora"
+    this.isRestoring = true; 
+    this.isLoading = false;
+
+    const response = this.questionService.lastResponse;
+    if (response) {
+        this.questoes = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.number;
     }
+    // Restaura os filtros que estavam salvos
+    this.currentFilters = this.questionService.cachedFilters || {};
+
+    // Guarda o valor localmente para garantir
+    const posicaoDestino = this.questionService.cachedScroll;
+
+    setTimeout(() => {
+      if (this.filtroComponent) {
+        this.filtroComponent.forcarSelecao(this.currentFilters);
+      }
+    }, 50);
+
+    // Primeiro Salto (Rápido)
+    setTimeout(() => {
+       window.scrollTo({ top: posicaoDestino, behavior: 'auto' });
+    }, 100);
+
+    // Segundo Salto (Correção Final e Destrava)
+    setTimeout(() => {
+       window.scrollTo({ top: posicaoDestino, behavior: 'auto' });
+       
+       // 2. SOLTA A TRAVA: "Pronto, pode voltar a salvar"
+       // Pequeno delay extra para garantir que o evento de scroll do salto terminou
+       setTimeout(() => { this.isRestoring = false; }, 100); 
+       
+    }, 600);
   }
 
   fetchQuestoes(): void {
@@ -113,9 +158,16 @@ export class QuestionList implements OnInit {
 
   // (onSearch está correto, ele chama fetchQuestoes que agora salva o estado)
   onSearch(termo: string): void {
-    this.currentFilters.termo = termo.trim(); 
-    this.currentPage = 0; // Reseta para a primeira página
-    this.fetchQuestoes();
+    const termoLimpo = termo.trim();
+    
+    // Em vez de buscar direto, nós navegamos para atualizar a URL.
+    // O 'ngOnInit' vai perceber a mudança na URL e chamar o 'fetchQuestoes' sozinho.
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { termo: termoLimpo || null }, // Se vazio, remove o param da URL
+      queryParamsHandling: 'merge', // Mantém outros filtros (opcional, ou remova para resetar tudo)
+      replaceUrl: true // Substitui o histórico para não criar "voltar" infinito
+    });
   }
 
   // (onFiltrosMudaram está correto)

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core'; 
+import { Component, Output, EventEmitter, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuestionService } from '../../services/questionService';
@@ -58,6 +58,70 @@ export class QuestionFilter {
   showAnoWarning = false;
   
   constructor() { }
+
+  public forcarSelecao(filtros: any) {
+    console.log('RECEBI ORDEM PARA PINTAR:', filtros);
+    if (!filtros) return;
+
+    // Resetar arrays dinâmicos para evitar duplicação
+    this.outrasDisciplinas = [{ checked: false, value: '' }];
+    this.outrasInstituicoes = [{ checked: false, value: '' }];
+    this.outrosAnos = [{ checked: false, value: '' }];
+
+    // 1. DISCIPLINAS
+    if (filtros.disciplinas) {
+      filtros.disciplinas.forEach((disc: string) => {
+        // Procura a chave no mapa (Ex: busca chave para valor "Matemática")
+        const chave = Object.keys(this.disciplinaMap).find(key => this.disciplinaMap[key] === disc);
+        
+        if (chave) {
+          // É estático (ex: Matematica)
+          // @ts-ignore
+          this.filtrosEstaticos.disciplina[chave] = true;
+        } else {
+          // É dinâmico
+          this.outrasDisciplinas.unshift({ checked: true, value: disc });
+        }
+      });
+    }
+
+    // 2. INSTITUIÇÕES
+    if (filtros.instituicoes) {
+      filtros.instituicoes.forEach((inst: string) => {
+        // @ts-ignore
+        if (this.filtrosEstaticos.instituicao.hasOwnProperty(inst)) {
+           // @ts-ignore
+           this.filtrosEstaticos.instituicao[inst] = true;
+        } else {
+           this.outrasInstituicoes.unshift({ checked: true, value: inst });
+        }
+      });
+    }
+
+    // 3. ANOS
+    if (filtros.anos) {
+      filtros.anos.forEach((ano: string) => {
+        // @ts-ignore
+        if (this.filtrosEstaticos.ano.hasOwnProperty(ano)) {
+           // @ts-ignore
+           this.filtrosEstaticos.ano[ano] = true;
+        } else {
+           this.outrosAnos.unshift({ checked: true, value: ano });
+        }
+      });
+    }
+
+    // 4. DIFICULDADE
+    if (filtros.dificuldades) {
+      filtros.dificuldades.forEach((dif: string) => {
+         // @ts-ignore
+         if (this.filtrosEstaticos.dificuldade.hasOwnProperty(dif)) {
+           // @ts-ignore
+           this.filtrosEstaticos.dificuldade[dif] = true;
+         }
+      });
+    }
+  }
 
   limparFiltros() {
     // 1. Reseta os checkboxes estáticos (incluindo 'dificuldade')
