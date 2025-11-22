@@ -15,6 +15,15 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/auth/auth-module').then((m) => m.AuthModule), 
   },
+
+  {
+    path: 'perfil',
+    loadChildren: () =>
+      import('./features/profile/services/profile-module').
+    then(m => m.ProfileModule)
+  },
+
+
   {
     path: 'questoes',
     loadChildren: () =>
@@ -33,5 +42,7 @@ export const routes: Routes = [
   {
     path: '**',
     component: NotFound
-  }
+  },
+
+ 
 ];

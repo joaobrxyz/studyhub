@@ -1,0 +1,67 @@
+<div class="container">
+  <h2 class="titulo">Criar Simulado</h2>
+
+  <form [formGroup]="simuladoForm" (ngSubmit)="salvar()" class="simulado-form">
+
+  <div class="form-group">
+    <label>Título</label>
+    <input formControlName="titulo" />
+  </div>
+
+  <div class="form-group">
+    <label>Descrição</label>
+    <textarea formControlName="descricao"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Categoria</label>
+    <input formControlName="categoria" />
+  </div>
+
+  <div class="form-group">
+    <label>Tempo (minutos)</label>
+    <input type="number" formControlName="tempo" />
+  </div>
+
+  <h2 class="titulo">Questões</h2>
+
+  <div formArrayName="questoes">
+
+    <div class="questao" *ngFor="let q of questoes.controls; let i = index" [formGroupName]="i">
+
+      <h4 class="subtitulo">Questão {{ i + 1 }}</h4>
+
+      <label class="alternativas">Enunciado</label>
+      <textarea formControlName="enunciado" class="card"></textarea>
+
+      <label class="alternativas">Alternativa A</label>
+      <input formControlName="alternativaA"  class="card"/>
+
+      <label class="alternativas">Alternativa B</label>
+      <input formControlName="alternativaB"  class="card"/>
+
+      <label class="alternativas">Alternativa C</label>
+      <input formControlName="alternativaC"  class="card"/>
+
+      <label class="alternativas" >Alternativa D</label>
+      <input formControlName="alternativaD" class="card" />
+
+      <label class="correta-question">Resposta Correta</label>
+      <select formControlName="correta" class="select">
+        <option value=""selected hidden>Selecione a Questão Correta</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+
+      <button type="button" (click)="removeQuestao(i)" class="remove" >Remover</button>
+    </div>
+
+  </div>
+
+  <button type="button" (click)="addQuestao()" class="btn-add">Adicionar Questão</button>
+
+  <button type="submit" class="btn-salvar">Salvar</button>
+
+</form>

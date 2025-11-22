@@ -1,0 +1,156 @@
+/* Container geral */
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;  
+  color: #2a2a2a;
+  font-family: "DM Sans", sans-serif;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px #00000010;
+  
+}
+
+.form-group{ 
+  border-radius: 12px; 
+  margin-bottom: 18px; 
+  
+}
+
+/* Títulos */
+.titulo {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  
+}
+
+.subtitulo {
+  margin: 40px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0A3083;
+}
+
+/* Card padrão (inputs, selects, textarea) */
+.card {
+  background: #ffffff;
+  border: 1px solid #e4e4e4;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.row .card {
+  flex: 1;
+}
+
+/* Labels */
+.card label,
+.questao-card label {
+  font-size: 15px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-top: 4px;
+  background: #fafafa;
+  transition: border 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #4675ff;
+  outline: none;
+}
+
+/* Botão adicionar */
+.btn-add {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #eef2ff;
+  border: 1px solid #d4ddff;
+  color: #3c55ff;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-right: 15px;
+}
+
+.btn-add:hover {
+  background: #dbe3ff;
+}
+
+.remove {
+  background: transparent;
+  border: none;
+  color: #ff4d4d;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 10px 0px;
+}
+
+/* Alternativas */
+.alternativas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 15px 0;
+}
+
+.correta-question {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 15px 0;
+  color: #008000;
+  font-weight: 700;
+}
+
+
+/* Botão salvar */
+.btn-salvar {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #3c55ff;
+  border: 1px solid #d4ddff;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-salvar:hover {
+  opacity: 0.99;
+  background-color: #193fb1;
+}
+
+.select, option{
+  font-size: 15px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  
+}

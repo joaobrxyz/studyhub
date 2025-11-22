@@ -5,12 +5,7 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/simulado-list/simulado-list').then(m => m.SimuladoList)
-  },
-  {
-    path: 'criar',
-    loadComponent: () =>
-      import('./pages/simulado-create/simulados-create').then(m => m.SimuladosCreate)
+      import('../pages/profile-page').then(m => m.ProfilePage) 
   }
 ];
 
@@ -18,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SimuladosRoutingModule {}
+export class ProfileRoutingModule {}

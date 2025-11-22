@@ -1,1 +1,34 @@
-<p>simulado-list works!</p>
+<div class="lista-container">
+
+  <div class="header">
+    <h2>Simulados</h2>
+    <button class="btn-novo" routerLink="/simulados/criar">+ Novo Simulado</button>
+  </div>
+
+  <div class="simulados-lista">
+    <div class="simulado-card" *ngFor="let simulado of simulados">
+
+      <div class="tags">
+        <span class="tag">{{ simulado.categoria }}</span>
+        <span class="tag">{{ simulado.nivel }}</span>
+        <span class="tag">{{ simulado.ano }}</span>
+      </div>
+
+      <h3 class="titulo">{{ simulado.titulo }}</h3>
+
+      <p class="descricao">
+        {{ simulado.descricao }}
+      </p>
+
+      <div class="footer-card">
+        <span class="info">{{ simulado.questoes }} questões</span>
+
+        <button class="btn-responder">
+          Abrir
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
