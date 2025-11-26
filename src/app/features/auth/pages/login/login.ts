@@ -3,13 +3,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { RouterLink } from '@angular/router'; 
+import { RouterLink } from '@angular/router';
 import { Auth } from '../../../../core/services/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -21,6 +21,7 @@ export class Login implements OnDestroy {
 
   public isLoading = false;
   public errorMessage: string | null = null;
+  public showPassword = false;
 
   public loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -31,6 +32,10 @@ export class Login implements OnDestroy {
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['/']);
     }
+  }
+
+  public togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   public onSubmit(): void {
@@ -45,7 +50,6 @@ export class Login implements OnDestroy {
 
     const credentials = this.loginForm.getRawValue();
 
-    
     this.loginSubscription = this.auth.login(credentials as any).subscribe({
       next: (response: any) => {
         this.router.navigate(['/']);
@@ -58,7 +62,6 @@ export class Login implements OnDestroy {
     });
   }
 
-  
   ngOnDestroy(): void {
     this.loginSubscription?.unsubscribe();
   }

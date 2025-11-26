@@ -5,7 +5,6 @@
       <p class="text-center text-muted mb-4">É rápido e fácil.</p>
 
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        
         <!-- Campo NOME -->
         <div class="form-floating mb-3">
           <input
@@ -14,10 +13,15 @@
             id="regNome"
             placeholder="Nome Completo"
             formControlName="name"
-            [class.is-invalid]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+            [class.is-invalid]="
+              registerForm.controls.name.touched && registerForm.controls.name.invalid
+            "
           />
           <label for="regNome">Nome Completo</label>
-          <div *ngIf="registerForm.controls.name.touched && registerForm.controls.name.invalid" class="invalid-feedback">
+          <div
+            *ngIf="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+            class="invalid-feedback"
+          >
             Nome é obrigatório.
           </div>
         </div>
@@ -30,36 +34,107 @@
             id="regEmail"
             placeholder="Endereço de e-mail"
             formControlName="email"
-            [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+            [class.is-invalid]="
+              registerForm.controls.email.touched && registerForm.controls.email.invalid
+            "
           />
           <label for="regEmail">Endereço de e-mail</label>
-          <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.invalid" class="invalid-feedback">
-            <span *ngIf="registerForm.controls.email.errors?.['required']">E-mail é obrigatório.</span>
-            <span *ngIf="registerForm.controls.email.errors?.['email']">Por favor, insira um e-mail válido.</span>
+          <div
+            *ngIf="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.controls.email.errors?.['required']"
+              >E-mail é obrigatório.</span
+            >
+            <span *ngIf="registerForm.controls.email.errors?.['email']"
+              >Por favor, insira um e-mail válido.</span
+            >
           </div>
         </div>
 
         <!-- Campo SENHA -->
-        <div class="form-floating mb-3">
+        <div class="form-floating mb-3 position-relative">
           <input
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             class="form-control"
             id="regSenha"
             placeholder="Senha"
             formControlName="password"
-            [class.is-invalid]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+            [class.is-invalid]="
+              registerForm.controls.password.touched && registerForm.controls.password.invalid
+            "
           />
           <label for="regSenha">Senha</label>
-          <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.invalid" class="invalid-feedback">
-            <span *ngIf="registerForm.controls.password.errors?.['required']">Senha é obrigatória.</span>
-            <span *ngIf="registerForm.controls.password.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres.</span>
+          <button
+            type="button"
+            class="position-absolute end-0 top-50 translate-middle-y"
+            style="
+              border: none;
+              background: none;
+              cursor: pointer;
+              padding: 0.5rem;
+              margin-right: 0.5rem;
+              color: #666;
+              font-size: 1.2rem;
+            "
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+            title="Mostrar/ocultar senha"
+          >
+            <svg
+              *ngIf="!showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.05 12.14C3.54 7.59 7.3 4 12 4s8.46 3.59 9.95 8.14a1 1 0 0 1 0 .72C20.46 16.41 16.7 20 12 20s-8.46-3.59-9.95-8.14a1 1 0 0 1 0-.72z"
+              ></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg
+              *ngIf="showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M17.94 17.94A10 10 0 0 1 12 20c-7 0-11-8-11-8a20.79 20.79 0 0 1 5.06-6.06"
+              ></path>
+              <path d="M1 1l22 22"></path>
+            </svg>
+          </button>
+          <div
+            *ngIf="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.controls.password.errors?.['required']"
+              >Senha é obrigatória.</span
+            >
+            <span *ngIf="registerForm.controls.password.errors?.['minlength']"
+              >Senha deve ter no mínimo 6 caracteres.</span
+            >
           </div>
         </div>
 
         <!-- Campo CONFIRMAR SENHA -->
-        <div class="form-floating mb-3">
+        <div class="form-floating mb-3 position-relative">
           <input
-            type="password"
+            [type]="showConfirmPassword ? 'text' : 'password'"
             class="form-control"
             id="regConfirmarSenha"
             placeholder="Confirmar Senha"
@@ -67,10 +142,74 @@
             [class.is-invalid]="(registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid) || (registerForm.touched && registerForm.errors?.['passwordMismatch'])"
           />
           <label for="regConfirmarSenha">Confirmar Senha</label>
-          <div *ngIf="registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid" class="invalid-feedback">
-            <span *ngIf="registerForm.controls.confirmPassword.errors?.['required']">Confirmação de senha é obrigatória.</span>
+          <button
+            type="button"
+            class="position-absolute end-0 top-50 translate-middle-y"
+            style="
+              border: none;
+              background: none;
+              cursor: pointer;
+              padding: 0.5rem;
+              margin-right: 0.5rem;
+              color: #666;
+              font-size: 1.2rem;
+            "
+            (click)="toggleConfirmPasswordVisibility()"
+            tabindex="-1"
+            title="Mostrar/ocultar senha"
+          >
+            <svg
+              *ngIf="!showConfirmPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.05 12.14C3.54 7.59 7.3 4 12 4s8.46 3.59 9.95 8.14a1 1 0 0 1 0 .72C20.46 16.41 16.7 20 12 20s-8.46-3.59-9.95-8.14a1 1 0 0 1 0-.72z"
+              ></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg
+              *ngIf="showConfirmPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M17.94 17.94A10 10 0 0 1 12 20c-7 0-11-8-11-8a20.79 20.79 0 0 1 5.06-6.06"
+              ></path>
+              <path d="M1 1l22 22"></path>
+            </svg>
+          </button>
+          <div
+            *ngIf="
+              registerForm.controls.confirmPassword.touched &&
+              registerForm.controls.confirmPassword.invalid
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.controls.confirmPassword.errors?.['required']"
+              >Confirmação de senha é obrigatória.</span
+            >
           </div>
-          <div *ngIf="registerForm.touched && registerForm.errors?.['passwordMismatch'] && !registerForm.controls.confirmPassword.errors?.['required']" class="invalid-feedback d-block">
+          <div
+            *ngIf="registerForm.touched && registerForm.errors?.['passwordMismatch'] && !registerForm.controls.confirmPassword.errors?.['required']"
+            class="invalid-feedback d-block"
+          >
             As senhas não coincidem.
           </div>
         </div>
@@ -91,7 +230,12 @@
           [disabled]="isLoading || registerForm.invalid"
         >
           <span *ngIf="!isLoading">Cadastrar</span>
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
           <span *ngIf="isLoading"> Criando...</span>
         </button>
 
@@ -100,7 +244,6 @@
           <span class="text-muted">Já tem uma conta? </span>
           <a routerLink="/auth/login" class="text-decoration-none fw-bold">Faça login</a>
         </div>
-
       </form>
     </div>
   </div>
