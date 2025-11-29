@@ -18,15 +18,15 @@ export class QuestionFilter {
   filtrosEstaticos = {
     disciplina: {
       Matematica: false,
-      Portugues: false,
-      Historia: false,
+      Linguagens: false,
+      Humanas: false,
       Fisica: false,
       Quimica: false
     },
     instituicao: {
       Enade: false,
       Enem: false,
-      Fuvest: false 
+      FGV: false 
     },
     ano: {
       '2025': false,
@@ -43,8 +43,8 @@ export class QuestionFilter {
   // O mapa de tradução para os valores corretos da API
   private disciplinaMap: { [key: string]: string } = {
     Matematica: 'Matemática',
-    Portugues: 'Português',
-    Historia: 'História',
+    Linguagens: 'Linguagens',
+    Humanas: 'Humanas',
     Fisica: 'Física',
     Quimica: 'Química'
   };
@@ -128,13 +128,13 @@ export class QuestionFilter {
     this.filtrosEstaticos = {
       disciplina: {
         Matematica: false,
-        Portugues: false,
-        Historia: false,
+        Linguagens: false,
+        Humanas: false,
         Fisica: false,
         Quimica: false
       },
       instituicao: {
-        Fuvest: false,
+        FGV: false,
         Enem: false,
         Enade: false
       },

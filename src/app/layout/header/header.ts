@@ -22,9 +22,14 @@ export class Header {
     }
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/auth/login']);
+
+  irParaConfiguracoes() {
+    this.router.navigate(['/perfil']);
+  }
+
+  get usuarioNome(): string {
+     // Exemplo: return this.authService.getUser().name;
+     return 'João Vitor'; 
   }
 
   irParaBusca() {

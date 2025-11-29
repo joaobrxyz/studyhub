@@ -1,132 +1,31 @@
-<!-- SPINNER DE CARREGAMENTO -->
-<div *ngIf="isLoading" class="d-flex justify-content-center my-5 py-5">
-  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-    <span class="visually-hidden">Carregando...</span>
-  </div>
-</div>
-
-<!-- CONTEÚDO -->
 <div *ngIf="!isLoading && questao" class="container p-4">
-  
   <div class="row g-4 justify-content-center">
-    
-    <!-- Coluna Principal (Questão) -->
     <div class="col-lg-8">
       
-      <!-- Link de "Voltar" (Correto) -->
+       <!-- Link de "Voltar" -->
       <a (click)="voltar()" class="btn btn-outline-secondary mb-2 d-inline-flex align-items-center gap-2 rounded-3 px-3" style="cursor: pointer;">
+
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+
           <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+
         </svg>
+
         Voltar para a busca
+
       </a>
 
-      <!-- O Card da Questão (Branco e Arredondado) -->
-      <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4 p-md-5">
-          
-          <!-- ID e Tags -->
-          <p class="text-muted small mb-2" id="questao-id">{{ questao.id }}</p>
-          <div class="mb-3">
-            <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.disciplina }}</span>
-            <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.dificuldade }}</span>
-            <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.instituicao }}</span>
-            <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.ano }}</span>
-          </div>
-          <hr class="my-4">
-          
-          <!-- Enunciado (com Markdown) -->
-          <markdown [data]="questao.enunciado | removeImageMarkdown:true | katex"class="enunciado-markdown markdown-content"></markdown>
-          
-          
+      <app-question-card
+          [questao]="questao"
+          [mostrarResultado]="mostrarResultado"
+          [ehCorreto]="ehCorreto"
+          [bloquearInteracao]="mostrarResultado"
+          [alternativaSelecionada]="alternativaSelecionada"
+          [exibirBotaoResponder]="true" 
+          (mudouOpcao)="alternativaSelecionada = $event"
+          (acaoResponder)="verificarResposta()">
+      </app-question-card>
 
-          <!-- Alternativas (Loop com *ngFor) -->
-          <div class="vstack gap-3">
-            
-            <div *ngFor="let item of alternativasFormatadas; let i = index">
-              
-              <input type="radio" 
-                     class="btn-check" 
-                     name="alternativas" 
-                     [id]="'alt' + i"
-                     [value]="i.toString()" 
-                     [(ngModel)]="alternativaSelecionada"
-                     [disabled]="mostrarResultado">
-              
-              <!-- O 'label' (card clicável) com o novo design do Figma -->
-              <label class="btn w-100 p-3 text-start alternativa-label" 
-                     [for]="'alt' + i"
-                     [class.alternativa-correta]="mostrarResultado && questao.resposta === i.toString()"
-                     [class.alternativa-incorreta]="mostrarResultado && alternativaSelecionada === i.toString() && questao.resposta !== i.toString()">
-                
-                <!-- O "badge" cinza com a letra -->
-                <div class="d-flex align-items-center badge-alter">
-                  <span class="alternativa-badge">{{ item.letra }}</span>
-                  
-                  <!-- O texto da alternativa (com markdown) -->
-                  <markdown 
-                    [data]="item.texto | katex" 
-                    class="alternativa-markdown ms-3">
-                  </markdown>
-                </div>
-
-              </label>
-            </div>
-
-          </div>
-          
-          <!-- Botão de Responder -->
-          <button class="btn btn-primary btn-lg rounded-pill w-100 mt-4" 
-                  (click)="verificarResposta()"
-                  [disabled]="!alternativaSelecionada || mostrarResultado">
-            Responder
-          </button>
-          
-          <!-- Feedback de Resultado (Aparece após responder) -->
-          <div *ngIf="mostrarResultado" class="mt-4">
-            <div *ngIf="ehCorreto; else incorreto" class="alert alert-success">
-              <strong>Correto!</strong> Você acertou.
-            </div>
-            <ng-template #incorreto>
-              <div class="alert alert-danger">
-                <strong>Incorreto.</strong> A resposta correta era outra.
-              </div>
-            </ng-template>
-          </div>
-
-        </div>
-      </div>
     </div>
-    
-  </div> <!-- Fim do .row -->
-
-  <!-- 
-    SIDEBAR FLUTUANTE 
-    (Corrigido para desgrudar da borda)
-  -->
-  <div class="position-fixed d-none d-lg-block text-center" 
-       style="top: 150px; width: 100px; right: 13rem;">
-    
-    <button type="button" class="btn btn-light border rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; margin: 0 auto;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-      </svg>
-    </button>
-
-    <div class="small text-muted mt-2">
-      Adicionar<br>ao simulado
-    </div>
-    
   </div>
-
-</div> <!-- Fim do .container -->
-
-
-<!-- Mensagem de Erro (Se o 'id' não for encontrado) -->
-<div *ngIf="!isLoading && !questao" class="container my-5 text-center">
-  <h2 class="text-danger">Questão não encontrada</h2>
-  <p class="text-muted">A questão que você está procurando não existe ou foi removida.</p>
-  <a (click)="voltar()" class="btn btn-primary rounded-pill mt-3" style="cursor: pointer;">
-    Voltar para a busca
-  </a>
-</div>
+  </div>

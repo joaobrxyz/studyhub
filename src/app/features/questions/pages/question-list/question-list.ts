@@ -36,6 +36,7 @@ export class QuestionList implements OnInit {
 
   @ViewChild(QuestionFilter) filtroComponent!: QuestionFilter;
 
+  termoBuscaBarra: string | null = null;
   questoes: Questao[] = [];
   isLoading = true; 
   totalElements = 0;
@@ -43,6 +44,7 @@ export class QuestionList implements OnInit {
   currentPage = 0; 
   pageSize = 10;   
   currentFilters: any = {};
+  mostrarFiltrosMobile = false;
 
   // 3. SALVA A ROLAGEM
   @HostListener('window:scroll')  
@@ -53,9 +55,16 @@ export class QuestionList implements OnInit {
     }
   }
 
+  // Função para abrir/fechar o filtro
+  toggleFiltrosMobile() {
+    this.mostrarFiltrosMobile = !this.mostrarFiltrosMobile;
+  }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const termoUrl = params['termo'] || null;
+
+      this.termoBuscaBarra = termoUrl;
 
       // Se for a primeira carga E tivermos cache, restauramos.
       if (this.isFirstLoad && this.questionService.lastResponse) {
@@ -159,6 +168,8 @@ export class QuestionList implements OnInit {
   // (onSearch está correto, ele chama fetchQuestoes que agora salva o estado)
   onSearch(termo: string): void {
     const termoLimpo = termo.trim();
+
+    this.termoBuscaBarra = termoLimpo;
     
     // Em vez de buscar direto, nós navegamos para atualizar a URL.
     // O 'ngOnInit' vai perceber a mudança na URL e chamar o 'fetchQuestoes' sozinho.
@@ -169,6 +180,11 @@ export class QuestionList implements OnInit {
       replaceUrl: true // Substitui o histórico para não criar "voltar" infinito
     });
   }
+
+  limparBusca(): void {
+  this.termoBuscaBarra = null; // Limpa a variável visual
+  this.onSearch(''); // Dispara a busca vazia para limpar a URL e recarregar a lista
+}
 
   // (onFiltrosMudaram está correto)
   onFiltrosMudaram(novosFiltros: any): void {

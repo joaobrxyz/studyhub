@@ -1,1 +1,60 @@
-<p>question-card works!</p>
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body p-4 p-md-5">
+    
+    <p class="text-muted small mb-2" id="questao-id">{{ questao.id }}</p>
+    <div class="mb-3">
+      <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.disciplina }}</span>
+      <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.dificuldade }}</span>
+      <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.instituicao }}</span>
+      <span class="badge bg-secondary-subtle text-dark-emphasis fw-normal me-1">{{ questao.ano }}</span>
+    </div>
+    <hr class="my-4">
+    
+    <markdown [data]="questao.enunciado | removeImageMarkdown:true | katex" class="enunciado-markdown markdown-content"></markdown>
+    
+    <div class="vstack gap-3">
+      <div *ngFor="let item of alternativasFormatadas; let i = index">
+        
+        <input type="radio" 
+               class="btn-check" 
+               name="alternativas" 
+               [id]="'alt' + i"
+               [value]="i.toString()" 
+               [checked]="alternativaSelecionada === i.toString()"
+               (change)="selecionarAlternativa(i.toString())"
+               [disabled]="bloquearInteracao">
+        
+        <label class="btn w-100 p-3 text-start alternativa-label" 
+               [for]="'alt' + i"
+               [class.alternativa-correta]="mostrarResultado && questao.resposta === i.toString()"
+               [class.alternativa-incorreta]="mostrarResultado && alternativaSelecionada === i.toString() && questao.resposta !== i.toString()">
+          
+          <div class="d-flex align-items-center badge-alter">
+            <span class="alternativa-badge">{{ item.letra }}</span>
+            <markdown [data]="item.texto | katex" class="alternativa-markdown ms-3"></markdown>
+          </div>
+
+        </label>
+      </div>
+    </div>
+
+    <button *ngIf="exibirBotaoResponder"
+            class="btn btn-primary btn-lg rounded-pill w-100 mt-4" 
+            (click)="clicouResponder()"
+            [disabled]="!alternativaSelecionada || bloquearInteracao">
+      Responder
+    </button>
+
+    <div *ngIf="mostrarResultado" class="mt-4">
+      <div *ngIf="ehCorreto; else incorreto" class="alert alert-success">
+        <strong>Correto!</strong> Você acertou.
+      </div>
+      <ng-template #incorreto>
+        <div class="alert alert-danger">
+          <strong>Incorreto.</strong> A resposta correta era outra.
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

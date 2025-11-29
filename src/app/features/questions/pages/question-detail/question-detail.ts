@@ -1,23 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, Location, ViewportScroller } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { MarkdownComponent, KatexOptions } from 'ngx-markdown';
 import { Questao } from '../../../../core/models/Question';
 import { QuestionService } from '../../services/questionService';
-import { FormsModule } from '@angular/forms';
-import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
-import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
+import { QuestionCard } from '../../components/question-card/question-card'; // Importe o novo componente
 
 @Component({
   selector: 'app-question-detail',
   standalone: true,
   imports: [
     CommonModule, 
-    RouterModule, 
-    MarkdownComponent,
-    KatexPipe,
-    FormsModule,
-    RemoveImageMarkdownPipe
+    RouterModule,
+    QuestionCard // Adicione aos imports
   ],
   templateUrl: './question-detail.html',
   styleUrls: ['./question-detail.css']
@@ -27,39 +21,24 @@ export class QuestionDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private questionService = inject(QuestionService);
   private location = inject(Location); 
+  private scroller = inject(ViewportScroller);
 
   questao: Questao | null = null;
   isLoading = true;
-  
-  // Esta é a variável que guarda os dados formatados
-  alternativasFormatadas: any[] = []; 
 
+  // Controle local da resposta
   alternativaSelecionada: string | null = null; 
   mostrarResultado = false;
   ehCorreto = false;
 
   ngOnInit(): void {
-    // 1. Pega o ID da URL
+    this.scroller.scrollToPosition([0, 0]);
     const questaoId = this.route.snapshot.paramMap.get('id');
 
     if (questaoId) {
-      // 2. Chama o serviço para buscar a questão
       this.questionService.getQuestaoById(questaoId).subscribe({
         next: (data) => {
           this.questao = data;
-          
-          // 3. A LÓGICA DE FORMATAÇÃO
-          // Transforma ["A) Texto...", "B) Texto..."]
-          // em [ {letra: 'A', texto: 'Texto...'}, {letra: 'B', texto: 'Texto...'} ]
-          this.alternativasFormatadas = data.alternativas.map(alt => {
-            const parts = alt.split(') '); // Divide no "A) "
-            return {
-              letra: parts[0], // "A"
-              texto: parts.slice(1).join(') ') // Pega o resto do texto
-            };
-          });
-          // --- FIM DA LÓGICA ---
-
           this.isLoading = false;
         },
         error: (err) => {
@@ -70,17 +49,17 @@ export class QuestionDetail implements OnInit {
     }
   }
 
-  // Função para o botão "Responder"
+  // Função chamada pelo botão responder
   verificarResposta(): void {
-    if (!this.questao || this.alternativaSelecionada === null) {
-      return; 
-    }
-    // Compara o índice selecionado (ex: "2") com a resposta da API (ex: "2")
+    if (!this.questao || this.alternativaSelecionada === null) return;
+    
+    // Calcula o resultado
     this.ehCorreto = (this.alternativaSelecionada === this.questao.resposta);
+    
+    // Ativa os visuais no componente filho via [Inputs]
     this.mostrarResultado = true;
   }
 
-  // Função para o botão "Voltar"
   voltar(): void {
     this.location.back();
   }

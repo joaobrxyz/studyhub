@@ -1,4 +1,4 @@
-/* Apenas ajustes finos que o Bootstrap não cobre */
+/* --- SEU CSS EXISTENTE --- */
 .btn-primary {
     background-color: #2563EB;
     border-color: #2563EB;
@@ -9,12 +9,39 @@
     border-color: #1d4ed8;
 }
 
-/* Tira a borda cinza feia do input quando clica */
 .form-control:focus, .input-group-text {
     border-color: #e0e0e0; 
 }
 
-/* Ajuste fino na logo */
 .navbar-brand {
     font-family: sans-serif; 
+}
+
+/* --- NOVO CSS (Só para o modo Logado) --- */
+
+/* Círculo do Avatar */
+.avatar-circle {
+  width: 48px;
+  height: 48px;
+  background-color: #60A5FA; /* Azul do print */
+  border: none;
+}
+
+/* Engrenagem pequena */
+.settings-icon-wrapper {
+  position: absolute;
+  bottom: -2px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff; /* Borda branca */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.user-profile-btn {
+    cursor: pointer;
 }

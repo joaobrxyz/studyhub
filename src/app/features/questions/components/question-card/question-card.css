@@ -1,0 +1,81 @@
+#questao-id { font-size: 12px; }
+
+/* CARD DA ALTERNATIVA */
+.alternativa-label {
+  background-color: #ffffff;
+  border: 1px solid #0000002e;
+  border-radius: 0.5rem;
+  color: #212529;
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+/* BADGE CIRCULAR */
+.alternativa-badge {
+  flex-shrink: 0; 
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F5F5; 
+  border-radius: 10px; 
+  color: #374151;
+  font-weight: 600;
+  margin: 0 !important; 
+}
+
+/* ESTILOS DE FEEDBACK E HOVER */
+.alternativa-label:hover { border-color: #0d6efd; }
+
+.btn-check:checked + .alternativa-label {
+  background-color: #EFF6FF;
+  border-color: #0d6efd;
+  color: #000;
+}
+.btn-check:checked + .alternativa-label .alternativa-badge {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* Resposta CORRETA */
+.alternativa-label.alternativa-correta,
+.btn-check:checked + .alternativa-label.alternativa-correta {
+  background-color: #D1E7DD; border-color: #198754; color: #0a3622; box-shadow: none;
+}
+.btn-check:checked + .alternativa-label.alternativa-correta .alternativa-badge {
+  background-color: #198754; color: #fff;
+}
+
+/* Resposta INCORRETA */
+.alternativa-label.alternativa-incorreta,
+.btn-check:checked + .alternativa-label.alternativa-incorreta {
+  background-color: #F8D7DA; border-color: #DC3545; color: #58151c; box-shadow: none;
+}
+.btn-check:checked + .alternativa-label.alternativa-incorreta .alternativa-badge {
+  background-color: #DC3545; color: #fff;
+}
+
+/* --- CSS NUCLEAR DO MARKDOWN --- */
+:host ::ng-deep .alternativa-markdown {
+  display: flex; align-items: center; width: 100%; margin: 0; padding: 0; min-height: auto !important; 
+}
+:host ::ng-deep .alternativa-markdown ol,
+:host ::ng-deep .alternativa-markdown ul {
+  width: 100%; margin: 0 !important; padding-left: 0 !important; list-style-position: inside !important; 
+}
+:host ::ng-deep .alternativa-markdown li {
+  margin: 0 !important; padding: 0 !important; display: list-item !important; text-align: left;
+}
+:host ::ng-deep .alternativa-markdown p {
+  margin: 0 !important; padding: 0 !important; display: inline-block; 
+}
+:host ::ng-deep .alternativa-markdown p:empty { display: none !important; }
+:host ::ng-deep .alternativa-markdown ol { list-style-type: decimal !important; }
+
+/* Outros ajustes globais do card */
+:host ::ng-deep .citation-text { font-size: 0.75rem; color: #9CA3AF; margin-top: 0.5rem; font-style: italic; display: block; margin-bottom: 10px; }
+:host ::ng-deep .badge { font-weight: 500; font-size: 0.75rem; }
+::ng-deep .katex .vlist > span { margin-top: -0.7em !important; }
+.markdown-content ::ng-deep img { max-width: 100%; height: auto; display: block; margin: 1rem auto; }

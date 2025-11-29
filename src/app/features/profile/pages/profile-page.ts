@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Auth } from '../../../core/services/auth';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -7,6 +9,8 @@ import { Component } from '@angular/core';
   standalone: true
 })
 export class ProfilePage {
+  authService = inject(Auth);
+  router = inject(Router);
 
   usuario = {
     nome: 'Usuário Exemplo',
@@ -19,6 +23,7 @@ export class ProfilePage {
   }
 
   logout() {
-    console.log('Logout...');
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 }
