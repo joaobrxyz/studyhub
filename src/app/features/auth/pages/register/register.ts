@@ -1,5 +1,12 @@
 import { Component, inject, OnDestroy } from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -9,7 +16,7 @@ import { Auth } from '../../../../core/services/auth';
 function passwordMatcher(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
-  
+
   // Verifica se ambos existem e se são diferentes
   if (password && confirmPassword && password.value !== confirmPassword.value) {
     return { passwordMismatch: true };
@@ -24,8 +31,9 @@ function passwordMatcher(control: AbstractControl): ValidationErrors | null {
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
 })
-export class Register implements OnDestroy { // Renomeei para RegisterComponent para seguir o padrão
-  
+export class Register implements OnDestroy {
+  // Renomeei para RegisterComponent para seguir o padrão
+
   private authService = inject(Auth);
   private router = inject(Router);
   private registerSubscription?: Subscription;
@@ -33,6 +41,8 @@ export class Register implements OnDestroy { // Renomeei para RegisterComponent 
   public isLoading = false;
   public errorMessage: string | null = null;
   public successMessage: string | null = null;
+  public showPassword = false;
+  public showConfirmPassword = false;
 
   public registerForm = new FormGroup(
     {
@@ -41,8 +51,16 @@ export class Register implements OnDestroy { // Renomeei para RegisterComponent 
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confirmPassword: new FormControl('', [Validators.required]),
     },
-    { validators: passwordMatcher } 
+    { validators: passwordMatcher }
   );
+
+  public togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  public toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
   public onSubmit(): void {
     if (this.registerForm.invalid) {
@@ -56,11 +74,11 @@ export class Register implements OnDestroy { // Renomeei para RegisterComponent 
     this.successMessage = null;
 
     const form = this.registerForm.getRawValue();
-  
+
     const payload = {
-      nome: form.name,    
+      nome: form.name,
       email: form.email,
-      senha: form.password, 
+      senha: form.password,
     };
 
     this.registerSubscription = this.authService.register(payload).subscribe({
@@ -69,7 +87,7 @@ export class Register implements OnDestroy { // Renomeei para RegisterComponent 
         this.successMessage = 'Cadastro realizado com sucesso! Redirecionando para o login...';
         // Redireciona após 2 segundos para o usuário ler a mensagem
         setTimeout(() => {
-            this.router.navigate(['/auth/login']);
+          this.router.navigate(['/auth/login']);
         }, 2000);
       },
       error: (err: any) => {

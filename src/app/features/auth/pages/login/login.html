@@ -4,9 +4,7 @@
       <h2 class="text-center mb-4">Acesse sua conta</h2>
       <p class="text-center text-muted mb-4">Bem-vindo de volta!</p>
 
-      
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        
         <div class="form-floating mb-3">
           <input
             type="email"
@@ -15,10 +13,12 @@
             placeholder="Endereço de e-mail"
             required
             formControlName="email"
-            [class.is-invalid]="loginForm.controls.email.touched && loginForm.controls.email.invalid"
+            [class.is-invalid]="
+              loginForm.controls.email.touched && loginForm.controls.email.invalid
+            "
           />
           <label for="loginEmail">Endereço de e-mail</label>
-          
+
           <div
             *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid"
             class="invalid-feedback"
@@ -33,17 +33,72 @@
         </div>
 
         <!-- Campo de Senha -->
-        <div class="form-floating mb-3">
+        <div class="form-floating mb-3 position-relative">
           <input
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             class="form-control"
             id="loginSenha"
             placeholder="Senha"
             required
             formControlName="password"
-            [class.is-invalid]="loginForm.controls.password.touched && loginForm.controls.password.invalid"
+            [class.is-invalid]="
+              loginForm.controls.password.touched && loginForm.controls.password.invalid
+            "
           />
           <label for="loginSenha">Senha</label>
+          <button
+            type="button"
+            class="position-absolute end-0 top-50 translate-middle-y"
+            style="
+              border: none;
+              background: none;
+              cursor: pointer;
+              padding: 0.5rem;
+              margin-right: 0.5rem;
+              color: #666;
+              font-size: 1.2rem;
+            "
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+            title="Mostrar/ocultar senha"
+          >
+            <svg
+              *ngIf="!showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.05 12.14C3.54 7.59 7.3 4 12 4s8.46 3.59 9.95 8.14a1 1 0 0 1 0 .72C20.46 16.41 16.7 20 12 20s-8.46-3.59-9.95-8.14a1 1 0 0 1 0-.72z"
+              ></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg
+              *ngIf="showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M17.94 17.94A10 10 0 0 1 12 20c-7 0-11-8-11-8a20.79 20.79 0 0 1 5.06-6.06"
+              ></path>
+              <path d="M1 1l22 22"></path>
+            </svg>
+          </button>
           <div
             *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid"
             class="invalid-feedback"
@@ -56,42 +111,33 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="lembrarDeMim"
-            />
-            <label class="form-check-label" for="lembrarDeMim">
-              Lembrar de mim
-            </label>
+            <input class="form-check-input" type="checkbox" value="" id="lembrarDeMim" />
+            <label class="form-check-label" for="lembrarDeMim"> Lembrar de mim </label>
           </div>
           <a href="#" class="small text-decoration-none">Esqueceu a senha?</a>
         </div>
 
-       
-        <div
-          *ngIf="errorMessage"
-          class="alert alert-danger text-center p-2 mb-3"
-          role="alert"
-        >
+        <div *ngIf="errorMessage" class="alert alert-danger text-center p-2 mb-3" role="alert">
           {{ errorMessage }}
         </div>
 
-        
         <button
           type="submit"
           class="btn btn-primary btn-lg w-100"
           [disabled]="isLoading || loginForm.invalid"
         >
           <span *ngIf="!isLoading">Entrar</span>
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
           <span *ngIf="isLoading"> Entrando...</span>
         </button>
       </form>
 
       <p class="text-center mt-4 text-muted">
-        
         Não tem uma conta? <a routerLink="/auth/register">Cadastre-se</a>
       </p>
     </div>
