@@ -1,0 +1,52 @@
+.container {
+    min-height: 70vh;
+}
+
+/* Container para o número e a sombra */
+.error-container {
+  position: relative;
+}
+
+/* O número gigante */
+.error-code {
+  font-size: 8rem; /* Tamanho bem grande */
+  margin-bottom: 0;
+  background: -webkit-linear-gradient(#0d6efd, #0a58ca); /* Degradê sutil no texto */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Animação de flutuar */
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Sombra embaixo do número */
+.error-shadow {
+  width: 100%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 70%);
+  margin-top: -10px;
+  
+  /* A sombra aumenta e diminui conforme o número flutua */
+  animation: shadow-pulse 3s ease-in-out infinite;
+}
+
+/* Animação de subir e descer */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Animação da sombra */
+@keyframes shadow-pulse {
+  0% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(0.8); opacity: 0.1; }
+  100% { transform: scale(1); opacity: 0.2; }
+}
+
+/* Ajuste para mobile */
+@media (max-width: 576px) {
+  .error-code {
+    font-size: 6rem;
+  }
+}

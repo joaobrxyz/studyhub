@@ -154,3 +154,8 @@ select:focus {
   font-weight: 600;
   
 }
+
+.filter {
+  box-shadow: none !important;
+  border: none;
+}

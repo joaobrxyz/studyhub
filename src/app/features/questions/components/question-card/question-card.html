@@ -16,18 +16,22 @@
       <div *ngFor="let item of alternativasFormatadas; let i = index">
         
         <input type="radio" 
-               class="btn-check" 
-               name="alternativas" 
-               [id]="'alt' + i"
-               [value]="i.toString()" 
-               [checked]="alternativaSelecionada === i.toString()"
-               (change)="selecionarAlternativa(i.toString())"
-               [disabled]="bloquearInteracao">
+              class="btn-check" 
+              
+              [name]="idUnico" 
+              [id]="idUnico + '-alt-' + i"
+              
+              [value]="i.toString()" 
+              [checked]="alternativaSelecionada === i.toString()"
+              (change)="selecionarAlternativa(i.toString())"
+              [disabled]="bloquearInteracao">
         
         <label class="btn w-100 p-3 text-start alternativa-label" 
-               [for]="'alt' + i"
-               [class.alternativa-correta]="mostrarResultado && questao.resposta === i.toString()"
-               [class.alternativa-incorreta]="mostrarResultado && alternativaSelecionada === i.toString() && questao.resposta !== i.toString()">
+              [for]="idUnico + '-alt-' + i"
+
+              [class.alternativa-correta]="mostrarResultado && questao.resposta === i.toString()"
+              
+              [class.alternativa-incorreta]="mostrarResultado && alternativaSelecionada === i.toString() && questao.resposta !== i.toString()">
           
           <div class="d-flex align-items-center badge-alter">
             <span class="alternativa-badge">{{ item.letra }}</span>

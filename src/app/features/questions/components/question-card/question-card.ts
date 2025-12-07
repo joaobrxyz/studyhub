@@ -19,6 +19,7 @@ export class QuestionCard implements OnChanges {
   @Input() mostrarResultado = false; 
   @Input() ehCorreto = false;        
   @Input() bloquearInteracao = false;
+  @Input() idUnico: string = 'questao-padrao';
 
   // Controle se o botão aparece ou não (Padrão false para o simulado)
   @Input() exibirBotaoResponder = false;
@@ -53,6 +54,7 @@ export class QuestionCard implements OnChanges {
 
   // Método chamado pelo (change) do HTML
   selecionarAlternativa(valor: string) {
+    if (this.bloquearInteracao) return;
     this.alternativaSelecionada = valor;
     this.mudouOpcao.emit(valor);
   }

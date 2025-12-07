@@ -3,11 +3,13 @@ import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
+  public loginStatusChanged = new Subject<void>();
   login(credentials: { email: string; password: string }): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -42,6 +44,7 @@ export class Auth {
 
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
+    this.loginStatusChanged.next();
   }
 
   getToken(): string | null {
@@ -56,7 +59,8 @@ export class Auth {
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
-    this.router.navigate(['/auth/login']);
+    localStorage.removeItem('usuario');
+    this.loginStatusChanged.next();
   }
 
   getUserRole(): string {

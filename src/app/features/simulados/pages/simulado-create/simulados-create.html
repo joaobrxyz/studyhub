@@ -1,67 +1,71 @@
-<div class="container">
-  <h2 class="titulo">Criar Simulado</h2>
+<div class="container py-5" style="margin-top: 60px; max-width: 800px;">
 
-  <form [formGroup]="simuladoForm" (ngSubmit)="salvar()" class="simulado-form">
+  <a routerLink="/simulados" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 rounded-3 px-3" style="cursor: pointer;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+      Voltar
+    </a>
+  
+  <h2 class="fw-bold mb-4 text-center">Gerar Simulado</h2>
 
-  <div class="form-group">
-    <label>Título</label>
-    <input formControlName="titulo" />
-  </div>
+  <div class=" border-0">
+    <div class="card-body p-4">
 
-  <div class="form-group">
-    <label>Descrição</label>
-    <textarea formControlName="descricao"></textarea>
-  </div>
+      <form [formGroup]="simuladoForm" (ngSubmit)="salvar()">
 
-  <div class="form-group">
-    <label>Categoria</label>
-    <input formControlName="categoria" />
-  </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Título do Simulado</label>
+          <input type="text" class="form-control" formControlName="titulo" placeholder="Ex: Simulado para prova de matemática">
+        </div>
 
-  <div class="form-group">
-    <label>Tempo (minutos)</label>
-    <input type="number" formControlName="tempo" />
-  </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Descrição</label>
+          <textarea class="form-control" formControlName="descricao" rows="2" placeholder="Opcional..."></textarea>
+        </div>
 
-  <h2 class="titulo">Questões</h2>
+        <div class="mb-4">
+          <label class="form-label fw-bold">Quantidade de Questões</label>
+          <input type="number" class="form-control" formControlName="quantidade">
+          <div class="form-text">O sistema vai selecionar essa quantidade baseada nos filtros abaixo.</div>
+        </div>
 
-  <div formArrayName="questoes">
+        <hr class="my-4">
 
-    <div class="questao" *ngFor="let q of questoes.controls; let i = index" [formGroupName]="i">
+        <h5 class="fw-bold mb-3">Filtrar Questões</h5>
+        
+        <div class="accordion mb-4" id="accordionFiltros">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter">
+                Selecionar Disciplinas, Anos, Instituições...
+              </button>
+            </h2>
+            <div id="collapseFilter" class="accordion-collapse collapse" data-bs-parent="#accordionFiltros">
+              <div class="accordion-body">
+                
+                <app-question-filter class="filter" 
+                    (filtrosMudaram)="atualizarFiltros($event)"
+                    [exibirBotoes]="false">
+                </app-question-filter>
 
-      <h4 class="subtitulo">Questão {{ i + 1 }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <label class="alternativas">Enunciado</label>
-      <textarea formControlName="enunciado" class="card"></textarea>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary btn-lg" 
+                  [disabled]="simuladoForm.invalid || isLoading">
+            
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ isLoading ? 'Gerando...' : 'Gerar Simulado' }}
+          
+          </button>
+        </div>
 
-      <label class="alternativas">Alternativa A</label>
-      <input formControlName="alternativaA"  class="card"/>
+      </form>
 
-      <label class="alternativas">Alternativa B</label>
-      <input formControlName="alternativaB"  class="card"/>
-
-      <label class="alternativas">Alternativa C</label>
-      <input formControlName="alternativaC"  class="card"/>
-
-      <label class="alternativas" >Alternativa D</label>
-      <input formControlName="alternativaD" class="card" />
-
-      <label class="correta-question">Resposta Correta</label>
-      <select formControlName="correta" class="select">
-        <option value=""selected hidden>Selecione a Questão Correta</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <option value="D">D</option>
-      </select>
-
-      <button type="button" (click)="removeQuestao(i)" class="remove" >Remover</button>
     </div>
-
   </div>
-
-  <button type="button" (click)="addQuestao()" class="btn-add">Adicionar Questão</button>
-
-  <button type="submit" class="btn-salvar">Salvar</button>
-
-</form>
+</div>

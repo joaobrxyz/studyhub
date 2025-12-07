@@ -1,0 +1,50 @@
+.cronometro-container {
+  position: fixed;
+  top: 100px;    
+  right: 50px; 
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 50px; 
+  padding: 10px 20px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.cronometro-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.tempo-texto {
+  font-size: 1.1rem;
+  color: #0d6efd; 
+  min-width: 80px; 
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .cronometro-container {
+    top: auto;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: max-content;
+    transform: none;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bg-success-subtle {
+  background-color: #d1e7dd; /* Fundo verde bem clarinho */
+}

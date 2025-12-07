@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth-guard';
 import { NotFound } from './features/not-found/not-found';
+import { SimuladoResponder } from './features/simulados/pages/simulado-responder/simulado-responder';
+import { SimuladoEditar } from './features/simulados/pages/simulado-editar/simulado-editar';
 
 export const routes: Routes = [
   {
@@ -38,6 +40,16 @@ export const routes: Routes = [
         (m) => m.SimuladosModule
       ),
     canActivate: [authGuard], 
+  },
+  {
+    path: 'simulados/:id', 
+    component: SimuladoResponder,
+    canActivate: [authGuard] 
+  },
+  {
+    path: 'simulados/editar/:id',
+    component: SimuladoEditar,
+    canActivate: [authGuard]
   },
   {
     path: '**',

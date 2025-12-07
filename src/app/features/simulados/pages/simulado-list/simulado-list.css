@@ -45,6 +45,7 @@
   box-shadow: 0 2px 8px #00000010;
   display: flex;
   flex-direction: column;
+  position: relative; 
 }
 
 .tags {
@@ -99,4 +100,54 @@
 
 .btn-responder:hover {
   background: #1e4fcf;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px; /* Espaço entre os botões */
+  align-items: center;
+}
+
+.btn-excluir {
+  background-color: #d9d9d9; 
+  color: #000000; 
+  border: none;
+  border-radius: 8px; 
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-excluir:hover {
+  background-color: #d32f2f;
+  color: white;
+  border-color: #d32f2f;
+}
+
+.btn-editar-topo {
+  position: absolute;
+  top: 15px;    
+  right: 15px;  
+  background-color: transparent;
+  color: #adb5bd; /* Cinza claro */
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-editar-topo:hover {
+  background-color: #e9ecef;
+  color: #0d6efd; /* Azul */
+  transform: scale(1.1);
 }

@@ -73,4 +73,11 @@ export class QuestionService {
   getQuestaoById(id: string): Observable<Questao> {
     return this.http.get<Questao>(`${API_URL}/${id}`);
   }
+
+  buscarPorIds(ids: string[]): Observable<Questao[]> {
+    
+    let params = new HttpParams().set('ids', ids.join(','));
+
+    return this.http.get<Questao[]>(`${API_URL}/lista`, { params });
+  }
 }

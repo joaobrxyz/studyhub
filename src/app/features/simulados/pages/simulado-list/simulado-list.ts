@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { SimuladoService, Simulado } from '../../services/simulado';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-simulado-list',
@@ -10,32 +11,105 @@ import { Router } from '@angular/router';
   templateUrl: './simulado-list.html',
   styleUrls: ['./simulado-list.css']
 })
-export class SimuladoList {
+export class SimuladoList implements OnInit {
+  
+  private router = inject(Router);
+  private simuladoService = inject(SimuladoService);
 
-  constructor(private router: Router) {}
+  // A tipagem aqui garante que o HTML reconheça o campo 'nome' e 'questoes'
+  simulados: Simulado[] = []; 
+  isLoading: boolean = true;
 
-  addQuestao() {
-    this.router.navigate(['./criar']);
+  ngOnInit() {
+    this.buscarSimulados();
   }
 
-  simulados = [
-    {
-      titulo: 'Simulado de Matemática - ENEM',
-      descricao: 'Um simulado com foco em progressões, geometria e funções.',
-      categoria: 'Matemática',
-      nivel: 'Média',
-      ano: '2024',
-      questoes: 10
-    },
-    {
-      titulo: 'Simulado de Física - Concursos',
-      descricao: 'Questões típicas de provas de concursos públicos.',
-      categoria: 'Física',
-      nivel: 'Difícil',
-      ano: '2023',
-      questoes: 15
-    }
-  ];
+  buscarSimulados() {
+    this.isLoading = true;
+    this.simuladoService.listarSimulados().subscribe({
+      next: (dados) => {
+        // Ordena a lista: Data do B (Mais novo) - Data do A (Mais antigo)
+        this.simulados = dados.sort((a, b) => {
+          // Garante que estamos comparando datas válidas
+          const dateA = new Date(a.data).getTime();
+          const dateB = new Date(b.data).getTime();
+          return dateB - dateA;
+        });
+        
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar simulados', err);
+        this.isLoading = false;
+      }
+    });
+  }
 
-  
+  abrirSimulado(simulado: Simulado) {
+    // Se não tiver questões, barra a entrada e sugere o Portal
+    if (!simulado.questoes || simulado.questoes.length === 0) {
+      
+      Swal.fire({
+        title: 'Simulado Vazio',
+        text: 'Este simulado não possui questões. Deseja ir ao Portal de Questões para adicionar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ir para Questões', // Texto atualizado
+        cancelButtonText: 'Fechar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // MUDANÇA AQUI: Redireciona para o portal geral de questões
+          this.router.navigate(['/questoes']);
+        }
+      });
+      return; 
+    }
+
+    this.router.navigate(['/simulados/', simulado.id]);
+  }
+
+  excluirSimulado(id: string, event: Event) {
+    event.stopPropagation(); 
+
+    // 1. Substitui o 'confirm()' por um Swal customizado
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você não poderá reverter essa exclusão!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Vermelho para indicar perigo
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sim, excluir!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      
+      // Se o usuário clicou em "Sim, excluir!"
+      if (result.isConfirmed) {
+        
+        this.simuladoService.deletarSimulado(id).subscribe({
+          next: () => {
+            // Remove da lista visualmente
+            this.simulados = this.simulados.filter(s => s.id !== id);
+            
+            Swal.fire(
+              'Excluído!',
+              'O simulado foi removido com sucesso.',
+              'success'
+            );
+          },
+          error: (err) => {
+            console.error(err);
+            
+            Swal.fire(
+              'Erro',
+              'Não foi possível excluir o simulado.',
+              'error'
+            );
+          }
+        });
+      }
+    });
+  }
 }

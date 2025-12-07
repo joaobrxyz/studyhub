@@ -15,6 +15,8 @@ export class QuestionFilter {
   @Output() filtrosMudaram = new EventEmitter<any>();
   private questionService = inject(QuestionService); 
 
+  @Input() exibirBotoes: boolean = true;
+
   filtrosEstaticos = {
     disciplina: {
       Matematica: false,
@@ -252,6 +254,10 @@ export class QuestionFilter {
     if (item.checked && valorComoString.trim() !== '' && index === array.length - 1) {
       array.push({ checked: false, value: '' });
     }
+
+    if (!this.exibirBotoes) {
+      this.aplicarFiltros();
+    }
   }
 
   onCheckboxToggle(tipo: 'disciplina' | 'instituicao' | 'ano', index: number) {
@@ -260,6 +266,16 @@ export class QuestionFilter {
     let item = array[index];
     if (!item.checked && array.length > 1) {
       array.splice(index, 1);
+    }
+
+    if (!this.exibirBotoes) {
+      this.aplicarFiltros();
+    }
+  }
+
+  onStaticChange() {
+    if (!this.exibirBotoes) {
+      this.aplicarFiltros();
     }
   }
 

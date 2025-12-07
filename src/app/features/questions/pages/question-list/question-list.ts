@@ -2,12 +2,18 @@ import { Component, OnInit, inject, HostListener, ViewChild } from '@angular/cor
 import { ViewportScroller, CommonModule } from '@angular/common'; 
 import { ActivatedRoute, RouterModule, Router } from '@angular/router'; 
 import { QuestionService } from '../../services/questionService';
+import { Simulado, SimuladoService } from '../../../simulados/services/simulado';
 import { PageableResponse, Questao } from '../../../../core/models/Question'; 
 import { QuestionFilter } from '../../components/question-filter/question-filter';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { MarkdownComponent } from 'ngx-markdown';
 import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
 import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
+import Swal from 'sweetalert2';
+import { Auth } from '../../../../core/services/auth';
+
+// Permite usar o JS do Bootstrap diretamente
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-question-list',
@@ -27,7 +33,8 @@ import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
 export class QuestionList implements OnInit { 
 
   private questionService = inject(QuestionService);
-  // 2. INJETE O SCROLLER
+  private simuladoService = inject(SimuladoService);
+  private authService = inject(Auth);
   private scroller = inject(ViewportScroller); 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -45,6 +52,11 @@ export class QuestionList implements OnInit {
   pageSize = 10;   
   currentFilters: any = {};
   mostrarFiltrosMobile = false;
+
+  // VARIÁVEIS PARA O MODAL DE SIMULADO
+  simuladosUsuario: Simulado[] = [];
+  questaoSelecionadaId: string | null = null;
+  modalInstance: any;
 
   // 3. SALVA A ROLAGEM
   @HostListener('window:scroll')  
@@ -200,5 +212,96 @@ export class QuestionList implements OnInit {
   onPaginaMudou(novaPagina: number): void {
     this.currentPage = novaPagina; // O componente de paginação já manda em base 0
     this.fetchQuestoes();
+  }
+
+  abrirModalSimulado(questaoId: string) {
+    this.questaoSelecionadaId = questaoId;
+
+    // VERIFICAÇÃO DE LOGIN
+    const token = this.authService.getToken();
+    if (!token) {
+      Swal.fire({
+        title: 'Login necessário',
+        text: 'Você precisa estar logado para criar simulados e salvar questões.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Fazer Login',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redireciona para sua tela de login
+          this.router.navigate(['/auth/login']); 
+        }
+      });
+      return; // Para tudo aqui se não estiver logado
+    }
+    
+    // 1. Busca os simulados do usuário antes de abrir
+    this.simuladoService.listarSimulados().subscribe({
+      next: (dados) => {
+        // Ordena por data (mais recente primeiro)
+        this.simuladosUsuario = dados.sort((a, b) => 
+          new Date(b.data).getTime() - new Date(a.data).getTime()
+        );
+
+        // 2. Abre o Modal usando Bootstrap JS
+        const modalElement = document.getElementById('modalAddSimulado');
+        if (modalElement) {
+          this.modalInstance = new bootstrap.Modal(modalElement);
+          this.modalInstance.show();
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire('Erro', 'Não foi possível carregar seus simulados.', 'error');
+      }
+    });
+  }
+
+  adicionarAoSimulado(simulado: Simulado) {
+    if (!this.questaoSelecionadaId) return;
+
+    // Verifica se a questão já está no simulado
+    if (simulado.questoes && simulado.questoes.includes(this.questaoSelecionadaId)) {
+      Swal.fire('Aviso', 'Esta questão já está neste simulado.', 'info');
+      return;
+    }
+
+    // Adiciona o ID na lista
+    const novaLista = [...(simulado.questoes || []), this.questaoSelecionadaId];
+
+    // Prepara o objeto para atualizar
+    const payload = {
+      nome: simulado.nome,
+      descricao: simulado.descricao,
+      questoes: novaLista
+    };
+
+    // Chama o serviço para salvar
+    this.simuladoService.atualizarSimulado(simulado.id, payload).subscribe({
+      next: () => {
+        // Fecha o modal
+        if (this.modalInstance) this.modalInstance.hide();
+        
+        Swal.fire({
+          title: 'Adicionada!',
+          text: `Questão adicionada ao simulado "${simulado.nome}".`,
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire('Erro', 'Falha ao adicionar questão.', 'error');
+      }
+    });
+  }
+  
+  irParaCriarSimulado() {
+    if (this.modalInstance) this.modalInstance.hide();
+    this.router.navigate(['/simulados/criar']);
   }
 }

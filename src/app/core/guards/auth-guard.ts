@@ -13,6 +13,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true; // Permite o acesso à rota
   } else {
     // Se não estiver logado, redireciona para o login
+    
     router.navigate(['/auth/login']);
     return false; // Bloqueia o acesso
   }

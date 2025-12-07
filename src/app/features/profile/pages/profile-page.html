@@ -1,31 +1,32 @@
 <div class="perfil-container">
 
   <div class="perfil-card">
-    <div class="foto-area">
-      <img src="https://via.placeholder.com/120" alt="Foto do usuário" />
-      <button class="btn-alterar-foto">Alterar Foto</button>
-    </div>
-
     <div class="info-area">
       <h2>Meu Perfil</h2>
 
+      <div *ngIf="isLoading">Carregando dados...</div>
+
+      <ng-container *ngIf="usuario">
       <div class="campo">
         <label>Nome</label>
-        <input type="text" [value]="usuario.nome" disabled />
+        <input type="text" [(ngModel)]="usuario.nome" />
       </div>
 
       <div class="campo">
         <label>E-mail</label>
-        <input type="email" [value]="usuario.email" disabled />
+        <input type="email" [(ngModel)]="usuario.email" />
       </div>
 
       <div class="campo">
         <label>Curso</label>
-        <input type="text" [value]="usuario.curso" disabled />
+        <input type="text" [(ngModel)]="usuario.curso"  />
       </div>
+      </ng-container>
 
       <div class="botoes">
-        <button class="btn-editar" (click)="editarPerfil()">Editar Dados</button>
+        <button class="btn-editar" (click)="salvarPerfil()">
+             Editar dados
+          </button>
         <button class="btn-sair" (click)="logout()">Sair</button>
       </div>
     </div>
