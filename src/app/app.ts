@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { Layout } from './layout/layout';
+import { Auth } from './core/services/auth';
+import { Injectable, inject } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +11,12 @@ import { Layout } from './layout/layout';
 })
 export class App {
   protected readonly title = signal('studyhub');
+  private authService = inject(Auth);
+
+  ngOnInit() {
+    // Ao abrir o site (ou dar F5), ele calcula quanto tempo falta e arma a bomba relógio
+    this.authService.verificarEAgendarLogout();
+  }
 }
+
+
