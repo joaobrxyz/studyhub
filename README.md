@@ -1,59 +1,61 @@
-# Studyhub
+# 📘 StudyHub
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-## Development server
+> Uma plataforma full-stack de estudos e simulados para estudantes de Análise e Desenvolvimento de Sistemas (ADS) e áreas de tecnologia.
 
-To start a local development server, run:
+O **StudyHub** é uma aplicação web que permite aos estudantes buscar questões de concursos, ENADE e provas específicas, criar simulados personalizados (manuais ou automáticos) e acompanhar seu desempenho. O foco do projeto foi criar uma experiência de usuário fluida (SPA) com um backend robusto e performático.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 📸 Screenshots
 
-## Code scaffolding
+<div style="display: flex; gap: 10px;">
+  <img src="https://wnstxjzpdaunxiphcbrc.supabase.co/storage/v1/object/public/questoes-img/studyhub-home.png" alt="Tela principal" width="400">
+  <img src="https://wnstxjzpdaunxiphcbrc.supabase.co/storage/v1/object/public/questoes-img/studyhub-questoes.png" alt="Questões" width="400">
+</div>
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 🚀 Tecnologias Utilizadas
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Frontend (Client-side)
+* **Angular 16+** (Standalone Components, Signals, Reactive Forms)
+* **Bootstrap 5** (Layout responsivo e Grid System)
+* **SweetAlert2** (Feedback visual e alertas elegantes)
+* **Ngx-Markdown & Katex** (Renderização de enunciados complexos e fórmulas matemáticas)
+* **RxJS** (Manipulação reativa de dados)
 
-```bash
-ng generate --help
-```
+### Backend (Server-side)
+* **Java 17 / 21**
+* **Spring Boot 3**
+* **Spring Security + JWT** (Autenticação e Autorização Stateless)
+* **MongoDB** (Banco de dados NoSQL para flexibilidade dos documentos)
+* **Maven** (Gerenciamento de dependências)
 
-## Building
+---
 
-To build the project run:
+## ✨ Funcionalidades Principais
 
-```bash
-ng build
-```
+### 🔐 Autenticação & Segurança
+* Login e Cadastro de usuários.
+* **JWT (JSON Web Token):** Sessão segura e stateless.
+* **Auto-Logout Inteligente:** Interceptores verificam a expiração do token e deslogam o usuário automaticamente por inatividade ou token inválido.
+* **Guards:** Proteção de rotas administrativas e privadas.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 📚 Portal de Questões (Busca Avançada)
+* **Filtros Dinâmicos:** Busca por Disciplina, Tópico, Instituição, Ano e Dificuldade.
+* **Busca Textual (Regex):** Pesquisa inteligente que procura termos no enunciado, tópicos ou instituição, ignorando acentos e maiúsculas (*Case & Accent Insensitive*).
+* **Renderização:** Suporte a Markdown e Imagens dentro das questões.
 
-## Running unit tests
+### 📝 Simulados
+* **Criação Automática:** O usuário define os filtros e o sistema gera um simulado aleatório usando **MongoDB Aggregation Pipeline**.
+* **Gerenciamento:** Editar nome, remover questões indesejadas ou excluir simulados.
+* **Modo Vazio:** Criação de simulados vazios para população manual via Portal de Questões.
+* **Resolução:** Interface limpa para responder as questões com feedback imediato.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 🎨 UX/UI
+* Design totalmente **Responsivo** (Mobile First).
+* Feedback visual de carregamento (Skeleton/Spinners).
+* Tratamento de erros amigável (Página 404, Toasts de Sucesso/Erro).
