@@ -3,7 +3,7 @@
 ![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-> Uma plataforma full-stack de estudos e simulados para estudantes de Análise e Desenvolvimento de Sistemas (ADS) e áreas de tecnologia.
+> Uma plataforma full-stack de estudos e simulados para estudantes.
 
 O **StudyHub** é uma aplicação web que permite aos estudantes buscar questões de concursos, ENADE e provas específicas, criar simulados personalizados (manuais ou automáticos) e acompanhar seu desempenho. O foco do projeto foi criar uma experiência de usuário fluida (SPA) com um backend robusto e performático.
 
