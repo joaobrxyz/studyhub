@@ -8,15 +8,15 @@
   <div *ngIf="!isLoading && simulado" class="row g-4 justify-content-center">
     <div class="col-lg-8">
       
-      <a routerLink="/simulados" class="btn btn-outline-secondary mb-4 d-inline-flex align-items-center gap-2 rounded-3 px-3" style="cursor: pointer;">
+      <a [routerLink]="(isRevisao || isModoReforco) ? ['/simulados/desempenho', simulado.id] : '/simulados'" class="btn btn-outline-secondary mb-4 d-inline-flex align-items-center gap-2 rounded-3 px-3" style="cursor: pointer;">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
         </svg>
-        Voltar para Simulados
+        {{ (isRevisao || isModoReforco) ? 'Voltar para Desempenho' : 'Voltar para Simulados' }}
       </a>
 
       <div>
-      <div *ngIf="simuladoFinalizado" class="card shadow-sm mb-5 animate-fade-in">
+      <div *ngIf="simuladoFinalizado && !isRevisao" class="card shadow-sm mb-5 animate-fade-in">
         <div class="card-body text-center p-4">
           
           <h3 class="fw-bold text-success mb-3">Simulado Finalizado!</h3>
@@ -131,33 +131,40 @@
   </div>
 </div>
 
-<div class="cronometro-container shadow-sm">
+<div *ngIf="!isRevisao" class="cronometro-wrapper" [ngClass]="{'recolhido': cronometroRecolhido}">
   
-  <div class="d-flex align-items-center gap-2">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-      <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+  <button class="btn-puxar shadow-sm" (click)="alternarRecolhimento()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+         [style.transform]="cronometroRecolhido ? 'rotate(180deg)' : 'rotate(0deg)'"
+         class="bi bi-chevron-right transition-all" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
     </svg>
+  </button>
 
-    <span class="tempo-texto fw-bold font-monospace">
-      {{ cronometroVisivel ? tempoFormatado : '--:--:--' }}
-    </span>
-
-    <button class="btn btn-sm btn-link text-decoration-none p-0 ms-2 text-dark" 
-            (click)="alternarVisibilidadeCronometro()"
-            title="{{ cronometroVisivel ? 'Ocultar tempo' : 'Mostrar tempo' }}">
-      
-      <svg *ngIf="cronometroVisivel" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 13.332 10.119 14.5 8 14.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+  <div class="cronometro-box shadow-sm">
+    <div class="d-flex align-items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock text-primary" viewBox="0 0 16 16">
+        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
       </svg>
 
-      <svg *ngIf="!cronometroVisivel" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
-        <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
-        <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
-        <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
-      </svg>
-    </button>
+      <span class="tempo-texto fw-bold font-monospace">
+        {{ cronometroVisivel ? tempoFormatado : '--:--:--' }}
+      </span>
+
+      <button class="btn-visibilidade" (click)="alternarVisibilidadeCronometro()" 
+              title="{{ cronometroVisivel ? 'Ocultar tempo' : 'Mostrar tempo' }}">
+        <svg *ngIf="cronometroVisivel" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 13.332 10.119 14.5 8 14.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+          <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+        </svg>
+        <svg *ngIf="!cronometroVisivel" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+          <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+          <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
+        </svg>
+      </button>
+
+    </div>
   </div>
 </div>

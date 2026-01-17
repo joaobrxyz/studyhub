@@ -1,10 +1,14 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MarkdownComponent } from 'ngx-markdown';
 import { Questao } from '../../../../core/models/Question';
 import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
 import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
+import { HistoricoService } from '../../services/historico-service';
+import { Auth } from '../../../../core/services/auth';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-question-card',
@@ -14,6 +18,9 @@ import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
   styleUrls: ['./question-card.css']
 })
 export class QuestionCard implements OnChanges {
+  private sanitizer = inject(DomSanitizer);
+  private historicoService = inject(HistoricoService);
+  private authService = inject(Auth);
 
   @Input() questao!: Questao;
   @Input() mostrarResultado = false; 
@@ -36,9 +43,30 @@ export class QuestionCard implements OnChanges {
 
   alternativasFormatadas: any[] = [];
 
+  exibirResolucao = false;
+  videoUrl: SafeResourceUrl | null = null;
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['questao'] && this.questao) {
+      this.exibirResolucao = false;
       this.formatarAlternativas();
+      this.atualizarVideoUrl();
+    }
+  }
+
+  // Método para alternar a visualização da resolução
+  alternarResolucao() {
+    this.exibirResolucao = !this.exibirResolucao;
+  }
+
+  // Método para sanitizar a URL do YouTube
+  private atualizarVideoUrl() {
+    // Verifique o nome aqui também:
+    if (this.questao.resolucaoVideoId) {
+      const url = `https://www.youtube.com/embed/${this.questao.resolucaoVideoId}`;
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } else {
+      this.videoUrl = null;
     }
   }
 
@@ -62,5 +90,22 @@ export class QuestionCard implements OnChanges {
   // Função interna que avisa o pai que o botão foi clicado
   clicouResponder() {
     this.acaoResponder.emit();
+    if (this.authService.isLoggedIn()) { 
+        const acertou = this.alternativaSelecionada === this.questao.resposta;
+
+        this.historicoService.registrarTentativa({
+            questaoId: this.questao.id,
+            acertou: acertou,
+            topicos: this.questao.topicos || [] 
+        })
+        .pipe(take(1))
+        .subscribe({
+            next: () => console.log('✅ Histórico salvo!'),
+            error: (err) => console.error('❌ Erro ao salvar:', err)
+        });
+
+    } else {
+        console.log('⚠️ Visitante: Resultado exibido, mas não salvo.');
+    }
   }
 }

@@ -1,39 +1,30 @@
-.cronometro-container {
-  position: fixed;
-  top: 100px;    
-  right: 50px; 
-  background-color: white;
-  border: 1px solid #dee2e6;
-  border-radius: 50px; 
-  padding: 10px 20px;
-  z-index: 1000;
-  transition: all 0.3s ease;
-}
-
-.cronometro-container:hover {
-  transform: scale(1.02);
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-}
+/* ==========================================================================
+   ESTILOS GERAIS E ANIMAÇÕES
+   ========================================================================== */
 
 .tempo-texto {
   font-size: 1.1rem;
-  color: #0d6efd; 
-  min-width: 80px; 
+  color: #2563eb; /* Azul StudyHub */
+  min-width: 85px; 
   text-align: center;
 }
 
+/* Estilo do botão do Olho (Visibilidade) */
+.btn-visibilidade {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #6b7280;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
 
-@media (max-width: 768px) {
-  .cronometro-container {
-    top: auto;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: max-content;
-    transform: none;
-  }
+.btn-visibilidade:hover {
+  color: #2563eb;
+  transform: scale(1.1);
 }
 
 .animate-fade-in {
@@ -46,5 +37,83 @@
 }
 
 .bg-success-subtle {
-  background-color: #d1e7dd; /* Fundo verde bem clarinho */
+  background-color: #d1e7dd; /* Fundo verde resultados */
+}
+
+/* ==========================================================================
+   COMPORTAMENTO MOBILE (PADRÃO) - Pílula Retrátil
+   ========================================================================== */
+
+.cronometro-wrapper {
+  position: fixed;
+  top: 80px; /* Acima da Bottom Nav, abaixo do header */
+  right: 0;
+  display: flex;
+  align-items: center;
+  z-index: 1100;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Lógica de esconder para o lado (Puxar/Sumi) */
+.cronometro-wrapper.recolhido {
+  transform: translateX(calc(100% - 40px)); /* Deixa apenas a flecha visível */
+}
+
+/* Botão da Flecha (Só aparece no Mobile) */
+.btn-puxar {
+  background: #2563eb;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 45px;
+  border-radius: 15px 0 0 15px; /* Arredondado só na ponta da flecha */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+}
+
+/* Caixa branca que segura o tempo e o olho */
+.cronometro-box {
+  background: white;
+  padding: 8px 15px;
+  border: 1px solid #e5e7eb;
+  border-right: none;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  min-height: 45px;
+}
+
+/* ==========================================================================
+   COMPORTAMENTO DESKTOP (>= 992px) - Pílula Fixa Arredondada
+   ========================================================================== */
+
+@media (min-width: 992px) {
+  .cronometro-wrapper {
+    top: 100px;
+    right: 50px; /* Posição clássica do Desktop */
+    transform: none !important; /* Nunca recolhe no PC */
+  }
+
+  /* Esconde a flecha de puxar no computador */
+  .btn-puxar {
+    display: none;
+  }
+
+  .cronometro-box {
+    border-radius: 50px !important; /* Volta a ser a cápsula redonda */
+    border: 1px solid #dee2e6;
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+
+  /* Efeito de hover que você tinha no cronometro-container original */
+  .cronometro-box:hover {
+    transform: scale(1.02);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    border-color: #2563eb;
+  }
 }

@@ -1,7 +1,6 @@
 # 📘 StudyHub
 
 ![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-blue)
 
 > Uma plataforma full-stack de estudos e simulados para estudantes.
 

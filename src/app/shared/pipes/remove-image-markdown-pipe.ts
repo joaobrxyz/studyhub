@@ -23,6 +23,8 @@ export class RemoveImageMarkdownPipe implements PipeTransform {
     const citationRegex = /(Disponível em:.*)/gi;
     text = text.replace(citationRegex, '<div class="citation-text">$1</div>');
 
+    
+
     return text;
   }
 

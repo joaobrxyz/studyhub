@@ -1,0 +1,131 @@
+.selection-page-wrapper {
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.back-link {
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.back-link:hover { color: #2563eb; }
+
+.main-title { color: #0f172a; font-size: 2.25rem; }
+
+/* --- CARD STYLE --- */
+.selection-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  text-align: center; /* Centraliza textos */
+  transition: all 0.3s ease;
+}
+
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #EFF6FF;
+  color: #2563EB;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  transition: all 0.3s ease;
+}
+
+.icon-yellow {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+/* --- HOVER EFFECT (CARD 1) --- */
+.selection-card:hover {
+  border-color: #2563eb;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+}
+
+.selection-card:hover .icon-circle {
+  background-color: #2563eb; /* Círculo fica azul sólido */
+  color: #ffffff; /* Ícone fica branco */
+}
+
+.card-title {
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.card-description {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.subtitle-link {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  opacity: 0; 
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.selection-card:hover .subtitle-link {
+  color: #2563eb;
+  opacity: 1;
+  transform: translateY(0); 
+}
+
+/* --- PREMIUM BADGE --- */
+.premium-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #facc15;
+  color: #713f12;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.free-limit-info {
+  background-color: #fef3c7; 
+  color: #92400e; 
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 8px;
+  margin-top: 5px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.selection-card:hover .free-limit-info {
+  opacity: 0.5; 
+}
+
+.success-icon-box {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 10px 20px rgba(34, 197, 94, 0.2);
+}
+
+.modal-container {
+  min-height: 400px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

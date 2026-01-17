@@ -13,8 +13,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       
-      // Se o erro for 401 (Não autorizado/Token expirado) ou 403 (Proibido)
-      if (error.status === 401 || error.status === 403) {
+      // Se o erro for 401 (Não autorizado/Token expirado)
+      if (error.status === 401) {
         
         // Faz o logout para limpar o token velho do localStorage
         authService.logout(); 

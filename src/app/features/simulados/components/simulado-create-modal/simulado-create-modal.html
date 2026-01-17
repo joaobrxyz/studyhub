@@ -1,0 +1,50 @@
+<div class="modal-overlay" (click)="fechar()">
+  <div class="modal-container p-4 p-md-5" (click)="$event.stopPropagation()">
+    
+    <button class="btn-close-modal" (click)="fechar()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+
+    <div *ngIf="!criadoComSucesso">
+      <div class="modal-header-custom mb-4">
+        <h2 class="fw-bold mb-1">Criar Novo Simulado</h2>
+        <p class="text-muted small">Defina as informações básicas</p>
+      </div>
+
+      <form [formGroup]="simuladoForm" (ngSubmit)="confirmarCriacao()">
+        <div class="mb-4">
+          <label class="form-label-custom">Nome do Simulado</label>
+          <input type="text" formControlName="titulo" class="form-input-custom" placeholder="Ex: Simulado ENEM">
+        </div>
+        <div class="mb-4">
+          <label class="form-label-custom">Descrição (Opcional)</label>
+          <textarea formControlName="descricao" class="form-input-custom" rows="3" placeholder="Adicione uma descrição para organizar melhor seus estudos"></textarea>
+        </div>
+
+        <div class="d-flex gap-3">
+          <button type="button" class="btn-modal-cancel w-100" (click)="fechar()">Cancelar</button>
+          <button type="submit" class="btn-modal-confirm w-100" [disabled]="simuladoForm.invalid">Continuar</button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="criadoComSucesso" class="text-center py-3">
+      <div class="success-icon-box mb-4">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      
+      <h3 class="fw-bold mb-2">Simulado Criado!</h3>
+      <p class="text-muted mb-5">O que você deseja fazer agora?</p>
+
+      <div class="d-flex flex-column gap-3">
+        <button class="btn-modal-confirm py-3" (click)="irParaQuestoes()">
+          <i class="bi bi-plus-circle me-2"></i> Adicionar Questões
+        </button>
+        <button class="btn-modal-cancel py-3" (click)="irParaMeusSimulados()">
+          Ver Meus Simulados
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

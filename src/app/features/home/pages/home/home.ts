@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { QuestionService } from '../../../questions/services/questionService';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -11,9 +12,10 @@ import { QuestionService } from '../../../questions/services/questionService';
 export class Home {
   private router = inject(Router);
   private questionService = inject(QuestionService); 
+  private scroller = inject(ViewportScroller);
 
   ngOnInit(): void {
-    // Sempre que a Home for carregada, limpamos o "baú de memória"
+    this.scroller.scrollToPosition([0, 0]);
     this.questionService.cachedFilters = null;
     this.questionService.cachedPage = 0;
     this.questionService.cachedScroll = 0;

@@ -1,0 +1,255 @@
+.premium-page-wrapper {
+  background-color: #F8F9FA;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Container do Badge Superior (Pill) */
+.premium-badge-pill {
+  background: #FFF8E1; /* Fundo branco transparente */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #FFD700;
+  padding: 8px 24px;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto dentro do badge */
+.badge-text {
+  color: #000000;
+  font-size: 0.80rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  text-transform: none;
+}
+
+/* Garante que os SVGs não herdem cores indesejadas */
+.premium-badge-pill svg {
+  flex-shrink: 0;
+  display: block;
+}
+
+/* Efeito de brilho suave nos ícones amarelos do topo */
+.premium-badge-pill svg path, 
+.premium-badge-pill svg circle {
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
+}
+
+/* Bolhas de brilho desfocadas no fundo (Estilo VIP) */
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: 0;
+}
+.top-left { width: 350px; height: 350px; background: #d3d3d3; top: 5%; left: 5%; }
+.bottom-right { width: 500px; height: 500px; background: #2563eb; bottom: 5%; right: 5%; }
+
+.relative-content { position: relative; z-index: 10; }
+
+.main-hero-title {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle { font-size: 1.15rem; }
+
+/* Estilo Glassmorphism (Card de Preço) */
+.glass-price-card {
+  background: #ffffff;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.price-symbol { font-size: 1.5rem; font-weight: 700; margin-right: 5px; }
+.price-value { font-size: 56px; font-weight: 800; }
+.price-period { font-size: 1.25rem; }
+
+/* --- BOTÃO ASSINAR AGORA (VIP) CORRIGIDO --- */
+.btn-yellow-vip {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff !important; /* Força o texto branco do design */
+  border: none;
+  position: relative;
+  overflow: hidden;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 20px 45px !important; /* Altura corrigida */
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 40px rgba(216, 216, 216, 0.4);
+  z-index: 1;
+}
+
+/* Espaçamento interno CORRIGIDO para a coroa não ficar grudada */
+.btn-yellow-vip .vip-crown-icon {
+  margin-right: 12px; /* Espaço adicionado entre ícone e texto */
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+}
+
+.btn-yellow-vip:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 50px rgba(209, 209, 209, 0.6);
+  color: #ffffff !important;
+}
+
+/* Efeito de brilho sweep (Luz passando pelo botão) */
+.shine-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent
+  );
+  animation: sweep 3.5s infinite;
+  z-index: 0;
+}
+
+@keyframes sweep {
+  0% { left: -100%; }
+  15% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Cards de Funcionalidades */
+.feature-card-glass {
+  background: rgb(255, 255, 255);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.353);
+  border-radius: 1.5rem;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100% !important; 
+  max-width: 100% !important; 
+  overflow: hidden !important;
+}
+
+.feature-card-glass h3 {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.feature-card-glass p {
+  word-wrap: break-word !important;
+  flex-grow: 1 !important;
+}
+
+.feature-card-glass:hover {
+  transform: translateY(-10px);
+  background: rgb(255, 255, 255);
+}
+
+.icon-container-vip {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #3700ff 0%, #0077ff 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Footer CTA Azul */
+.footer-cta-card {
+  background: rgb(255, 255, 255);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2rem;
+}
+
+.btn-free-trial {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  padding: 14px 40px;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+}
+
+.btn-free-trial:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.6);
+}
+
+/* Ajustes de Responsividade */
+@media (max-width: 768px) {
+  .main-hero-title { font-size: 32px; }
+  .price-value { font-size: 42px; }
+  .premium-page-wrapper { padding-bottom: 120px; }
+}
+
+.text-gold { color: #DAA520; }
+
+/* Card de Gestão para Membros */
+.management-card {
+  background: #ffffff;
+  border: 1px solid #f1f1f1;
+  border-radius: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05) !important;
+}
+
+.expiration-date {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+}
+
+/* Botão de Renovação Dourado */
+.btn-renew-gold {
+  background: linear-gradient(135deg, #FFD700 0%, #DAA520 100%);
+  color: #000;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(218, 165, 32, 0.2);
+}
+
+.btn-renew-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(218, 165, 32, 0.4);
+}
+
+/* Badge de Status Ativo */
+.status-badge-pill {
+  background: #f0fff4;
+  border: 1px solid #c6f6d5;
+  padding: 6px 16px;
+  border-radius: 50px;
+}
+
+.dot-online {
+  width: 8px;
+  height: 8px;
+  background-color: #48bb78;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-text {
+  color: #2f855a;
+  font-size: 0.85rem;
+  font-weight: 600;
+}

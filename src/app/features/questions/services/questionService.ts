@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams, HttpUrlEncodingCodec } from '@angular/common/http'; // 1. Importe o Codec
+import { HttpClient, HttpParams, HttpUrlEncodingCodec, HttpHeaders } from '@angular/common/http'; // 1. Importe o Codec
 import { Observable } from 'rxjs';
 import { PageableResponse, Questao } from '../../../core/models/Question'; 
+import { Auth } from '../../../core/services/auth';
+import { environment } from '../../../../environments/environment';
 
-const API_URL = 'http://localhost:8080/questoes'; 
+const API_URL = `${environment.apiUrl}/questoes`; 
 
-// 2. CRIE O "DESTRAVADOR" DE '&'
 class CustomHttpUrlEncodingCodec extends HttpUrlEncodingCodec {
   override encodeKey(k: string): string {
     return super.encodeKey(k);
@@ -23,6 +24,7 @@ class CustomHttpUrlEncodingCodec extends HttpUrlEncodingCodec {
 export class QuestionService {
 
   private http = inject(HttpClient);
+  private authService = inject(Auth);
 
   public cachedFilters: any = null;
   public cachedPage: number = 0;
@@ -58,6 +60,10 @@ export class QuestionService {
       });
     }
 
+    if (filtros.apenasErros) params = params.set('apenasErros', 'true');
+    if (filtros.comResolucao) params = params.set('comResolucao', 'true');
+    if (filtros.comVideo) params = params.set('comVideo', 'true');
+
     // Adiciona o loop para o array 'dificuldades'
     if (filtros.dificuldades && filtros.dificuldades.length > 0) {
       filtros.dificuldades.forEach((dificuldade: string) => {
@@ -65,9 +71,15 @@ export class QuestionService {
       });
     }
 
-    console.log("Parâmetros enviados para API (Formato Append):", params.toString());
+    const token = this.authService.getToken();
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    return this.http.get<PageableResponse<Questao>>(API_URL, { params: params });
+    if (token) {
+      // Se tiver logado, adiciona o Authorization
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    } 
+
+    return this.http.get<PageableResponse<Questao>>(API_URL, { params: params,  headers });
   }
 
   getQuestaoById(id: string): Observable<Questao> {

@@ -17,7 +17,26 @@
     font-family: sans-serif; 
 }
 
-/* --- NOVO CSS (Só para o modo Logado) --- */
+@media (max-width: 767px) {
+  .navbar-collapse {
+    background: white;
+    position: absolute;
+    top: 80px;
+    left: 15px;
+    right: 15px;
+    border-radius: 24px; /* Formato de card */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .nav-search-btn {
+    border: 1px solid #f1f5f9 !important;
+    background: #f8fafc !important;
+    border-radius: 15px;
+    padding: 12px !important;
+  }
+}
 
 /* Círculo do Avatar */
 .avatar-circle {

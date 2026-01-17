@@ -1,0 +1,149 @@
+<div class="desempenho-wrapper min-vh-100 p-4">
+  <div class="container-fluid" style="max-width: 1200px;">
+
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Carregando estatísticas...</p>
+    </div>
+
+    <div *ngIf="!isLoading && tentativas.length === 0" class="empty-state-container text-center animate-fade-in">
+      <div class="simulado-card p-5 shadow-sm rounded-24 bg-white">
+        <h2 class="fw-bold mb-3">Nenhum dado encontrado</h2>
+        <p class="text-muted mb-4">Parece que você ainda não realizou este simulado. <br> Complete-o pela primeira vez para liberar sua análise!</p>
+        <div class="d-flex gap-3 justify-content-center align-items-center">
+          <a routerLink="/simulados" class="btn btn-light rounded-pill px-4 p-1 fw-bold border align-items-center text-center">Voltar</a>
+          <button [routerLink]="['/simulados/responder', simuladoId]" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">Começar Agora</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && tentativas.length > 0" class="animate-fade-in">
+      
+      <div class="d-flex align-items-center mb-4">
+        <a routerLink="/simulados" class="btn-voltar d-flex align-items-center me-3 text-decoration-none text-muted">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          </svg>
+          <span class="ms-1 fw-medium">Voltar</span>
+        </a>
+        <h2 class="fw-bold m-0">{{ ultimaTentativa?.nomeSimulado || 'Desempenho Detalhado' }}</h2>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="simulado-card p-4 bg-white shadow-sm rounded-24">
+            <div class="icon-kpi bg-primary-light mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2563eb" viewBox="0 0 16 16">
+                <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+              </svg>
+            </div>
+            <p class="text-muted small fw-bold mb-1">PONTUAÇÃO FINAL</p>
+            <h3 class="fw-bolder m-0 display-6">{{ ultimaTentativa?.totalAcertos }}/{{ ultimaTentativa?.totalQuestoes }}</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="simulado-card p-4 bg-white shadow-sm rounded-24">
+            <div class="icon-kpi bg-success-light mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#16a34a" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
+              </svg>
+            </div>
+            <p class="text-muted small fw-bold mb-1">TAXA DE ACERTO</p>
+            <h3 class="fw-bolder m-0 display-6">{{ ultimaTentativa?.porcentagemAcerto | number:'1.0-0' }}%</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="simulado-card p-4 bg-white shadow-sm rounded-24">
+            <div class="icon-kpi bg-purple-light mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#a855f7" viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+              </svg>
+            </div>
+            <p class="text-muted small fw-bold mb-1">TEMPO GASTO</p>
+            <h3 class="fw-bolder m-0 display-6">{{ (ultimaTentativa?.tempoTotalSegundos || 0) / 60 | number:'1.0-0' }} min</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="simulado-card d-flex flex-column p-4 bg-white shadow-sm rounded-24 h-100">
+            <h5 class="fw-bold mb-4">Corretas vs. Incorretas</h5>
+            <div class="chart-wrapper d-flex align-items-center justify-content-center">
+              <canvas #donutChart></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="simulado-card p-4 bg-white shadow-sm rounded-24 h-100">
+            <h5 class="fw-bold mb-4">Evolução</h5>
+            <div class="chart-wrapper">
+              <canvas #lineChart></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="simulado-card p-4 mb-4 bg-white shadow-sm rounded-24">
+        <h5 class="fw-bold mb-4">Central de Ações</h5>
+        <div class="d-flex gap-3">
+          <button (click)="refazerErros()" class="btn btn-primary rounded-pill px-4 py-3 fw-bold flex-grow-1 shadow-sm d-flex align-items-center justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+            </svg>
+            Refazer apenas as questões que errei
+          </button>
+          <button class="btn btn-light rounded-pill px-4 py-3 fw-bold flex-grow-1 shadow-sm border d-flex align-items-center justify-content-center" (click)="revisarRespostas()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+              <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+            </svg>
+            Revisar respostas
+          </button>
+        </div>
+      </div>
+
+      <div class="simulado-card p-4 bg-white shadow-sm rounded-24">
+        <h5 class="fw-bold mb-4">
+            Histórico de Tentativas
+            <small class="text-muted fw-normal ms-2">(inclui reforço de erros)</small>
+        </h5>
+
+        <div class="table-responsive">
+          <table class="table table-borderless align-middle">
+            <thead class="text-muted small text-uppercase">
+              <tr>
+                <th>Data</th>
+                <th>Pontuação</th>
+                <th>Taxa de Acerto</th>
+                <th class="text-end">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of tentativas">
+                <td class="text-muted">{{ t.dataFim | date:'dd MMM yyyy' }}</td>
+                <td class="fw-bold">{{ t.totalAcertos }}/{{ t.totalQuestoes }}</td>
+                <td style="min-width: 200px;">
+                  <div class="d-flex align-items-center">
+                    <div class="progress flex-grow-1" style="height: 8px; border-radius: 4px; background-color: #f1f5f9;">
+                      <div class="progress-bar" [style.width.%]="t.porcentagemAcerto" style="background-color: #2563eb; border-radius: 4px;"></div>
+                    </div>
+                    <span class="ms-3 small fw-bold text-muted">{{ t.porcentagemAcerto | number:'1.0-0' }}%</span>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill px-3 py-2" [ngClass]="t.porcentagemAcerto >= 70 ? 'bg-success-light text-success' : 'bg-warning-light text-warning'">
+                    {{ t.porcentagemAcerto >= 70 ? 'Excelente' : 'Bom' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

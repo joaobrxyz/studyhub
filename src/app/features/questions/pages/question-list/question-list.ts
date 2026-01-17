@@ -1,16 +1,20 @@
-import { Component, OnInit, inject, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, inject, HostListener, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ViewportScroller, CommonModule } from '@angular/common'; 
 import { ActivatedRoute, RouterModule, Router } from '@angular/router'; 
 import { QuestionService } from '../../services/questionService';
 import { Simulado, SimuladoService } from '../../../simulados/services/simulado';
 import { PageableResponse, Questao } from '../../../../core/models/Question'; 
 import { QuestionFilter } from '../../components/question-filter/question-filter';
+import { SimuladoCreateModal } from '../../../simulados/components/simulado-create-modal/simulado-create-modal';
+import { SimuladoAddQuestionModal } from '../../../simulados/components/simulado-add-question-modal/simulado-add-question-modal';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { MarkdownComponent } from 'ngx-markdown';
 import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
 import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
 import Swal from 'sweetalert2';
 import { Auth } from '../../../../core/services/auth';
+import { take } from 'rxjs';
 
 // Permite usar o JS do Bootstrap diretamente
 declare var bootstrap: any;
@@ -21,8 +25,11 @@ declare var bootstrap: any;
   imports: [
     CommonModule, 
     RouterModule,
+    FormsModule,
     QuestionFilter, 
     PaginationComponent,
+    SimuladoCreateModal,
+    SimuladoAddQuestionModal,
     MarkdownComponent,
     KatexPipe,
     RemoveImageMarkdownPipe
@@ -40,8 +47,10 @@ export class QuestionList implements OnInit {
   private router = inject(Router);
   private isFirstLoad = true;
   isRestoring = false;
+  isMobile: boolean = false;
 
   @ViewChild(QuestionFilter) filtroComponent!: QuestionFilter;
+  @ViewChildren(QuestionFilter) filtros!: QueryList<QuestionFilter>;
 
   termoBuscaBarra: string | null = null;
   questoes: Questao[] = [];
@@ -54,9 +63,18 @@ export class QuestionList implements OnInit {
   mostrarFiltrosMobile = false;
 
   // VARIÁVEIS PARA O MODAL DE SIMULADO
-  simuladosUsuario: Simulado[] = [];
   questaoSelecionadaId: string | null = null;
-  modalInstance: any;
+  exibirModalSelecao = false;
+  exibirModalCriacao = false;
+
+  get isUserLoggedIn(): boolean {
+    return !!this.authService.getToken(); 
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
 
   // 3. SALVA A ROLAGEM
   @HostListener('window:scroll')  
@@ -74,6 +92,7 @@ export class QuestionList implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
+      this.checkScreenSize();
       const termoUrl = params['termo'] || null;
 
       this.termoBuscaBarra = termoUrl;
@@ -96,6 +115,10 @@ export class QuestionList implements OnInit {
     });
   }
 
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth < 992; 
+  }
+
   restoreFromCache() {
     // 1. ATIVA A TRAVA: "Pare de salvar o scroll, vou mexer nele agora"
     this.isRestoring = true; 
@@ -115,9 +138,8 @@ export class QuestionList implements OnInit {
     const posicaoDestino = this.questionService.cachedScroll;
 
     setTimeout(() => {
-      if (this.filtroComponent) {
-        this.filtroComponent.forcarSelecao(this.currentFilters);
-      }
+    // Itera por todos os componentes de filtro (PC e Mobile) e força a seleção em todos
+      this.filtros.forEach(f => f.forcarSelecao(this.currentFilters));
     }, 50);
 
     // Primeiro Salto (Rápido)
@@ -150,10 +172,16 @@ export class QuestionList implements OnInit {
       disciplinas: this.currentFilters.disciplinas || null,
       instituicoes: this.currentFilters.instituicoes || null,
       anos: this.currentFilters.anos || null,
-      dificuldades: this.currentFilters.dificuldades || null 
+      dificuldades: this.currentFilters.dificuldades || null, 
+
+      apenasErros: this.currentFilters.apenasErros || false,
+      comResolucao: this.currentFilters.comResolucao || false,
+      comVideo: this.currentFilters.comVideo || false
     };
 
-    this.questionService.getQuestoes(filtrosParaApi).subscribe({
+    this.questionService.getQuestoes(filtrosParaApi)
+    .pipe(take(1))
+    .subscribe({
       next: (response) => {
         this.questoes = response.content;
         this.totalElements = response.totalElements;
@@ -177,18 +205,15 @@ export class QuestionList implements OnInit {
     });
   }
 
-  // (onSearch está correto, ele chama fetchQuestoes que agora salva o estado)
   onSearch(termo: string): void {
     const termoLimpo = termo.trim();
 
     this.termoBuscaBarra = termoLimpo;
     
-    // Em vez de buscar direto, nós navegamos para atualizar a URL.
-    // O 'ngOnInit' vai perceber a mudança na URL e chamar o 'fetchQuestoes' sozinho.
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { termo: termoLimpo || null }, // Se vazio, remove o param da URL
-      queryParamsHandling: 'merge', // Mantém outros filtros (opcional, ou remova para resetar tudo)
+      queryParamsHandling: 'merge', // Mantém outros filtros 
       replaceUrl: true // Substitui o histórico para não criar "voltar" infinito
     });
   }
@@ -215,93 +240,40 @@ export class QuestionList implements OnInit {
   }
 
   abrirModalSimulado(questaoId: string) {
-    this.questaoSelecionadaId = questaoId;
-
-    // VERIFICAÇÃO DE LOGIN
     const token = this.authService.getToken();
-    if (!token) {
-      Swal.fire({
-        title: 'Login necessário',
-        text: 'Você precisa estar logado para criar simulados e salvar questões.',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#0d6efd',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Fazer Login',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Redireciona para sua tela de login
-          this.router.navigate(['/auth/login']); 
-        }
-      });
-      return; // Para tudo aqui se não estiver logado
-    }
     
-    // 1. Busca os simulados do usuário antes de abrir
-    this.simuladoService.listarSimulados().subscribe({
-      next: (dados) => {
-        // Ordena por data (mais recente primeiro)
-        this.simuladosUsuario = dados.sort((a, b) => 
-          new Date(b.data).getTime() - new Date(a.data).getTime()
-        );
-
-        // 2. Abre o Modal usando Bootstrap JS
-        const modalElement = document.getElementById('modalAddSimulado');
-        if (modalElement) {
-          this.modalInstance = new bootstrap.Modal(modalElement);
-          this.modalInstance.show();
-        }
-      },
-      error: (err) => {
-        console.error(err);
-        Swal.fire('Erro', 'Não foi possível carregar seus simulados.', 'error');
-      }
-    });
-  }
-
-  adicionarAoSimulado(simulado: Simulado) {
-    if (!this.questaoSelecionadaId) return;
-
-    // Verifica se a questão já está no simulado
-    if (simulado.questoes && simulado.questoes.includes(this.questaoSelecionadaId)) {
-      Swal.fire('Aviso', 'Esta questão já está neste simulado.', 'info');
+    if (!token) {
+      this.exibirAvisoLogin();
       return;
     }
 
-    // Adiciona o ID na lista
-    const novaLista = [...(simulado.questoes || []), this.questaoSelecionadaId];
+    this.questaoSelecionadaId = questaoId;
+    this.exibirModalSelecao = true; // Abre o NOVO componente que criamos
+  }
 
-    // Prepara o objeto para atualizar
-    const payload = {
-      nome: simulado.nome,
-      descricao: simulado.descricao,
-      questoes: novaLista
-    };
-
-    // Chama o serviço para salvar
-    this.simuladoService.atualizarSimulado(simulado.id, payload).subscribe({
-      next: () => {
-        // Fecha o modal
-        if (this.modalInstance) this.modalInstance.hide();
-        
-        Swal.fire({
-          title: 'Adicionada!',
-          text: `Questão adicionada ao simulado "${simulado.nome}".`,
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
-        });
-      },
-      error: (err) => {
-        console.error(err);
-        Swal.fire('Erro', 'Falha ao adicionar questão.', 'error');
-      }
-    });
+  adicionarAoSimulado(simulado: Simulado) {
+    this.exibirModalSelecao = false;
+    this.questaoSelecionadaId = null;
   }
   
   irParaCriarSimulado() {
-    if (this.modalInstance) this.modalInstance.hide();
-    this.router.navigate(['/simulados/criar']);
+    this.exibirModalSelecao = false;
+    this.exibirModalCriacao = true;
+  }
+
+  onSimuladoCriado(dados: any) {
+    this.exibirModalCriacao = false;
+    Swal.fire('Sucesso', 'Simulado criado! Clique em "+" novamente para adicionar a questão.', 'success');
+  }
+  private exibirAvisoLogin() {
+    Swal.fire({
+      title: 'Login necessário',
+      text: 'Você precisa estar logado para salvar questões.',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Fazer Login'
+    }).then((result) => {
+      if (result.isConfirmed) this.router.navigate(['/auth/login']);
+    });
   }
 }

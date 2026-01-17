@@ -1,0 +1,151 @@
+/* --- Container Principal --- */
+.sidebar {
+  width: 260px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-right: 1px solid #dee2e6;
+  transition: width 0.3s ease-in-out;
+  will-change: width;
+}
+
+.flex-grow-1 {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* No CSS da sua Sidebar */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 1000;
+}
+
+/* Área de scroll do menu */
+.nav-menu {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* --- Estado Colapsado --- */
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* Centralização do conteúdo quando recolhido */
+.collapsed .nav-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.collapsed .logo-area, 
+.collapsed .logo-icon {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* --- Links de Navegação (Base) --- */
+.nav-pills .nav-link {
+  color: #4b5563 !important; /* Cor cinza escura "normal" */
+  transition: all 0.2s ease;
+  border-radius: 17px;
+  margin: 0 8px;
+  font-weight: 500;
+}
+
+/* Hover nos itens (quando o mouse passa em cima) */
+.nav-pills .nav-link:hover {
+  background-color: #f8f9fa;
+  color: #111827 !important;
+}
+
+/* --- ITEM ATIVO (Correção do Azul) --- */
+.nav-pills .nav-link.active {
+  background-color: #eef2ff !important; /* Mantém o fundo azul clarinho */
+  color: #2563EB !important;            /* Força o texto a ficar escuro/normal */
+  font-weight: 600;
+}
+
+/* Garante que o ícone SVG siga a cor do texto e não fique azul */
+.nav-pills .nav-link.active svg,
+.nav-pills .nav-link.active path {
+  fill: #2563EB !important;
+  color: #2563EB !important;
+}
+
+/* --- Botões do Rodapé --- */
+
+/* Botão Editar */
+.btn-light-custom {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: none;
+  border-radius: 12px;
+  padding: 8px;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.btn-light-custom:hover {
+  background-color: #e5e7eb;
+}
+
+/* Botão Sair */
+.btn-danger-custom {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: none;
+  border-radius: 12px;
+  padding: 8px;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.btn-danger-custom:hover {
+  background-color: #fee2e2;
+}
+
+/* --- Ajustes de Logo e Toggle --- */
+.logo-area img {
+  transition: transform 0.3s ease;
+}
+
+button.btn-link:focus {
+  box-shadow: none; /* Remove o contorno azul de clique do Bootstrap */
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #4f46e5; /* Cor azul índigo do StudyHub */
+  color: white;
+  flex-shrink: 0; /* Impede que o círculo amasse */
+  transition: all 0.3s ease;
+}
+
+.avatar-letter {
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.badge-pro-sm {
+  background-color: #f59e0b;
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+@keyframes pulse-gold {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}

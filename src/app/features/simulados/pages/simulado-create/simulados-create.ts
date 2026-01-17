@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { QuestionFilter } from '../../../questions/components/question-filter/question-filter';
 import { SimuladoService } from '../../services/simulado';
 import Swal from 'sweetalert2';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-simulados-create',
@@ -27,15 +28,17 @@ export class SimuladosCreate {
     disciplinas: [] as string[],
     dificuldades: [] as string[],
     instituicoes: [] as string[],
-    anos: [] as string[]
+    anos: [] as string[],
+    apenasErros: false,
+    comResolucao: false,
+    comVideo: false
   };
 
   constructor() {
     this.simuladoForm = this.fb.group({
-      
       titulo: ['', Validators.required],
       descricao: [''],
-      quantidade: [10, [Validators.required, Validators.min(0), Validators.max(100)]]
+      quantidade: [10, [Validators.required, Validators.min(1), Validators.max(100)]]
     });
   }
 
@@ -71,10 +74,16 @@ export class SimuladosCreate {
       disciplinas: this.filtrosSelecionados.disciplinas,
       dificuldades: this.filtrosSelecionados.dificuldades,
       instituicoes: this.filtrosSelecionados.instituicoes,
-      anos: this.filtrosSelecionados.anos
+      anos: this.filtrosSelecionados.anos,
+
+      apenasErros: this.filtrosSelecionados.apenasErros,
+      comResolucao: this.filtrosSelecionados.comResolucao,
+      comVideo: this.filtrosSelecionados.comVideo
     };
 
-    this.simuladoService.gerarSimulado(payload).subscribe({
+    this.simuladoService.gerarSimulado(payload)
+    .pipe(take(1))
+    .subscribe({
       next: () => {
         this.isLoading = false;
         Swal.fire({
@@ -94,13 +103,44 @@ export class SimuladosCreate {
         console.error(err);
         this.isLoading = false;
 
-        // Popup de Erro
-        if (err.status === 404) {
-           Swal.fire('Ops!', 'Não encontramos questões suficientes com esses filtros.', 'warning');
-        } else {
-           Swal.fire('Erro', 'Não foi possível criar o simulado.', 'error');
+        // 1. Tratamento para Limite Atingido (429)
+        if (err.status === 429) {
+          Swal.fire({
+            title: 'Limite Atingido!',
+            text: 'Você já usou seus 2 simulados automáticos gratuitos deste mês. Quer simulados ilimitados?',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Ser premium agora',
+            cancelButtonText: 'Depois',
+            confirmButtonColor: '#f59e0b', 
+            cancelButtonColor: '#6c757d'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/premium']);
+            }
+          });
+          return; // Para não cair no erro genérico abaixo
         }
+
+        // 2. Tratamento para Questões não encontradas (404)
+        if (err.status === 404) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Ops!',
+            text: 'Não encontramos questões suficientes com esses filtros. Tente selecionar mais disciplinas ou anos.',
+            confirmButtonColor: '#0d6efd'
+          });
+          return;
+        }
+
+        // 3. Erro Genérico
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Não foi possível criar o simulado. Tente novamente mais tarde.',
+          confirmButtonColor: '#d33'
+        });
       }
-    });
-  }
+    }); 
+  } 
 }

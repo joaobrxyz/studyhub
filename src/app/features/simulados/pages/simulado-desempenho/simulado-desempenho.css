@@ -1,0 +1,136 @@
+/* --- Layout e Fundo --- */
+.desempenho-wrapper {
+  background-color: #f8fafc; /* Cinza azulado bem leve para destacar os cards brancos */
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+/* --- Cards Customizados --- */
+.simulado-card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 24px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03) !important;
+}
+
+/* --- KPIs e Ícones --- */
+.icon-kpi {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.bg-primary-light { background-color: #eff6ff; } /* Azul suave */
+.bg-success-light { background-color: #f0fdf4; } /* Verde suave */
+.bg-purple-light { background-color: #faf5ff; }  /* Roxo suave */
+.bg-warning-light { background-color: #fffbeb; }  /* Amarelo suave */
+
+.text-purple { color: #a855f7; }
+
+/* --- Gráficos --- */
+.chart-wrapper {
+  position: relative;
+  height: 300px; /* Altura ideal para visualização */
+  width: 100%;
+}
+
+/* --- Histórico e Tabela --- */
+.table thead th {
+  border: none;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.progress {
+  background-color: #f1f5f9 !important;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  border-radius: 999px;
+}
+
+/* --- Badges de Status --- */
+.bg-success-light.text-success {
+  background-color: #dcfce7 !important;
+  color: #16a34a !important;
+}
+
+.bg-warning-light.text-warning {
+  background-color: #fef9c3 !important;
+  color: #ca8a04 !important;
+}
+
+/* --- Botões e Ações --- */
+.btn-primary {
+  background-color: #2563eb;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-light {
+  background-color: #f8fafc;
+  color: #64748b;
+}
+
+.btn-voltar {
+  color: #64748b;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.btn-voltar:hover {
+  color: #2563eb;
+}
+
+/* --- Estado Vazio e Animações --- */
+.empty-state-container {
+  max-width: 600px;
+  margin: 10vh auto;
+  min-height: auto;
+}
+
+.rounded-24 {
+  border-radius: 24px !important;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajustes para Mobile */
+@media (max-width: 768px) {
+  .display-6 {
+    font-size: 1.75rem;
+  }
+  .chart-wrapper {
+    height: 250px;
+  }
+}

@@ -74,3 +74,72 @@ label {
 .extra-input[type=number] {
   -moz-appearance: textfield;
 }
+
+.premium-filter-container {
+  position: relative;
+  padding: 1.25rem;
+  border: 0.8px solid #e2e8f0; 
+  border-left: 4px solid #f59f0b6d; 
+  border-radius: 12px;
+  background-color: #fffbeb15; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.premium-header {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.65rem !important;
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.premium-badge-overlay {
+  position: absolute;
+  top: -12px;
+  right: -20px;
+  color: #f59e0b;
+  transform: rotate(15deg);
+  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1));
+}
+
+.premium-filter-container .form-check-label {
+  color: #475569;
+  cursor: pointer;
+}
+
+.premium-header {
+  position: relative;
+  display: inline-block; 
+  color: #1e293b; 
+  font-weight: 700;
+}
+
+.premium-badge-overlay {
+  position: absolute;
+  top: -10px;    
+  right: -18px;
+  color: #f59e0b;  
+  transform: rotate(15deg);
+  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1)); 
+  z-index: 10;
+}
+
+.premium-filter-container.is-locked {
+  border-left: 4px solid #f59f0b6d; 
+  opacity: 0.8;
+}
+
+.is-locked .form-check-input, 
+.is-locked .form-check-label {
+  cursor: not-allowed !important;
+}
+
+.btn-outline-warning {
+  border-color: #f59e0b;
+  color: #d97706;
+}
+.btn-outline-warning:hover {
+  background-color: #f59e0b;
+  color: white;
+}

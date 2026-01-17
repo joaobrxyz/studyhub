@@ -7,6 +7,9 @@ export interface Questao {
   dificuldade: string;
   ano: string; 
   instituicao: string;
+  topicos: string[];
+  resolucaoTexto?: string;
+  resolucaoVideoId?: string;
 }
 
 export interface PageableResponse<T> {

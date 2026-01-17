@@ -1,10 +1,27 @@
-/* :host se refere ao próprio componente <app-layout> */
 :host {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 80px);
+  display: block;
 }
 
 .content-wrapper {
-  flex-grow: 1;
+  padding-bottom: 0; 
+}
+
+
+app-footer {
+  display: block;
+  width: 100%;
+  background-color: #FAFAFA;
+}
+
+
+@media (max-width: 991px) {
+  app-footer {
+    padding-bottom: 120px; 
+  }
+}
+
+@media (min-width: 992px) {
+  app-footer {
+    padding-bottom: 0; 
+  }
 }

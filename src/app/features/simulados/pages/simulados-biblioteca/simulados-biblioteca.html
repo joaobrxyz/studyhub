@@ -1,0 +1,107 @@
+<div class="biblioteca-container py-5">
+
+    <div class="container mb-4">
+        <a routerLink="/simulados" class="btn-back d-inline-flex align-items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Voltar para meus simulados</span>
+        </a>
+    </div>
+  
+  <div class="text-center mb-5 header-stack">
+    <h1 class="fw-bold display-5 mb-2 color-dark">Biblioteca de Simulados</h1>
+    <p class="text-muted mb-4">Escolha um simulado preparado por nossa equipe e adicione à sua coleção.</p>
+    
+    <div class="search-box mx-auto">
+        <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden bg-white border">
+            <span class="input-group-text bg-white border-0 ps-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            </span>
+            <input type="text" 
+                class="form-control border-0 ps-2 py-3 fs-6" 
+                placeholder="Buscar por assunto ou título..."
+                [(ngModel)]="termoBusca">
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && simuladosFiltrados.length === 0" class="text-center py-5">
+      <i class="bi bi-search display-1 text-light mb-3 d-block"></i>
+      <p class="text-muted fs-5">Nenhum simulado oficial encontrado com esse termo.</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="!isLoading">
+      <div class="col" *ngFor="let sim of simuladosFiltrados">
+        
+        <div class="card h-100 card-premium border-0 shadow-sm">
+          <div class="card-body p-4 d-flex flex-column">
+            
+            <div class="mb-3">
+                <span class="badge badge-oficial rounded-pill px-3 py-2 d-inline-flex align-items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" style="display: block;" viewBox="0 0 16 16">
+                    <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+                    </svg>
+                    <span style="line-height: 1; margin-top: 1px;">StudyHub Oficial</span>
+                </span>
+            </div>
+
+            <h5 class="card-title fw-bold mb-3 text-dark">{{ sim.nome }}</h5>
+            
+            <p class="card-text text-muted small mb-4 flex-grow-1">
+              {{ sim.descricao || 'Simulado completo com questões selecionadas com base nas competências do ENEM.' }}
+            </p>
+
+            <div class="d-flex gap-3 mb-4 text-secondary small fw-medium">
+              <span class="d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <line x1="10" y1="9" x2="8" y2="9"/>
+                </svg>
+                {{ sim.questoes?.length || 0 }} questões
+              </span>
+              <span class="d-flex align-items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;" viewBox="0 0 24 24">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    
+                    <span style="line-height: 1; margin-top: 1px;">
+                        Nível: {{ labelsDificuldade[sim.dificuldade] || 'Não definido' }}
+                    </span>
+                </span>
+            </div>
+
+            <button *ngIf="!jaEstaAdicionado(sim)"
+                    (click)="adicionarSimulado(sim)"
+                    class="btn btn-primary-premium w-100 rounded-pill py-2 fw-bold">
+                    <i class="bi bi-plus-lg me-2"></i> Adicionar aos meus simulados
+            </button>
+
+            <button *ngIf="jaEstaAdicionado(sim)"
+                    class="btn btn-added w-100 rounded-pill py-2 fw-bold"
+                    disabled>
+              <i class="bi bi-check-lg me-2"></i> Já adicionado
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

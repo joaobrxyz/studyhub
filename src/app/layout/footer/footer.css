@@ -1,23 +1,75 @@
-footer {
-    background-color: #FAFAFA !important;
-}
+:host { display: block; width: 100%; }
 
-.footer {
-  font-family: inherit;
-  font-size: 0.875rem; /* 14px */
-}
+footer { background-color: #FAFAFA !important; }
 
-.footer-text {
-  color: #6B7280; 
-}
+/* Corrigindo o texto do Copyright */
+.footer-text { color: #6B7280; font-size: 0.875rem; }
 
-.footer-link {
+.footer-link { 
   color: #6B7280; 
   text-decoration: none; 
+  font-size: 0.875rem; 
+  transition: color 0.2s ease; 
+}
+
+.footer-text-link {
+  color: #6B7280; /* Cinza suave que você escolheu */
+  font-size: 0.875rem;
+  text-decoration: none; /* Remove o sublinhado padrão */
   transition: color 0.2s ease-in-out;
 }
 
-.footer-link:hover {
-  color: #111827; 
-  text-decoration: underline; 
+.footer-text-link:hover {
+  color: #2563eb; /* Muda para o azul StudyHub no hover */
+  text-decoration: underline; /* Adiciona sublinhado apenas no hover para indicar que é um link */
+}
+
+.footer-link:hover { color: #2563eb; }
+
+/* Alinhamento do Bloco de Contato */
+.footer-contact-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* Necessário para os ícones absolutos */
+}
+
+/* Redes Sociais embaixo do e-mail sem ocupar espaço na altura da linha */
+.social-links-wrapper {
+  position: absolute;
+  top: 100%; /* Começa logo abaixo do texto do e-mail */
+  display: flex;
+  gap: 12px;
+  margin-top: 8px; /* Distância entre o e-mail e os ícones */
+}
+
+.social-btn {
+  width: 32px;
+  height: 32px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.social-btn:hover {
+  background: #2563eb;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Ajustes Responsivos */
+@media (max-width: 767px) {
+  .footer-contact-container { display: flex; width: 100%; margin-top: 20px; }
+  .social-links-wrapper { position: static; margin-top: 15px; } /* No mobile volta ao normal */
+}
+
+@media (min-width: 768px) {
+  /* Alinha o bloco de contato à direita no PC */
+  .col-md-4.text-md-end { display: flex; justify-content: flex-end; }
 }

@@ -1,0 +1,77 @@
+.biblioteca-container {
+  background-color: #f8fafc; 
+  min-height: 100vh;
+}
+
+.btn-back {
+  color: #64748b; 
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  color: #2563eb; 
+  transform: translateX(-3px); 
+}
+
+.btn-back svg {
+  transition: transform 0.2s ease;
+}
+
+/* Centralização do Cabeçalho */
+.header-stack {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-box {
+  max-width: 600px;
+}
+
+/* Estilo do Card Oficial */
+.card-premium {
+  border-radius: 24px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-premium:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Badge Oficial */
+.badge-oficial {
+  background-color: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 0.75rem;
+  border: 1px solid #dbeafe;
+}
+
+/* Botões */
+.btn-primary-premium {
+  background-color: #2563eb;
+  border: none;
+  color: white;
+  transition: all 0.2s;
+}
+
+.btn-primary-premium:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-added {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #dcfce7;
+}
+
+/* Ajustes de Input */
+.form-control:focus {
+  box-shadow: none;
+  border-color: #2563eb;
+}

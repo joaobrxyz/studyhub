@@ -10,6 +10,7 @@ import { QuestionCard } from '../../../questions/components/question-card/questi
 import { MarkdownComponent } from 'ngx-markdown';
 import { RemoveImageMarkdownPipe } from '../../../../shared/pipes/remove-image-markdown-pipe';
 import { KatexPipe } from '../../../../shared/pipes/katex.pipe';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-simulado-editar',
@@ -50,7 +51,9 @@ export class SimuladoEditar implements OnInit {
     this.isLoading = true;
     
     // 1. Busca o Simulado
-    this.simuladoService.buscarPorId(this.simuladoId).subscribe({
+    this.simuladoService.buscarPorId(this.simuladoId)
+    .pipe(take(1))
+    .subscribe({
       next: (simulado) => {
         // Preenche o formulário
         this.form.nome = simulado.nome;
@@ -116,7 +119,9 @@ export class SimuladoEditar implements OnInit {
       questoes: idsAtualizados // Envia a lista atualizada (sem as excluídas)
     };
 
-    this.simuladoService.atualizarSimulado(this.simuladoId, payload).subscribe({
+    this.simuladoService.atualizarSimulado(this.simuladoId, payload)
+    .pipe(take(1))
+    .subscribe({
       next: () => {
         Swal.fire({
           title: 'Sucesso!',

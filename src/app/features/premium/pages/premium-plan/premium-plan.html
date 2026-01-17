@@ -1,0 +1,225 @@
+<div class="premium-page-wrapper">
+  <div class="bg-glow top-left"></div>
+  <div class="bg-glow bottom-right"></div>
+
+  <div class="container relative-content py-5">
+    <div *ngIf="usuario?.premium; else salesView">
+      <div class="text-center mb-4">
+        <div class="status-badge-pill d-inline-flex align-items-center gap-2">
+          <span class="dot-online"></span>
+          <span class="status-text">Assinatura Premium Ativa</span>
+        </div>
+      </div>
+
+      <div class="text-center mb-5">
+        <h1 class="main-hero-title text-black">
+          Você é um Membro <span class="text-gold">Premium</span>
+        </h1>
+        <p class="hero-subtitle text-black opacity-50">
+          Aproveite seu acesso ilimitado a todos os recursos exclusivos.
+        </p>
+      </div>
+
+      <div class="row justify-content-center mb-5">
+        <div class="col-12 col-md-8">
+          <div class="management-card p-5 text-center shadow-lg">
+            <div class="crown-icon-container mb-3">
+               <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
+              <path d="M5 20h14"></path>
+              </svg>
+               </div>
+            
+            <h5 class="text-uppercase tracking-widest opacity-60 mb-3">Validade do Acesso</h5>
+            <div class="expiration-date mb-4">
+              {{ usuario?.dataFimPremium | date:'dd/MM/yyyy' }}
+            </div>
+
+            <button class="btn btn-renew-gold rounded-pill px-5 py-3 fw-bold" 
+                    (click)="iniciarAssinatura()" 
+                    [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isLoading ? 'Processando...' : 'Renovar por +30 dias (R$ 9,90)' }}
+            </button>
+            <p class="mt-3 text-muted small">A renovação adiciona tempo ao seu prazo atual.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <ng-template #salesView>
+      <div class="text-center mb-4">
+          <div class="premium-badge-pill d-inline-flex align-items-center gap-3"> 
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
+              <path d="M5 20h14"></path>
+              </svg>
+
+              <span class="badge-text">Plano Premium</span>
+
+          </div>
+      </div>
+
+      <div class="text-center mb-5">
+        <h1 class="main-hero-title text-black">
+          Potencialize sua aprovação <br>
+          <span class="text-primary">por menos de um café</span>
+        </h1>
+        <p class="hero-subtitle text-black opacity-50">
+          Tenha acesso a recursos exclusivos e conquiste sua vaga dos sonhos
+        </p>
+      </div>
+
+      <div class="row justify-content-center mb-5">
+        <div class="col-12 d-flex flex-column flex-md-row align-items-center justify-content-center gap-4">
+          
+          <div class="glass-price-card p-4 px-5 text-center">
+            <small class="text-black text-uppercase opacity-50 mb-2 d-block">por apenas</small>
+            <div class="d-flex align-items-baseline justify-content-center gap-2 text-black">
+              <span class="price-symbol">R$</span>
+              <span class="price-value">9,90</span>
+              <span class="price-period opacity-80">/mês</span>
+            </div>
+            <small class="text-secondary">Cancele quando quiser, sem taxas</small>
+          </div>
+
+          <button class="btn btn-yellow-vip rounded-pill px-5 shadow-glow fw-bold py-3 d-flex align-items-center gap-3"
+          (click)="iniciarAssinatura()"
+          [disabled]="isLoading">
+              <div *ngIf="!isLoading" class="shine-sweep"></div>
+
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+              
+              <svg *ngIf="!isLoading" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="vip-crown-icon">
+                  <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
+                  <path d="M5 20h14"></path>
+              </svg>
+
+              <span class="btn-text">{{ isLoading ? 'Processando...' : 'Assinar Agora' }}</span>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="feature-card-glass p-4 h-100">
+          <div class="icon-container-vip mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 4v6h6M23 20v-6h-6"></path>
+              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+            </svg>
+        </div>
+        <h3 class="text-black h5 fw-bold mb-2">Revisão Seletiva</h3>
+        <p class="text-black opacity-80 small mb-3">Opção inteligente para refazer um simulado apenas com as suas falhas.</p>
+          <div class="mt-auto d-flex align-items-center gap-2 text-success-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="text-success-light fw-medium small">Incluído</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card-glass p-4 h-100">
+          <div class="icon-container-vip mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"></path>
+            </svg>
+          </div>
+          <h3 class="text-black h5 fw-bold mb-2">Filtros Avançados</h3>
+          <p class="text-black opacity-80 small mb-3">Filtre por questões erradas ou questões que tenham resolução em texto/vídeo</p>
+          <div class="mt-auto d-flex align-items-center gap-2 text-success-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="text-success-light fw-medium small">Incluído</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card-glass p-4 h-100">
+          <div class="icon-container-vip mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4z"></path>
+            </svg>
+          </div>
+          <h3 class="text-black h5 fw-bold mb-2">Simulados Automáticos</h3>
+          <p class="text-black opacity-80 small mb-3">Gere provas personalizadas com um clique de forma ilimitada.</p>
+          <div class="mt-auto d-flex align-items-center gap-2 text-success-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="text-success-light fw-medium small">Incluído</span>
+          </div>
+        </div>
+      </div>
+
+    <div class="col-md-4">
+        <div class="feature-card-glass p-4 h-100 d-flex flex-column">
+        <div class="icon-container-vip mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+        </div>
+        <h3 class="text-black h5 fw-bold mb-2">Estatísticas Detalhadas</h3>
+        <p class="text-black opacity-80 small mb-3">Gráficos de desempenho específicos para cada simulado resolvido.</p>
+        <div class="mt-auto d-flex align-items-center gap-2 text-success-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="text-success-light fw-medium small">Incluído</span>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="feature-card-glass p-4 h-100 d-flex flex-column">
+        <div class="icon-container-vip mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+        </div>
+        <h3 class="text-black h5 fw-bold mb-2">Foco nos Erros</h3>
+        <p class="text-black opacity-80 small mb-3">Crie simulados compostos apenas por questões que você errou anteriormente.</p>
+        <div class="mt-auto d-flex align-items-center gap-2 text-success-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="text-success-light fw-medium small">Incluído</span>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="feature-card-glass p-4 h-100 d-flex flex-column">
+        <div class="icon-container-vip mb-4">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path><path d="M5 20h14"></path>
+            </svg>
+          </div>
+          <h3 class="text-black h5 fw-bold mb-2">Selo de Membro Premium</h3>
+          <p class="text-black opacity-80 small mb-3">Identifique-se como membro VIP da comunidade</p>
+        <div class="mt-auto d-flex align-items-center gap-2 text-success-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="text-success-light fw-medium small">Incluído</span>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="footer-cta-card p-5 text-center text-black" *ngIf="!usuario?.premium">
+      <h2 class="fw-bold mb-3">Pronto para dar o próximo passo?</h2>
+      <p class="opacity-80 mb-4">Junte-se a milhares de estudantes que já conquistaram a aprovação.</p>
+      <button class="btn-free-trial px-5 py-3 rounded-pill fw-bold" (click)="iniciarAssinatura()">
+        {{ isLoading ? 'Aguarde...' : 'Assinar agora' }}
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -2,7 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { SimuladoService, Simulado } from '../../services/simulado';
+import { UserService } from '../../../profile/services/user-service';
 import Swal from 'sweetalert2';
+import { ViewportScroller } from '@angular/common';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-simulado-list',
@@ -15,27 +18,67 @@ export class SimuladoList implements OnInit {
   
   private router = inject(Router);
   private simuladoService = inject(SimuladoService);
+  private scroller = inject(ViewportScroller);
+  private userService = inject(UserService);
 
   // A tipagem aqui garante que o HTML reconheça o campo 'nome' e 'questoes'
   simulados: Simulado[] = []; 
+  simuladosFiltrados: Simulado[] = [];
   isLoading: boolean = true;
+  isPremium: boolean = false;
 
   ngOnInit() {
+    this.scroller.scrollToPosition([0, 0]);
+    this.userService.getUsuarioLogado()
+      .pipe(take(1))
+      .subscribe(user => {
+        this.isPremium = user?.premium || false;
+    });
     this.buscarSimulados();
   }
 
+  readonly labelsDificuldade: Record<string, string> = {
+  'FACIL': 'Fácil',
+  'MEDIO': 'Médio',
+  'DIFICIL': 'Difícil'
+  };
+
+  acessarDesempenho(simuladoId: string) {
+  if (this.isPremium) {
+    // Se for PRO, navega normalmente
+    this.router.navigate(['/simulados/desempenho', simuladoId]);
+  } else {
+    // Se for Free, abre o convite
+    this.abrirModalAssinatura();
+  }
+}
+
+abrirModalAssinatura() {
+  Swal.fire({
+    title: 'Recurso Premium',
+    text: 'A análise detalhada de desempenho e estatísticas por simulado são exclusivas para membros do StudyHub premium.',
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Conhecer StudyHub premium',
+    cancelButtonText: 'Agora não',
+    confirmButtonColor: '#f59e0b',
+    cancelButtonColor: '#6c757d',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.router.navigate(['/premium']);
+    }
+  });
+}
+
   buscarSimulados() {
     this.isLoading = true;
-    this.simuladoService.listarSimulados().subscribe({
+    this.simuladoService.listarSimulados()
+    .pipe(take(1))
+    .subscribe({
       next: (dados) => {
-        // Ordena a lista: Data do B (Mais novo) - Data do A (Mais antigo)
-        this.simulados = dados.sort((a, b) => {
-          // Garante que estamos comparando datas válidas
-          const dateA = new Date(a.data).getTime();
-          const dateB = new Date(b.data).getTime();
-          return dateB - dateA;
-        });
-        
+        this.simulados = dados;
+        this.simuladosFiltrados = [...this.simulados];
         this.isLoading = false;
       },
       error: (err) => {
@@ -45,9 +88,17 @@ export class SimuladoList implements OnInit {
     });
   }
 
+  // Lógica de busca em tempo real
+  onSearch(event: any) {
+    const termo = event.target.value.toLowerCase();
+    this.simuladosFiltrados = this.simulados.filter(s => 
+      s.nome.toLowerCase().includes(termo)
+    );
+  }
+
   abrirSimulado(simulado: Simulado) {
     // Se não tiver questões, barra a entrada e sugere o Portal
-    if (!simulado.questoes || simulado.questoes.length === 0) {
+    if (simulado.quantidadeQuestoes === 0) {
       
       Swal.fire({
         title: 'Simulado Vazio',
@@ -88,10 +139,13 @@ export class SimuladoList implements OnInit {
       // Se o usuário clicou em "Sim, excluir!"
       if (result.isConfirmed) {
         
-        this.simuladoService.deletarSimulado(id).subscribe({
+        this.simuladoService.deletarSimulado(id)
+        .pipe(take(1))
+        .subscribe({
           next: () => {
             // Remove da lista visualmente
             this.simulados = this.simulados.filter(s => s.id !== id);
+            this.simuladosFiltrados = this.simuladosFiltrados.filter(s => s.id !== id);
             
             Swal.fire(
               'Excluído!',

@@ -5,12 +5,19 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
+
+interface ResetPasswordPayload {
+  token: string;
+  newPassword: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
   private timerLogout: any;
+  private apiUrl = `${environment.apiUrl}/auth`;
   public loginStatusChanged = new Subject<void>();
   login(credentials: { email: string; password: string }): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -21,7 +28,7 @@ export class Auth {
       senha: credentials.password,
     };
 
-    return this.http.post<any>('http://localhost:8080/auth/signin', payload, { headers }).pipe(
+    return this.http.post<any>(this.apiUrl+ '/signin', payload, { headers }).pipe(
       map((response) => {
         const token = response?.token || response?.accessToken;
         if (token) {
@@ -38,10 +45,13 @@ export class Auth {
 
   private tokenKey = 'studyhub_token';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient) {}
+
   register(payload: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post('http://localhost:8080/auth/signup', payload, { headers });
+    return this.http.post(this.apiUrl + '/signup', payload, { headers });
   }
 
   saveToken(token: string): void {
@@ -134,5 +144,13 @@ export class Auth {
 
   getUserRole(): string {
     return 'USER';
+  }
+
+  requestPasswordReset(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email }, { responseType: 'text' as 'json' });
+  }
+
+  resetPassword(payload: ResetPasswordPayload): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, payload, { responseType: 'text' as 'json' });
   }
 }

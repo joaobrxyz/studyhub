@@ -1,7 +1,23 @@
-<app-header></app-header>
+<div *ngIf="isUserLoggedIn" class="d-flex">
+  <app-sidebar class="d-none d-lg-block"></app-sidebar>
 
-<main class="content-wrapper">
-  <router-outlet></router-outlet>
-</main>
+  <div class="flex-column flex-grow-1 content-wrapper">
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+    
+    <app-bottom-nav class="d-block d-lg-none"></app-bottom-nav>
+    
+    <app-footer></app-footer>
+  </div>
+</div>
 
-<app-footer></app-footer>
+<div *ngIf="!isUserLoggedIn">
+  <app-header></app-header>
+
+  <main style="padding-top: 80px;" class="min-vh-100">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer></app-footer>
+</div>

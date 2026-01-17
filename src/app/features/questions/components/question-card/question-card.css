@@ -79,3 +79,30 @@
 :host ::ng-deep .badge { font-weight: 500; font-size: 0.75rem; }
 ::ng-deep .katex .vlist > span { margin-top: -0.7em !important; }
 .markdown-content ::ng-deep img { max-width: 100%; height: auto; display: block; margin: 1rem auto; }
+.alternativa-markdown ::ng-deep img { max-width: 100%; height: auto; display: block; margin: 1rem auto; }
+
+::ng-deep .katex svg {
+    overflow: visible !important;
+}
+
+/* 2. Força o desenho da raiz a ter a cor do texto atual */
+::ng-deep .katex path {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* 3. Garante que a linha superior (o teto da raiz) tenha espessura */
+::ng-deep .katex .sqrt > .root {
+    border-top: 1px solid currentColor !important;
+    margin-top: -1px !important;
+}
+
+:host ::ng-deep .alternativa-markdown img {
+  max-height: 180px !important;
+  width: auto !important;  
+  max-width: 100%;        
+  object-fit: contain; 
+  display: block;
+  margin: 8px auto;    
+  border-radius: 6px;     
+}

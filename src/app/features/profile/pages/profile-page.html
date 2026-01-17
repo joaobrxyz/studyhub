@@ -1,35 +1,72 @@
-<div class="perfil-container">
+<div class="settings-wrapper py-5">
+  <div class="container">
+    <h2 class="fw-bold mb-4 h4">Minhas Configurações</h2>
 
-  <div class="perfil-card">
-    <div class="info-area">
-      <h2>Meu Perfil</h2>
+    <div class="row g-4" *ngIf="usuario">
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4 p-4 text-center h-100">
+          <div class="avatar-circle-xl mx-auto mb-3">
+            <span>{{ usuario.nome.charAt(0).toUpperCase() }}</span>
+          </div>
+          <h3 class="fw-bold h5 mb-1">{{ usuario.nome }}</h3>
+          <p class="text-muted small mb-4">Estudante</p>
 
-      <div *ngIf="isLoading">Carregando dados...</div>
+          <div class="stats-list text-start mb-5">
+            <div class="d-flex justify-content-between py-2 border-bottom border-light">
+              <span class="text-muted small">Simulados</span>
+              <span class="fw-bold small">{{ totalSimulados }}</span>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom border-light">
+              <span class="text-muted small">Questões Resolvidas</span>
+              <span class="fw-bold small">{{ totalResolvidas }}</span>
+            </div>
+            <div class="d-flex justify-content-between py-2">
+              <span class="text-muted small">Taxa de Acerto</span>
+              <span class="text-primary fw-bold small">{{ taxaAcertos }}%</span>
+            </div>
+          </div>
 
-      <ng-container *ngIf="usuario">
-      <div class="campo">
-        <label>Nome</label>
-        <input type="text" [(ngModel)]="usuario.nome" />
-      </div>
-
-      <div class="campo">
-        <label>E-mail</label>
-        <input type="email" [(ngModel)]="usuario.email" />
-      </div>
-
-      <div class="campo">
-        <label>Curso</label>
-        <input type="text" [(ngModel)]="usuario.curso"  />
-      </div>
-      </ng-container>
-
-      <div class="botoes">
-        <button class="btn-editar" (click)="salvarPerfil()">
-             Editar dados
+          <button class="btn btn-outline-danger rounded-pill w-100 py-2 d-flex align-items-center justify-content-center gap-2 mt-auto" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+              <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+            </svg>
+            Sair da Conta
           </button>
-        <button class="btn-sair" (click)="logout()">Sair</button>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 h-100">
+          <div class="mb-4">
+            <h3 class="fw-bold h4 mb-1">Informações Pessoais</h3>
+            <p class="text-muted small">Atualize seus dados cadastrais</p>
+          </div>
+
+          <form (ngSubmit)="salvarPerfil()">
+            <div class="mb-4">
+              <label class="form-label-custom">Nome Completo</label>
+              <input type="text" class="form-control-custom" [(ngModel)]="usuario.nome" name="nome">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label-custom">E-mail</label>
+              <input type="email" class="form-control-custom" [(ngModel)]="usuario.email" name="email">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label-custom">Curso</label>
+              <input type="text" class="form-control-custom" [(ngModel)]="usuario.curso" name="curso">
+            </div>
+
+            <div class="d-grid mt-5">
+              <button type="submit" class="btn btn-primary-pill py-3" [disabled]="isLoading">
+                {{ isLoading ? 'Salvando...' : 'Salvar Alterações' }}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-
 </div>

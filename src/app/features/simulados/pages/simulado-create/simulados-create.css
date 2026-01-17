@@ -1,161 +1,123 @@
-/* Container geral */
-.container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 20px;  
-  color: #2a2a2a;
-  font-family: "DM Sans", sans-serif;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 2px 8px #00000010;
-  
+/* Fundo da Página */
+.page-background {
+  background-color: #FAFAFA;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.form-group{ 
-  border-radius: 12px; 
-  margin-bottom: 18px; 
-  
+.container-premium {
+  max-width: 750px;
+  margin: 0 auto;
 }
+
+/* Botão Voltar */
+.btn-back {
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+.btn-back:hover { color: #2563eb; }
 
 /* Títulos */
-.titulo {
-  font-size: 26px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  
-}
+.color-dark { color: #0f172a; }
+.ls-wide { letter-spacing: 0.05em; color: #475569; }
 
-.subtitulo {
-  margin: 40px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #0A3083;
-}
-
-/* Card padrão (inputs, selects, textarea) */
-.card {
+/* Estilo dos Cards Premium */
+.card-premium {
   background: #ffffff;
-  border: 1px solid #e4e4e4;
-  border-radius: 12px;
-  padding: 18px 20px;
-  margin-bottom: 18px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
 }
 
-.row {
-  display: flex;
-  gap: 20px;
-}
-
-.row .card {
-  flex: 1;
-}
-
-/* Labels */
-.card label,
-.questao-card label {
+/* Inputs Modernos */
+.input-modern {
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 18px;
   font-size: 15px;
-  font-weight: 500;
-  display: block;
-  margin-bottom: 6px;
+  color: #1e293b;
+  transition: all 0.3s ease;
 }
 
-/* Inputs */
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #dcdcdc;
-  border-radius: 10px;
-  font-size: 15px;
-  margin-top: 4px;
-  background: #fafafa;
-  transition: border 0.2s;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #4675ff;
+.input-modern:focus {
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
   outline: none;
 }
 
-/* Botão adicionar */
-.btn-add {
-  margin-top: 12px;
-  padding: 10px 16px;
-  background: #eef2ff;
-  border: 1px solid #d4ddff;
-  color: #3c55ff;
+/* Botão de Accordion (Filtros)*/
+.accordion-header {
+  font-size: 23px;
+}
+.accordion-button-premium {
+  width: 100%;
+  text-align: left;
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px !important;
+  padding: 14px 18px;
   font-weight: 600;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-  margin-right: 15px;
+  color: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
-.btn-add:hover {
-  background: #dbe3ff;
+.accordion-button-premium::after {
+  content: '▼';
+  font-size: 10px;
+  transition: transform 0.2s;
 }
 
-.remove {
-  background: transparent;
+.accordion-button-premium:not(.collapsed)::after {
+  transform: rotate(180deg);
+}
+
+/* Botão de Gerar Principal */
+.btn-generate-premium {
+  background: #2563eb;
+  color: white;
   border: none;
-  color: #ff4d4d;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-  margin: 10px 0px;
-}
-
-/* Alternativas */
-.alternativas {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 15px 0;
-}
-
-.correta-question {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 15px 0;
-  color: #008000;
+  border-radius: 16px;
+  padding: 18px;
   font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-
-/* Botão salvar */
-.btn-salvar {
-  margin-top: 12px;
-  padding: 10px 16px;
-  background: #3c55ff;
-  border: 1px solid #d4ddff;
-  color: #ffffff;
-  font-weight: 600;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
+.btn-generate-premium:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
 }
 
-.btn-salvar:hover {
-  opacity: 0.99;
-  background-color: #193fb1;
+.btn-generate-premium:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
 }
 
-.select, option{
-  font-size: 15px;
-  font-weight: 500;
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  
+.shadow-blue {
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-.filter {
-  box-shadow: none !important;
-  border: none;
+/* Remove setas no Chrome, Safari, Edge e Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove setas no Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }

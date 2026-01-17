@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, HostListener, ElementRef, ViewChild } from '@angular/core';import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Auth } from '../../core/services/auth';
 import { UserService } from '../../features/profile/services/user-service';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +16,7 @@ export class Header {
   authService = inject(Auth);
   router = inject(Router);
   userService = inject(UserService);
+  elRef = inject(ElementRef);
 
   primeiroNome: string = '';
   private loginSubscription!: Subscription;
@@ -44,8 +45,24 @@ export class Header {
     }
   }
 
+  @ViewChild('navbarContent') navbarContent!: ElementRef;
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const menuMobile = this.navbarContent?.nativeElement;
+
+    if (menuMobile && 
+        menuMobile.classList.contains('show') && 
+        !this.elRef.nativeElement.contains(event.target)) {
+      
+      menuMobile.classList.remove('show');
+    }
+  }
+
   carregarNomeUsuario() {
-    this.userService.getUsuarioLogado().subscribe({
+    this.userService.getUsuarioLogado()
+    .pipe(take(1))
+    .subscribe({
       next: (usuario) => {
         if (usuario && usuario.nome) {
           this.primeiroNome = usuario.nome.split(' ')[0];

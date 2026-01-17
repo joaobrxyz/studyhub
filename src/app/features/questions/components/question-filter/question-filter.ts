@@ -2,6 +2,10 @@ import { Component, Output, EventEmitter, inject, Input, OnChanges, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuestionService } from '../../services/questionService';
+import { UserService } from '../../../profile/services/user-service';
+import { Auth } from '../../../../core/services/auth';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-question-filter',
@@ -17,7 +21,38 @@ export class QuestionFilter {
 
   @Input() exibirBotoes: boolean = true;
 
+  private userService = inject(UserService);
+  private router = inject(Router);
+  private authService = inject(Auth);
+
+  isPremium: boolean = false;
+  estaLogado: boolean = false;
+
+  ngOnInit() {
+  // Verifica se está logado
+  this.estaLogado = this.authService.isLoggedIn();
+
+  // Se estiver logado, busca o status premium (seu código que já existe)
+  if (this.estaLogado) {
+    this.userService.getUsuarioLogado()
+      .pipe(take(1))
+      .subscribe(user => {
+        this.isPremium = user?.premium || false;
+      });
+  }
+}
+
+  irParaPremium() {
+    // Navega direto para a página de assinatura
+    this.router.navigate(['/premium']);
+  }
+
   filtrosEstaticos = {
+    premium: {
+    apenasErros: false,
+    comResolucao: false,
+    comVideo: false
+  },
     disciplina: {
       Matematica: false,
       Linguagens: false,
@@ -62,8 +97,12 @@ export class QuestionFilter {
   constructor() { }
 
   public forcarSelecao(filtros: any) {
-    console.log('RECEBI ORDEM PARA PINTAR:', filtros);
     if (!filtros) return;
+
+    // Restaurar Filtros Premium
+    this.filtrosEstaticos.premium.apenasErros = !!filtros.apenasErros;
+    this.filtrosEstaticos.premium.comResolucao = !!filtros.comResolucao;
+    this.filtrosEstaticos.premium.comVideo = !!filtros.comVideo;
 
     // Resetar arrays dinâmicos para evitar duplicação
     this.outrasDisciplinas = [{ checked: false, value: '' }];
@@ -126,8 +165,18 @@ export class QuestionFilter {
   }
 
   limparFiltros() {
+    this.filtrosEstaticos.premium = {
+    apenasErros: false,
+    comResolucao: false,
+    comVideo: false
+  };
     // 1. Reseta os checkboxes estáticos (incluindo 'dificuldade')
     this.filtrosEstaticos = {
+      premium: {
+      apenasErros: false,
+      comResolucao: false,
+      comVideo: false
+      },
       disciplina: {
         Matematica: false,
         Linguagens: false,
@@ -173,7 +222,10 @@ export class QuestionFilter {
       disciplinas: [] as string[], 
       instituicoes: [] as string[],
       anos: [] as string[],
-      dificuldades: [] as string[] 
+      dificuldades: [] as string[],
+      apenasErros: this.filtrosEstaticos.premium.apenasErros,
+      comResolucao: this.filtrosEstaticos.premium.comResolucao,
+      comVideo: this.filtrosEstaticos.premium.comVideo
     };
 
     const disciplinasFinais: string[] = [];

@@ -3,14 +3,55 @@
   <hr class="mt-0 mb-4 opacity-25">
 </ng-container>
 
+<div *ngIf="estaLogado" class="premium-filter-container mb-4" [class.is-locked]="!isPremium">
+  <h6 class="filter-title premium-header">
+    Recursos Premium 
+    <svg width="22" height="22" fill="currentColor" class="bi bi-crown-fill premium-badge-overlay" viewBox="0 0 24 24">
+      <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
+    </svg>
+  </h6>
+    
+  <div class="d-flex flex-wrap gap-3 mt-2 mb-4">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="checkErros"
+             [(ngModel)]="filtrosEstaticos.premium.apenasErros"
+             [disabled]="!isPremium"
+             (change)="onStaticChange()">
+      <label class="form-check-label small fw-medium" for="checkErros">
+        Meus Erros
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="checkResolucao"
+             [(ngModel)]="filtrosEstaticos.premium.comResolucao"
+             [disabled]="!isPremium" 
+             (change)="onStaticChange()">
+      <label class="form-check-label small fw-medium" for="checkResolucao">
+        Resolução texto
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="checkVideo"
+             [(ngModel)]="filtrosEstaticos.premium.comVideo"
+             [disabled]="!isPremium"
+             (change)="onStaticChange()">
+      <label class="form-check-label small fw-medium" for="checkVideo">
+        Resolução vídeo
+      </label>
+    </div>
+  </div>
+  <div *ngIf="!isPremium" class="text-center mt-1">
+    <span class="text-warning fw-bold" style="font-size: 0.7rem; cursor: pointer;" (click)="irParaPremium()">
+      LIBERAR RECURSOS PREMIUM
+    </span>
+  </div>
+</div>
+
 <!-- Seção Disciplina -->
 <div class="filter-group mb-4">
   <h6 class="filter-title">Disciplina</h6>
-  
-  <!-- 
-    LIGANDO OS CHECKBOXES ESTÁTICOS
-    Note o [(ngModel)]="filtrosEstaticos.disciplina['Matematica']"
-  -->
   <div class="form-check mb-2">
     <input class="form-check-input" type="checkbox" id="checkMatematica"
            [(ngModel)]="filtrosEstaticos.disciplina['Matematica']"

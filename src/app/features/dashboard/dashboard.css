@@ -1,0 +1,92 @@
+/* 1. Trava o componente para nunca vazar para os lados */
+:host {
+  display: block;
+  width: 100%;
+  overflow-x: hidden; 
+  background-color: white;
+}
+
+/* 2. Remove o respiro negativo do Bootstrap que causa o scroll no mobile */
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* 3. Contêiner do gráfico: Essencial para o Chart.js diminuir */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Altura padrão */
+  margin: 0 auto;
+}
+
+/* 4. Força o Canvas a nunca ser maior que o Card */
+canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Card de Incentivo no Dashboard */
+.premium-upsell-card {
+  background: linear-gradient(90deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 1.25rem;
+}
+
+.upsell-icon-box {
+  width: 56px;
+  height: 56px;
+  background: #1062cefa;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shadow-glow-sm {
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
+}
+
+/* Botão de Upgrade (Azul StudyHub para passar confiança) */
+.btn-premium-upsell {
+  background-color: #2563eb;
+  color: white !important;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.btn-premium-upsell:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+}
+
+/* Ajuste mobile */
+@media (max-width: 767px) {
+  .premium-upsell-card .card-body {
+    text-align: center;
+    gap: 15px;
+  }
+  .premium-upsell-card .d-flex {
+    flex-direction: column;
+  }
+}
+
+/* 5. Ajuste para celulares pequenos */
+@media (max-width: 576px) {
+  .chart-container {
+    height: 220px; /* Gráfico menor no celular para caber na tela */
+  }
+  .container-fluid {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+
+@media (max-width: 991px) {
+  :host{
+    padding: 15px;
+  }
+}

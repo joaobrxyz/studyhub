@@ -52,7 +52,7 @@ export class Login implements OnDestroy {
 
     this.loginSubscription = this.auth.login(credentials as any).subscribe({
       next: (response: any) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
         this.isLoading = false;
       },
       error: (err: any) => {
