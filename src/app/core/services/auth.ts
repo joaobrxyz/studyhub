@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 
 interface ResetPasswordPayload {
   token: string;

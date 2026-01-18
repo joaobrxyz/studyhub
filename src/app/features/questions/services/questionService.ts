@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpUrlEncodingCodec, HttpHeaders } from '@angu
 import { Observable } from 'rxjs';
 import { PageableResponse, Questao } from '../../../core/models/Question'; 
 import { Auth } from '../../../core/services/auth';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment.prod';
 
 const API_URL = `${environment.apiUrl}/questoes`; 
 

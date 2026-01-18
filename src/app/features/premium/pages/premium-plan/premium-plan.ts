@@ -6,7 +6,7 @@ import { Auth } from '../../../../core/services/auth';
 import { UserService, Usuario } from '../../../profile/services/user-service';
 import { ActivatedRoute } from '@angular/router'; 
 import Swal from 'sweetalert2';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment.prod';
 
 declare var MercadoPago: any;
 
