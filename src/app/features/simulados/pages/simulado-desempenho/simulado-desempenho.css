@@ -1,3 +1,9 @@
+/* Garante que o canvas nunca ultrapasse o card */
+canvas {
+  width: 100% !important;
+  max-width: 100%;
+}
+
 /* --- Layout e Fundo --- */
 .desempenho-wrapper {
   background-color: #f8fafc; /* Cinza azulado bem leve para destacar os cards brancos */
@@ -38,7 +44,7 @@
 /* --- Gráficos --- */
 .chart-wrapper {
   position: relative;
-  height: 300px; /* Altura ideal para visualização */
+  height: 300px;
   width: 100%;
 }
 
@@ -132,5 +138,56 @@
   }
   .chart-wrapper {
     height: 250px;
+  }
+
+  .simulado-card .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .btn-primary, .btn-light {
+    width: 100%;
+    font-size: 14px; 
+  }
+
+  .chart-wrapper {
+    height: 220px; 
+  }
+
+  .table {
+    width: 100% !important;
+    margin-bottom: 0;
+  }
+  
+  .table-responsive {
+    border: none;
+  }
+
+  .table td, .table th {
+    padding: 0.75rem 0.3rem !important;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Reduz o padding do card para o gráfico ter mais espaço lateral */
+  .simulado-card.p-4 {
+    padding: 1rem !important;
+  }
+
+  /* Garante que o container do gráfico não tenha largura fixa */
+  .chart-wrapper {
+    height: 200px; /* Diminuir um pouco a altura ajuda a manter a proporção no celular */
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Força o canvas a nunca ultrapassar o limite do card */
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
   }
 }

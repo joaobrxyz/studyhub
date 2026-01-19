@@ -125,12 +125,18 @@
               <tr *ngFor="let t of tentativas">
                 <td class="text-muted">{{ t.dataFim | date:'dd MMM yyyy' }}</td>
                 <td class="fw-bold">{{ t.totalAcertos }}/{{ t.totalQuestoes }}</td>
-                <td style="min-width: 200px;">
-                  <div class="d-flex align-items-center">
-                    <div class="progress flex-grow-1" style="height: 8px; border-radius: 4px; background-color: #f1f5f9;">
+                <td class="text-center">
+  
+                  <div class="d-flex align-items-center justify-content-center">
+                    
+                    <div class="progress flex-grow-1 d-none d-md-flex" style="height: 8px; border-radius: 4px; background-color: #f1f5f9;">
                       <div class="progress-bar" [style.width.%]="t.porcentagemAcerto" style="background-color: #2563eb; border-radius: 4px;"></div>
                     </div>
-                    <span class="ms-3 small fw-bold text-muted">{{ t.porcentagemAcerto | number:'1.0-0' }}%</span>
+
+                    <span class="small fw-bold text-muted ms-md-3">
+                      {{ t.porcentagemAcerto | number:'1.0-0' }}%
+                    </span>
+                    
                   </div>
                 </td>
                 <td class="text-end">

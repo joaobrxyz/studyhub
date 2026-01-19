@@ -92,7 +92,14 @@ export class SimuladoDesempenho implements OnInit, AfterViewInit {
           borderWidth: 0
         }]
       },
-      options: { cutout: '75%', plugins: { legend: { display: false } } }
+      options: { 
+        cutout: '75%', 
+        responsive: true,          
+        maintainAspectRatio: false,
+        layout: {
+          padding: 0           
+        },
+        plugins: { legend: { display: false } } }
     });
 
     // Gráfico de Evolução (Linha)
@@ -118,6 +125,9 @@ export class SimuladoDesempenho implements OnInit, AfterViewInit {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: 0           
+        },
         plugins: {
           legend: { display: false }  
         },

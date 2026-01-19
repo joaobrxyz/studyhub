@@ -7,7 +7,7 @@
     <app-question-filter (filtrosMudaram)="onFiltrosMudaram($event)" ></app-question-filter>
   </div>
 
-  <div [ngClass]="isUserLoggedIn ? 'flex-grow-1 px-lg-5 px-3' : 'container px-lg-5 px-4'" class="py-5">
+  <div [ngClass]="isUserLoggedIn ? 'container-fluid flex-grow-1 px-lg-5 px-3' : 'container px-lg-5 px-4'" class="py-5" style="overflow-x: hidden;">
     <div class="row g-4" [ngClass]="{'justify-content-center': !isUserLoggedIn}">
       <div [ngClass]="isUserLoggedIn ? 'col-lg-12' : 'col-lg-11'" class="col-12">
         

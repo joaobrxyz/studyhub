@@ -180,7 +180,7 @@
   border-radius: 50px; 
   border: 1px solid #dbdee1;
   background-color: #fff;
-  font-size: 15px;
+  font-size: 16px;
   color: #495057;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
   transition: all 0.2s ease;
@@ -197,3 +197,47 @@
   font-weight: 400;
 }
 
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column; 
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .btn-novo {
+    width: 100%; 
+  }
+
+  .lista-container {
+    padding: 20px 15px; 
+  }
+
+  .simulado-card {
+    padding: 20px; 
+  }
+
+  .acoes-topo {
+    position: static; 
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .titulo {
+    margin-top: 10px !important; 
+    font-size: 18px;
+  }
+
+  .descricao {
+    max-width: 100%; 
+  }
+
+  .simulado-card .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .acoes {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

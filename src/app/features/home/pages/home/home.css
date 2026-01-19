@@ -85,6 +85,7 @@ h1 {
     padding-left: 1.5rem;
     padding-right: 1rem;
     border-radius: 10px; 
+    transition: font-size 0.2s ease;
 }
 
 .main-search-bar .form-control:focus {
@@ -175,10 +176,10 @@ h1 {
 /* --- AJUSTES ESPECÍFICOS PARA CELULAR (MEDIA QUERIES) --- */
 @media (max-width: 768px) {
     h1 {
-        font-size: 36px; /* Reduz o título para caber na tela do celular */
+        font-size: 36px; 
     }
     .sub-heading {
-        font-size: 20px; /* Reduz o subtítulo */
+        font-size: 20px; 
     }
     .main-search-bar .form-control {
         font-size: 1rem;
@@ -191,11 +192,23 @@ h1 {
 
 @media (min-width: 992px) {
     .section-value {
-        width: 75%; /* Volta para 75% apenas no Desktop */
+        width: 75%; 
     }
     .main-search-bar .btn {
-        width: 80px; /* Volta para seu tamanho original no PC */
+        width: 80px; 
         height: 80px;
+    }
+}
+
+@media (max-width: 450px) {
+    .main-search-bar .form-control::placeholder {
+        font-size: 0.95rem; 
+    }
+}
+
+@media (max-width: 380px) {
+    .main-search-bar .form-control::placeholder {
+        font-size: 0.80rem !important;
     }
 }
 

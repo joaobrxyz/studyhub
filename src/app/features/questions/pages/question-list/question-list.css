@@ -97,3 +97,18 @@
   color: #64748b;
 }
 
+@media (max-width: 576px) {
+  .search-input {
+    font-size: 16px !important; 
+    height: 50px;
+  }
+  
+  .search-button {
+    padding: 0.5rem 1rem;
+    height: 50px;
+  }
+
+  .d-flex.gap-3.mb-4 {
+    gap: 0.5rem !important;
+  }
+}
