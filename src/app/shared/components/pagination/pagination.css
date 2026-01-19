@@ -1,0 +1,21 @@
+@media (max-width: 576px) {
+  /* Alvo nos links de Anterior e Próxima */
+  ::ng-deep .pagination .page-item:first-child .page-link,
+  ::ng-deep .pagination .page-item:last-child .page-link {
+    font-size: 0px !important; /* "Some" com o texto */
+    padding: 8px 12px !important;
+  }
+
+  /* Faz a seta (ou o símbolo) reaparecer com tamanho normal */
+  ::ng-deep .pagination .page-item:first-child .page-link::before {
+    content: '«';
+    font-size: 16px;
+    color: #2563eb;
+  }
+
+  ::ng-deep .pagination .page-item:last-child .page-link::after {
+    content: '»';
+    font-size: 16px;
+    color: #2563eb;
+  }
+}

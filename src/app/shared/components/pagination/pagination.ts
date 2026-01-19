@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -29,6 +29,11 @@ export class PaginationComponent implements OnChanges {
     }
   }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.pages = this.calculatePages();
+  }
+
   // A função que EMITE o evento para o pai
   mudarPagina(page: number | string): void {
     // Se clicou em '...' não faz nada
@@ -46,26 +51,40 @@ export class PaginationComponent implements OnChanges {
 
   // A "mágica" para calcular os números e as elipses (...)
   private calculatePages(): (number | string)[] {
-    if (this.totalPages <= 7) {
-      // Se tiver 7 ou menos páginas, mostra tudo
-      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    }
+  const isMobile = window.innerWidth < 576;
+  const pageBase1 = this.currentPage + 1;
 
-    const pageBase1 = this.currentPage + 1;
-    const pagesToShow: (number | string)[] = [];
+  // 1. Se o total de páginas for pequeno, mostra tudo
+  if (this.totalPages <= (isMobile ? 5 : 7)) {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
 
-    // Lógica para adicionar '...'
-    if (pageBase1 < 5) {
-      // Caso 1: Estamos no início (1, 2, 3, 4, ..., 78)
-      pagesToShow.push(1, 2, 3, 4, 5, '...', this.totalPages);
-    } else if (pageBase1 > this.totalPages - 4) {
-      // Caso 2: Estamos no final (1, ..., 75, 76, 77, 78)
-      pagesToShow.push(1, '...', this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages);
+  const pagesToShow: (number | string)[] = [];
+
+  if (isMobile) {
+    // LÓGICA MOBILE: Focada em mostrar o "vizinho" imediato
+    if (pageBase1 <= 2) {
+      // Início: 1, 2, 3, ..., 100
+      pagesToShow.push(1, 2, 3, '...', this.totalPages);
+    } else if (pageBase1 >= this.totalPages - 1) {
+      // Fim: 1, ..., 98, 99, 100
+      pagesToShow.push(1, '...', this.totalPages - 2, this.totalPages - 1, this.totalPages);
     } else {
-      // Caso 3: Estamos no meio (1, ..., 10, 11, 12, ..., 78)
+      // Meio: 1, ..., 9, 10, 11, ..., 100 (5 números + 2 elipses)
+      // Se 7 itens ainda quebrarem seu layout, mude para: [1, '...', pageBase1, '...', this.totalPages]
       pagesToShow.push(1, '...', pageBase1 - 1, pageBase1, pageBase1 + 1, '...', this.totalPages);
     }
-
-    return pagesToShow;
+  } else {
+    // LÓGICA DESKTOP (Sua lógica original mantida)
+    if (pageBase1 < 5) {
+      pagesToShow.push(1, 2, 3, 4, 5, '...', this.totalPages);
+    } else if (pageBase1 > this.totalPages - 4) {
+      pagesToShow.push(1, '...', this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages);
+    } else {
+      pagesToShow.push(1, '...', pageBase1 - 1, pageBase1, pageBase1 + 1, '...', this.totalPages);
+    }
   }
+
+  return pagesToShow;
+}
 }

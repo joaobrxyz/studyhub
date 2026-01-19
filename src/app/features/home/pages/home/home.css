@@ -202,7 +202,7 @@ h1 {
 
 @media (max-width: 450px) {
     .main-search-bar .form-control::placeholder {
-        font-size: 0.95rem; 
+        font-size: 0.75rem; 
     }
 }
 

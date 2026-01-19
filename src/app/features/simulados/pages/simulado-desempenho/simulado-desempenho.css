@@ -176,18 +176,39 @@ canvas {
     padding: 1rem !important;
   }
 
-  /* Garante que o container do gráfico não tenha largura fixa */
   .chart-wrapper {
-    height: 200px; /* Diminuir um pouco a altura ajuda a manter a proporção no celular */
+    height: 200px; 
     width: 100% !important;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  /* Força o canvas a nunca ultrapassar o limite do card */
   canvas {
     max-width: 100% !important;
     height: auto !important;
+  }
+
+  .desempenho-wrapper {
+    padding: 1rem 0.5rem !important;
+  }
+
+  .table thead th {
+    font-size: 0.7rem !important;
+    letter-spacing: 0;
+    padding-bottom: 10px;
+  }
+
+  .table td {
+    font-size: 0.92rem !important;
+    padding: 0.5rem 0.2rem !important;
+  }
+
+  .display-6 {
+    font-size: 1.4rem !important;
+  }
+  
+  .simulado-card {
+    padding: 1.25rem !important;
   }
 }
