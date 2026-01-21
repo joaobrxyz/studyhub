@@ -87,6 +87,20 @@
           </div>
         </div>
 
+        <div *ngIf="!isUserLoggedIn" class="promo-card shadow-sm border-0 p-4 mb-4 text-center animate-fade-in">
+          <div class="d-flex flex-column align-items-center">
+
+            <h5 class="fw-bold mb-2">Quer salvar sua evolução?</h5>
+            <p class="text-muted mb-3 mx-auto" style="max-width: 400px;">
+              Crie simulados personalizados, salve suas questões favoritas e acompanhe suas estatísticas de acertos detalhadas.
+            </p>
+            
+            <a routerLink="/auth/register" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
+              Criar Conta Grátis
+            </a>
+          </div>
+        </div>
+
         <!-- 4b. MOSTRAR A LISTA APENAS QUANDO 'isLoading' FOR FALSE -->
         <div *ngIf="!isLoading" class="vstack gap-3">
           

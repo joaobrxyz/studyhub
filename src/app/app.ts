@@ -3,6 +3,7 @@ import { Layout } from './layout/layout';
 import { Auth } from './core/services/auth';
 import { Injectable, inject } from '@angular/core';
 import { injectSpeedInsights } from '@vercel/speed-insights';
+import { inject as injectAnalytics } from '@vercel/analytics';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class App {
   ngOnInit() {
     // Ao abrir o site (ou dar F5), ele calcula quanto tempo falta e arma a bomba relógio
     this.authService.verificarEAgendarLogout();
+    injectAnalytics();
     injectSpeedInsights();
   }
 }
