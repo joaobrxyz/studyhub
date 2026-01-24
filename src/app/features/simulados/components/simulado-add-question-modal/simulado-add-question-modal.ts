@@ -49,6 +49,16 @@ export class SimuladoAddQuestionModal implements OnInit {
   fechar() { this.close.emit(); }
 
   selecionarSimulado(simulado: Simulado) {
+    if (simulado.quantidadeQuestoes >= 100) {
+    Swal.fire({
+      title: 'Limite Atingido',
+      text: 'Este simulado já atingiu o limite máximo de 100 questões.',
+      icon: 'warning',
+      confirmButtonColor: '#2563eb'
+    });
+    return; // Interrompe a execução aqui mesmo
+  }
+
     this.simuladoService.adicionarQuestaoAoSimulado(simulado.id, this.questaoId)
     .pipe(take(1))
     .subscribe({
